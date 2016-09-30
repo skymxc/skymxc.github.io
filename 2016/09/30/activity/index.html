@@ -1,0 +1,722 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Activity详解，activity的生命周期，sky-mxc,Activity间传递数据" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="关于Activity的理解,activity的生命周期，activity之间传递数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Activity">
+<meta property="og:url" content="http://yoursite.com/2016/09/30/activity/index.html">
+<meta property="og:site_name" content="孟祥超">
+<meta property="og:description" content="关于Activity的理解,activity的生命周期，activity之间传递数据">
+<meta property="og:image" content="http://yoursite.com/\images\Android\activity\activitlifcycle.png">
+<meta property="og:updated_time" content="2016-09-30T11:04:52.189Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Activity">
+<meta name="twitter:description" content="关于Activity的理解,activity的生命周期，activity之间传递数据">
+<meta name="twitter:image" content="http://yoursite.com/\images\Android\activity\activitlifcycle.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'sky-mxc'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/30/activity/"/>
+
+  <title> Activity | 孟祥超 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">孟祥超</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">总结&分享</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friend">
+          <a href="/friend" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user-plus"></i> <br />
+            
+            好基友
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Activity
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-30T18:59:47+08:00" content="2016-09-30">
+              2016-09-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/30/activity/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/30/activity/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/09/30/SeekBar" target="_blank" rel="external">https://sky-mxc.github.io/2016/09/30/SeekBar</a></p>
+</blockquote>
+<h1 id="Activity"><a href="#Activity" class="headerlink" title="Activity"></a>Activity</h1><ul>
+<li>什么是Activity</li>
+<li>创建Activity</li>
+<li>启动Activity</li>
+<li>保存Activity状态</li>
+<li>Activity的生命周期</li>
+</ul>
+<hr>
+<h2 id="acitivyt-是什么"><a href="#acitivyt-是什么" class="headerlink" title="acitivyt 是什么"></a>acitivyt 是什么</h2><blockquote>
+<p>引用官方的说法：<br><em>是一个应用组件，用户可与其提供的屏幕进行交互，以执行拨打电话、拍摄照片、发送电子邮件或查看地图等操作。 每个 Activity 都会获得一个用于绘制其用户界面的窗口。窗口通常会充满屏幕，但也可小于屏幕并浮动在其他窗口之上</em></p>
+</blockquote>
+<h2 id="创建Activity"><a href="#创建Activity" class="headerlink" title="创建Activity"></a>创建Activity</h2><p>要创建Activity 必须继承自Activity或者Activity的子类。在Activity的各个生命阶段实现对应的方法；</p>
+<blockquote>
+<p>其中重要的两个方法:</p>
+<p>onCreate() ,系统在创建Activity时调用此方法；在此方法实现视图绑定；一些 控件的初始化</p>
+<p>onPuase();  用户离开当前Activity调用的第一个方法 ，</p>
+<p>创建完成后必须在Manifest文件中 声明此Activity 系统才会知道有这个Activity</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">...</span> &gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">application</span> <span class="attr">...</span> &gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">".ExampleActivity"</span> /&gt;</span></div><div class="line">      ...</div><div class="line">  <span class="tag">&lt;/<span class="name">application</span> <span class="attr">...</span> &gt;</span></div><div class="line">  ...</div><div class="line"><span class="tag">&lt;/<span class="name">manifest</span> &gt;</span></div></pre></td></tr></table></figure>
+<p>如果有需要也可以为此Activity添加IntentFilter(IntentFilter稍后我会再做总结),以供外部程序来启动，一般同一应用中不会用到隐式启动。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">".AActivity"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.skymxc.action.x1"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.skymxc.action.x2"</span> /&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"com.skymxc.catagory.c1"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"com.skymxc.catagory.c2"</span> /&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">"http"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>最简单的Activity 只绑定了一个视图<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</blockquote>
+<hr>
+<h2 id="启动Activity"><a href="#启动Activity" class="headerlink" title="启动Activity"></a>启动Activity</h2><blockquote>
+<p>可以通过一个intent 来启动 一个Activity ,关于intent稍后会做总结</p>
+</blockquote>
+<h3 id="明确目标启动"><a href="#明确目标启动" class="headerlink" title="明确目标启动"></a>明确目标启动</h3><p>在明确的指导要启动的Activity的时候可以显示使用intent来启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Intent intent = new Intent(this, SignInActivity.class);</div><div class="line">startActivity(intent);</div></pre></td></tr></table></figure>
+<h3 id="传递数据"><a href="#传递数据" class="headerlink" title="传递数据"></a>传递数据</h3><p>如果需要传递数据，可以在intent中放入数据<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_SEND);</div><div class="line">intent.putExtra(<span class="string">"origin"</span>, <span class="string">"哈哈"</span>);</div><div class="line">startActivity(intent);</div></pre></td></tr></table></figure></p>
+<p>获取数据<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Intent intent = getIntent();<span class="comment">//获取启动此activity的intent</span></div><div class="line">String origin = intent.getStringExtra(<span class="string">"origin"</span>);</div></pre></td></tr></table></figure></p>
+<h3 id="不明确启动目标"><a href="#不明确启动目标" class="headerlink" title="不明确启动目标"></a>不明确启动目标</h3><p>在不明确要启动的Activity的时候 可以在intent中添加关于启动目标的描述和类型,系统会过滤所有的Activity的intentFilter来匹配 ；一般 在同一个应用中不必使用隐式Intent；</p>
+<blockquote>
+<p>例如 我在为A Activity添加这样的IntentFilter：</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">".AActivity"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.skymxc.action.x1"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.skymxc.action.x2"</span> /&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"com.skymxc.catagory.c1"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"com.skymxc.catagory.c2"</span> /&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">"http"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>要启动上面的Activity可以这样写 </p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Intent in = <span class="keyword">new</span> Intent();</div><div class="line"><span class="comment">////要执行的动作的描述 所有的action中 有一个匹配行</span></div><div class="line">in.setAction(<span class="string">"com.skymxc.action.x2"</span>);</div><div class="line"><span class="comment">//附加信息的描述 这里的描述只要在intentFilter中声明了就能匹配上，</span></div><div class="line"><span class="comment">// 如果有一项未声明则匹配不上，如果intentFilter中没有可以不添加，会使用默认的category</span></div><div class="line">in.addCategory(<span class="string">"com.skymxc.catagory.c2"</span>);</div><div class="line"><span class="comment">//对数据进行描述 C中定义了协议为 file</span></div><div class="line">in.setDataAndType(Uri.parse(<span class="string">"http://"</span>),<span class="string">"audio/13"</span>);</div><div class="line"><span class="keyword">if</span> (in.resolveActivity(getPackageManager())!=<span class="keyword">null</span>)&#123;</div><div class="line">    <span class="comment">//启动</span></div><div class="line">    startActivity(in);</div><div class="line">&#125;<span class="keyword">else</span>&#123;</div><div class="line">    Toast.makeText(<span class="keyword">this</span>,<span class="string">"系统中不存在可以执行此操作的程序"</span>,Toast.LENGTH_SHORT).show();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="为某个结果启动一个Activity"><a href="#为某个结果启动一个Activity" class="headerlink" title="为某个结果启动一个Activity"></a>为某个结果启动一个Activity</h3><p>如果启动一个Activit只为获得某个结果 可以 使用 startActivityForResult() 来启动一个Activity ，在获得结果后会回调 方法：onActivityResult();</p>
+<blockquote>
+<p>去图库获取图片 第二个参数是请求码 在onActivityResult()中区分结果<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Intent intent1 = <span class="keyword">new</span> Intent(Intent.ACTION_PICK);</div><div class="line">intent1.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);</div><div class="line"><span class="comment">//为了结果去启动一个Activity</span></div><div class="line">startActivityForResult(intent1,<span class="number">50</span>);</div></pre></td></tr></table></figure></p>
+<p>onActivityResult()中获取到取得的图片<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> requestCode 启动时的 requestCode</div><div class="line"> * <span class="doctag">@param</span> resultCode 跳转的activity给的</div><div class="line"> * <span class="doctag">@param</span> data 跳转的activity给的 返回的数据</div><div class="line"> */</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onActivityResult</span><span class="params">(<span class="keyword">int</span> requestCode, <span class="keyword">int</span> resultCode, Intent data)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onActivityResult(requestCode, resultCode, data);</div><div class="line">    <span class="keyword">if</span> (requestCode== <span class="number">50</span> &amp;&amp; resultCode ==RESULT_OK &amp;&amp; data != <span class="keyword">null</span>)&#123;</div><div class="line">       Uri uri = data.getData(); <span class="comment">//返回是标识符指定图片所在的位置的统一资源标识符</span></div><div class="line">        img.setImageURI(uri);  <span class="comment">//设置给 ImageView</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</blockquote>
+<hr>
+<h2 id="保存Activity的状态"><a href="#保存Activity的状态" class="headerlink" title="保存Activity的状态"></a>保存Activity的状态</h2><p>当用户 离开Activity去往另一个Activity时；Activity会被压入返回栈，如果内存不够就会被销毁 ，当Activity被销毁后其中的数据当然就没了，如果需要保留这些数据可调用 方法 onSaveInstanceState()方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSaveInstanceState</span><span class="params">(Bundle outState, PersistableBundle outPersistentState)</span> </span>&#123;</div><div class="line">    <span class="comment">//存入数据</span></div><div class="line">   outState.putBoolean(<span class="string">"checked"</span>,<span class="keyword">true</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当此Activity被创建时 就能取出数据了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">    <span class="keyword">if</span> (savedInstanceState!=<span class="keyword">null</span>)&#123;</div><div class="line">        <span class="keyword">boolean</span> checked = savedInstanceState.getBoolean(<span class="string">"checked"</span>);</div><div class="line">    &#125;</div><div class="line">    setContentView(R.layout.activity_main);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="Activity的生命周期"><a href="#Activity的生命周期" class="headerlink" title="Activity的生命周期"></a>Activity的生命周期</h3><p>看一张图描述了整个Activity由生到死的一套回调方法<br><img src="\images\Android\activity\activitlifcycle.png" alt="生命周期"></p>
+<h3 id="回调方法说明"><a href="#回调方法说明" class="headerlink" title="回调方法说明"></a>回调方法说明</h3><blockquote>
+<p>先说一下上图的方法：</p>
+<ul>
+<li>onCreate() :创建Activity ，可以在这里进行初始一些视图和数据 </li>
+<li>onStart():   启动Activity ，这里你就可以看到 这个activity了</li>
+<li>onResume(): 调用这个方法前 只能看到Activity 并不能进行交互 ，执行完此方法才可以进行交互 ，整个Activity就彻底的运行起来了</li>
+<li>onPause()   :停止用户交互 你可以看到 但是 不能交互了  比如 启动另一个透明的Dialog Activity 你可以看到原本的Activity ，但是已经失去了焦点 ，无法交互</li>
+<li>onStop() ：当前Activity被覆盖时调用 例如 当前activity1跳往到activity2 ，activity就会把activity1覆盖，这时就调用了此方法</li>
+<li>onRestart();  重新启动</li>
+<li><p>onDestroy():activity再结束前调用的最后一个方法;这里可以进行一些释放资源的操作</p>
+<h3 id="三种阶段"><a href="#三种阶段" class="headerlink" title="三种阶段"></a>三种阶段</h3><ul>
+<li>完整生命周期：<br>从调用的第一个方法 onCreate()  到最后调用一个的方法onDestroy()  ，在onCreate()方法中可以进行一些全局的配置，UI的引用，数据的初始化，也可以从savedInstanceState中读取 保存在设备中或者执行reCreate方法前保存的数据等前提savedInstanceSate不为null，在onDestroy(）方法中可以 释放资源等</li>
+</ul>
+</li>
+<li><p>可视周期：在执行onStart()和onStop(）之间  在这期间 你可以在屏幕上看到这个Activity但是 不能再前台跟用户交互 。只能看，可以理解为于禁用状态</p>
+</li>
+<li><p>前台周期：在执行onResume() 和 onPause() 之间，在这期间，用户就可以在前台和activity交互了。</p>
+</li>
+</ul>
+</blockquote>
+<hr>
+<blockquote>
+<p>关于这里提到的intent ，intentFilter 我会在之后总结。</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Activity/" rel="tag">#Activity</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/30/SeekBar/" rel="next" title="seekbar">
+                <i class="fa fa-chevron-left"></i> seekbar
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/30/activity/"
+           data-title="Activity" data-url="http://yoursite.com/2016/09/30/activity/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/top.jpg"
+               alt="sky-mxc" />
+          <p class="site-author-name" itemprop="name">sky-mxc</p>
+          <p class="site-description motion-element" itemprop="description">编码路漫漫 总结很重要</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity"><span class="nav-number">1.</span> <span class="nav-text">Activity</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#acitivyt-是什么"><span class="nav-number">1.1.</span> <span class="nav-text">acitivyt 是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Activity"><span class="nav-number">1.2.</span> <span class="nav-text">创建Activity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动Activity"><span class="nav-number">1.3.</span> <span class="nav-text">启动Activity</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#明确目标启动"><span class="nav-number">1.3.1.</span> <span class="nav-text">明确目标启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#传递数据"><span class="nav-number">1.3.2.</span> <span class="nav-text">传递数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不明确启动目标"><span class="nav-number">1.3.3.</span> <span class="nav-text">不明确启动目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为某个结果启动一个Activity"><span class="nav-number">1.3.4.</span> <span class="nav-text">为某个结果启动一个Activity</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保存Activity的状态"><span class="nav-number">1.4.</span> <span class="nav-text">保存Activity的状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Activity的生命周期"><span class="nav-number">1.4.1.</span> <span class="nav-text">Activity的生命周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回调方法说明"><span class="nav-number">1.4.2.</span> <span class="nav-text">回调方法说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三种阶段"><span class="nav-number">1.4.3.</span> <span class="nav-text">三种阶段</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sky-mxc</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"sky-mxc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
