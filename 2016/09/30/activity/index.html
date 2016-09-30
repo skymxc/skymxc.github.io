@@ -91,7 +91,7 @@
 <meta property="og:site_name" content="孟祥超">
 <meta property="og:description" content="关于Activity的理解,activity的生命周期，activity之间传递数据">
 <meta property="og:image" content="http://yoursite.com/\images\Android\activity\activitlifcycle.png">
-<meta property="og:updated_time" content="2016-09-30T11:04:52.189Z">
+<meta property="og:updated_time" content="2016-09-30T11:08:39.262Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Activity">
 <meta name="twitter:description" content="关于Activity的理解,activity的生命周期，activity之间传递数据">
@@ -335,7 +335,7 @@
 
       
         <blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/09/30/SeekBar" target="_blank" rel="external">https://sky-mxc.github.io/2016/09/30/SeekBar</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/09/30/activity" target="_blank" rel="external">https://sky-mxc.github.io/2016/09/30/activity</a></p>
 </blockquote>
 <h1 id="Activity"><a href="#Activity" class="headerlink" title="Activity"></a>Activity</h1><ul>
 <li>什么是Activity</li>
@@ -397,11 +397,14 @@
 <li>onPause()   :停止用户交互 你可以看到 但是 不能交互了  比如 启动另一个透明的Dialog Activity 你可以看到原本的Activity ，但是已经失去了焦点 ，无法交互</li>
 <li>onStop() ：当前Activity被覆盖时调用 例如 当前activity1跳往到activity2 ，activity就会把activity1覆盖，这时就调用了此方法</li>
 <li>onRestart();  重新启动</li>
-<li><p>onDestroy():activity再结束前调用的最后一个方法;这里可以进行一些释放资源的操作</p>
-<h3 id="三种阶段"><a href="#三种阶段" class="headerlink" title="三种阶段"></a>三种阶段</h3><ul>
-<li>完整生命周期：<br>从调用的第一个方法 onCreate()  到最后调用一个的方法onDestroy()  ，在onCreate()方法中可以进行一些全局的配置，UI的引用，数据的初始化，也可以从savedInstanceState中读取 保存在设备中或者执行reCreate方法前保存的数据等前提savedInstanceSate不为null，在onDestroy(）方法中可以 释放资源等</li>
+<li>onDestroy():activity再结束前调用的最后一个方法;这里可以进行一些释放资源的操作</li>
 </ul>
-</li>
+</blockquote>
+<h3 id="三种阶段"><a href="#三种阶段" class="headerlink" title="三种阶段"></a>三种阶段</h3><blockquote>
+<ul>
+<li>完整生命周期：<br> 从调用的第一个方法 onCreate()  到最后调用一个的方法onDestroy()  ，在onCreate()方法中可以进行一些全局的配置，UI的引用，数据的初始化，也可以从savedInstanceState中读取 保存在设备中或者执行reCreate方法前保存的数据等前提savedInstanceSate不为null，在onDestroy(）方法中可以 释放资源等</li>
+</ul>
+<ul>
 <li><p>可视周期：在执行onStart()和onStop(）之间  在这期间 你可以在屏幕上看到这个Activity但是 不能再前台跟用户交互 。只能看，可以理解为于禁用状态</p>
 </li>
 <li><p>前台周期：在执行onResume() 和 onPause() 之间，在这期间，用户就可以在前台和activity交互了。</p>
