@@ -1,0 +1,690 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Inten.ACTION_SEND 实现简单的分享图片和文字,sky-mxc,Android 分享,不使用第三方 SDK 实现简单分享" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Inten.ACTION_SEND 实现简单的分享图片和文字,分享到 微信，QQ ，微博">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ACTION_SEND">
+<meta property="og:url" content="http://yoursite.com/2016/10/01/ACTION-SEND/index.html">
+<meta property="og:site_name" content="孟祥超">
+<meta property="og:description" content="Inten.ACTION_SEND 实现简单的分享图片和文字,分享到 微信，QQ ，微博">
+<meta property="og:image" content="http://yoursite.com/\images\Android\share_ACTION_SEND\system.png">
+<meta property="og:image" content="http://yoursite.com/e\images\Android\share_ACTION_SEND\createChooser.png">
+<meta property="og:updated_time" content="2016-10-01T10:51:28.675Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ACTION_SEND">
+<meta name="twitter:description" content="Inten.ACTION_SEND 实现简单的分享图片和文字,分享到 微信，QQ ，微博">
+<meta name="twitter:image" content="http://yoursite.com/\images\Android\share_ACTION_SEND\system.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'sky-mxc'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/10/01/ACTION-SEND/"/>
+
+  <title> ACTION_SEND | 孟祥超 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?e9d2c08c26634692a2d82ea974373245";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">孟祥超</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">总结&分享</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friend">
+          <a href="/friend" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user-plus"></i> <br />
+            
+            好基友
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ACTION_SEND
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-01T17:30:28+08:00" content="2016-10-01">
+              2016-10-01
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/01/ACTION-SEND/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/01/ACTION-SEND/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<blockquote>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
+</blockquote>
+<hr>
+<h1 id="不使用第三方-SDK-实现简单分享"><a href="#不使用第三方-SDK-实现简单分享" class="headerlink" title="不使用第三方 SDK 实现简单分享"></a>不使用第三方 SDK 实现简单分享</h1><blockquote>
+<p>现在在Android系统中进行分享，主要有两种手段，一种是通过系统自带的来启动分享功能；第二种是通过第三方的SDK插件进行分享；今天先来看看系统自带的分享功能:Intent.ACTOIN_SEND;</p>
+<ul>
+<li>分享文本</li>
+<li>分享图片+文本 （QQ和微信不支持，只能将图片和文本分两次分享，目前来看只有新浪微博支持）</li>
+<li>分享多图片 （和上面一样 ，目前只有新浪微博可以同时分享图片和文本）</li>
+<li>分享图片+文本至微信朋友圈 </li>
+</ul>
+</blockquote>
+<h2 id="分享存文本内容"><a href="#分享存文本内容" class="headerlink" title="分享存文本内容"></a>分享存文本内容</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">share</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 简单分享</div><div class="line">     * 让用户去选择分享平台</div><div class="line">     * 只分享简单的文子</div><div class="line">     */</div><div class="line">    String context = etContext.getText().toString();</div><div class="line">    intent = <span class="keyword">new</span> Intent(Intent.ACTION_SEND);</div><div class="line">    intent.setType(<span class="string">"text/plain"</span>);</div><div class="line">    intent.putExtra(Intent.EXTRA_TEXT,context);</div><div class="line">    <span class="keyword">if</span>(hasApplication(intent))&#123;</div><div class="line">        <span class="comment">//没有默认选项 可以自定义dialog标题</span></div><div class="line">        startActivity(Intent.createChooser(intent,<span class="string">"分享一下"</span>));</div><div class="line">        <span class="comment">//系统默认主题</span></div><div class="line">        <span class="comment">//   startActivity(intent);</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在分享之前可以先查看一下手机上是否有分享平台，如果没有就给出提示可以增加用户友好度，通过 PackageManager的queryIntentActivities()查看是否有匹配intent的Activity<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 判断是否存在intent要启动的Activity</div><div class="line"> * <span class="doctag">@param</span> intent</div><div class="line"> * <span class="doctag">@return</span></div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">hasApplication</span><span class="params">(Intent intent)</span></span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">//查询是否有该intent要启动的Activity</span></div><div class="line">    List&lt;ResolveInfo&gt; resolveInfos= getPackageManager().queryIntentActivities(intent,<span class="number">0</span>);</div><div class="line">    log(resolveInfos.size()+<span class="string">""</span>);</div><div class="line">    <span class="keyword">return</span>  resolveInfos.size()&gt;<span class="number">0</span>?<span class="keyword">true</span>:<span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>另外 使用  Intent.createChooser()可以避免出现默认程序的可能，还可以定义弹出框的标题 ，友好程度更好一些,下面看一下两者的区别</p>
+<blockquote>
+<p>系统默认的主题( startActivity(intent))<br><img src="\images\Android\share_ACTION_SEND\system.png" alt="系统默认"><br><strong>使用 Intent.createChooser()</strong><br><img src="e\images\Android\share_ACTION_SEND\createChooser.png" alt="Intent.createChooser()"></p>
+</blockquote>
+<hr>
+<h2 id="分享文本-图片"><a href="#分享文本-图片" class="headerlink" title="分享文本+图片"></a>分享文本+图片</h2><blockquote>
+<p>图片和文本一起分享 目前我测试的只有微博好使 ，QQ和微信 都只能分享图片，不接受文本<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 分享图片 和文本</div><div class="line"> * QQ 微信 不能图片和文本一起分享</div><div class="line"> * 微博可以实现图片和文本一起分享</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">shareChooser</span><span class="params">()</span> </span>&#123;</div><div class="line">    String context = etContext.getText().toString();</div><div class="line"></div><div class="line">    intent = <span class="keyword">new</span> Intent(Intent.ACTION_SEND);</div><div class="line">    intent.setType(<span class="string">"image/*"</span>);</div><div class="line">    intent.putExtra(Intent.EXTRA_TEXT,context);</div><div class="line">    intent.putExtra(Intent.EXTRA_STREAM,uri);</div><div class="line">    <span class="keyword">if</span> (hasApplication(intent))&#123;</div><div class="line">        startActivity(Intent.createChooser(intent,<span class="string">"选择要分享到的平台吧"</span>));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</blockquote>
+<hr>
+<h2 id="分享多张图片"><a href="#分享多张图片" class="headerlink" title="分享多张图片"></a>分享多张图片</h2><blockquote>
+<p>和上面一样 我测试 只有微博能同时分享图片和文本</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 分享多个图片</div><div class="line"> * 目前来看 只有微博能同时分享文本和内容</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">sharePhototMult</span><span class="params">()</span> </span>&#123;</div><div class="line">    ArrayList&lt;Uri&gt; uris =<span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    uris.add(uri);</div><div class="line">    uris.add(uri);</div><div class="line">    intent = <span class="keyword">new</span> Intent(Intent.ACTION_SEND_MULTIPLE);</div><div class="line">    intent.setType(<span class="string">"image/*"</span>);</div><div class="line">    intent.putExtra(Intent.EXTRA_TEXT,<span class="string">"分享内容测试"</span>);</div><div class="line">    intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM,uris);</div><div class="line">    <span class="keyword">if</span>(hasApplication(intent))&#123;</div><div class="line">        startActivity(Intent.createChooser(intent,<span class="string">"选择分享平台"</span>));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="分享-图片-文本到微信朋友圈"><a href="#分享-图片-文本到微信朋友圈" class="headerlink" title="分享 图片+文本到微信朋友圈"></a>分享 图片+文本到微信朋友圈</h2><blockquote>
+<p>这个方式可以实现 图片+ 文本同时分享</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 分享图片去微信朋友圈</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">sharePhotoToWX</span><span class="params">()</span> </span>&#123;</div><div class="line">    String wxPackage = <span class="string">"com.tencent.mm"</span>;</div><div class="line">    <span class="keyword">if</span> (checkPackage(wxPackage))&#123;</div><div class="line">        intent = <span class="keyword">new</span> Intent(Intent.ACTION_SEND);</div><div class="line"></div><div class="line">        intent.setClassName(wxPackage,<span class="string">"com.tencent.mm.ui.tools.ShareToTimeLineUI"</span>);</div><div class="line">        intent.setType(<span class="string">"image/*"</span>);</div><div class="line">        intent.putExtra(<span class="string">"Kdescription"</span>,<span class="string">"朋友圈分享测试"</span>);</div><div class="line">        intent.putExtra(Intent.EXTRA_STREAM,uri);</div><div class="line">        startActivity(intent);</div><div class="line"></div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">        Toast.makeText(<span class="keyword">this</span>,<span class="string">"微信不存在"</span>,Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ACTION-SEND/" rel="tag">#ACTION_SEND</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/30/activity/" rel="next" title="Activity">
+                <i class="fa fa-chevron-left"></i> Activity
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/01/ACTION-SEND/"
+           data-title="ACTION_SEND" data-url="http://yoursite.com/2016/10/01/ACTION-SEND/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/top.jpg"
+               alt="sky-mxc" />
+          <p class="site-author-name" itemprop="name">sky-mxc</p>
+          <p class="site-description motion-element" itemprop="description">编码路漫漫 总结很重要</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">博文</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#不使用第三方-SDK-实现简单分享"><span class="nav-number">1.</span> <span class="nav-text">不使用第三方 SDK 实现简单分享</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#分享存文本内容"><span class="nav-number">1.1.</span> <span class="nav-text">分享存文本内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分享文本-图片"><span class="nav-number">1.2.</span> <span class="nav-text">分享文本+图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分享多张图片"><span class="nav-number">1.3.</span> <span class="nav-text">分享多张图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分享-图片-文本到微信朋友圈"><span class="nav-number">1.4.</span> <span class="nav-text">分享 图片+文本到微信朋友圈</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sky-mxc</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"sky-mxc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
