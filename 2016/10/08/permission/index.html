@@ -1,0 +1,952 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="sky-mxc,Android 6.0 运行时权限 请求 响应流程" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/top.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Android 6.0 运行时权限 请求 响应流程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.0 运行时权限处理">
+<meta property="og:url" content="https://sky-mxc.github.io/2016/10/08/permission/index.html">
+<meta property="og:site_name" content="孟祥超">
+<meta property="og:description" content="Android 6.0 运行时权限 请求 响应流程">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\permission\permission0.png">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\permission\PermissionDescription.png">
+<meta property="og:updated_time" content="2016-10-08T04:53:45.009Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6.0 运行时权限处理">
+<meta name="twitter:description" content="Android 6.0 运行时权限 请求 响应流程">
+<meta name="twitter:image" content="https://sky-mxc.github.io/\images\Android\permission\permission0.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'sky-mxc'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://sky-mxc.github.io/2016/10/08/permission/"/>
+
+  <title> 6.0 运行时权限处理 | 孟祥超 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?e9d2c08c26634692a2d82ea974373245";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">孟祥超</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">总结&分享</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friend">
+          <a href="/friend" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user-plus"></i> <br />
+            
+            好基友
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                6.0 运行时权限处理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-08T11:58:17+08:00" content="2016-10-08">
+              2016-10-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/08/permission/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/08/permission/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="6-0-运行时权限处理"><a href="#6-0-运行时权限处理" class="headerlink" title="6.0 运行时权限处理"></a>6.0 运行时权限处理</h1><blockquote>
+<p>在6.0以前 权限都是在安装时授权的，如果用户不授权就无法安装；<br>Android从6.0（API 23）开始 使用运行时权限，而不是像以前那样安装时授权。当你需要某些权限时，系统会向用户去申请权限。用户可以随时取消授权给你的权限。<br>6.0中权限分为两类 普通权限和危险权限，普通权限在AndroidManifest 文件中注册就可以得到，对于能获得用户隐私的权限属于危险权限。在使用的时候必须用户授权才能使用。例如 拍照，录音 sd卡的操作，危险权限被分为很多组，只要一组中的其中一项被授权 Android 就会将这一组的权限打包都授权给你app</p>
+</blockquote>
+<p><img src="\images\Android\permission\permission0.png" alt="image"></p>
+<h2 id="危险权限"><a href="#危险权限" class="headerlink" title="危险权限"></a>危险权限</h2><blockquote>
+<p>危险权限被分为了9组</p>
+</blockquote>
+<pre><code>Permission Group    Permissions
+
+CALENDAR    • READ_CALENDAR 
+            • WRITE_CALENDAR
+
+CAMERA            • CAMERA
+
+CONTACTS    • READ_CONTACTS
+            • WRITE_CONTACTS
+            • GET_ACCOUNTS
+
+LOCATION    • ACCESS_FINE_LOCATION
+            • ACCESS_COARSE_LOCATION
+MICROPHONE    • RECORD_AUDIO
+
+PHONE       • READ_PHONE_STATE
+            • CALL_PHONE
+            • READ_CALL_LOG
+            • WRITE_CALL_LOG
+            • ADD_VOICEMAIL
+            • USE_SIP
+            • PROCESS_OUTGOING_CALLS
+
+SENSORS             • BODY_SENSORS
+
+    SMS            • SEND_SMS
+            • RECEIVE_SMS
+            • READ_SMS
+            • RECEIVE_WAP_PUSH
+            • RECEIVE_MMS
+
+STORAGE    • READ_EXTERNAL_STORAGE
+        • WRITE_EXTERNAL_STORAGE
+</code></pre><h2 id="普通权限"><a href="#普通权限" class="headerlink" title="普通权限"></a>普通权限</h2><pre><code>  • ACCESS_LOCATION_EXTRA_COMMANDS  
+• ACCESS_NETWORK_STATE
+• ACCESS_NOTIFICATION_POLICY
+• ACCESS_WIFI_STATE
+• BLUETOOTH
+• BLUETOOTH_ADMIN
+• BROADCAST_STICKY
+• CHANGE_NETWORK_STATE
+• CHANGE_WIFI_MULTICAST_STATE
+• CHANGE_WIFI_STATE
+• DISABLE_KEYGUARD
+• EXPAND_STATUS_BAR
+• GET_PACKAGE_SIZE
+• INSTALL_SHORTCUT
+• INTERNET
+• KILL_BACKGROUND_PROCESSES
+• MODIFY_AUDIO_SETTINGS
+• NFC
+• READ_SYNC_SETTINGS
+• READ_SYNC_STATS
+• RECEIVE_BOOT_COMPLETED
+• REORDER_TASKS
+• REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+• REQUEST_INSTALL_PACKAGES
+• SET_ALARM
+• SET_TIME_ZONE
+• SET_WALLPAPER
+• SET_WALLPAPER_HINTS
+• TRANSMIT_IR
+• UNINSTALL_SHORTCUT
+• USE_FINGERPRINT
+• VIBRATE
+• WAKE_LOCK
+    • WRITE_SYNC_SETTINGS
+</code></pre><h2 id="请求权限"><a href="#请求权限" class="headerlink" title="请求权限"></a>请求权限</h2><h3 id="targetSdkVerion"><a href="#targetSdkVerion" class="headerlink" title="targetSdkVerion"></a>targetSdkVerion</h3><blockquote>
+<p>申请权限之前必须先说一下tartgetSdkVersion ，目标sdk版本，一般定义在build.gradle文件中。<br>    如果 targetSDKVersion 是22 安装好之后 Android系统就知道这个App在系统API22一下都测试过了并且能正确运行的，假如这个App运行在了Android6.0系统上，Android就会对这个App很”照顾“，兼容它正确运行。6.0系统会把App申请的权限都默认给这个App。<br>但是 ，在6.0系统 ，用户可随时撤销授权给app的权限 ，即使系统默认都授权给你，用户也可以取消掉。这时就没权限了。所以即使是targetSDKVersion &lt; 23 也不是就万事大吉了。Android为我们提供了android.support.v4.content.PermissionChecker 来检测是否具有某些权限</p>
+<p>判断 targetSdkVersion</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 检查targetSDKVersion 是否在 23以上</div><div class="line"> * <span class="doctag">@return</span></div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">checkTargetSdkVersion</span><span class="params">()</span></span>&#123;</div><div class="line">    PackageInfo info= <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        info = getPackageManager().getPackageInfo(getPackageName(),<span class="number">0</span>);</div><div class="line">    &#125; <span class="keyword">catch</span> (PackageManager.NameNotFoundException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span> targetSdk=  info.applicationInfo.targetSdkVersion;</div><div class="line">    log(<span class="string">"TargetSdkVersion:"</span>+targetSdk);</div><div class="line">    <span class="keyword">if</span> (targetSdk&gt;=Build.VERSION_CODES.M)&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="检查权限"><a href="#检查权限" class="headerlink" title="检查权限"></a>检查权限</h3><blockquote>
+<p>在去请求权限之前 应该先检查一下系统 的版本 如果系统版本在6.0以上再去请求权限，如果不在就不去请求，直接使用</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 检查系统版本是否在6.0或者6.0以上</div><div class="line"> * <span class="doctag">@return</span> </div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">checkVersion</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="comment">// Build.VERSION.SDK_INT 当前系统版本</span></div><div class="line">    <span class="comment">//Build.VERSION_CODES.M 6.0版本</span></div><div class="line">    <span class="keyword">if</span>(Build.VERSION.SDK_INT &gt;=Build.VERSION_CODES.M)&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>PermissionChecker.checkSelfPermission()</strong> 方法就是用于检查App自身有没有某一个权限 此方法适用于 targetSdkVersion &lt; 23</p>
+<p> <strong>context.checkSelfPermission()</strong>  适用于 targetSDKVersion &gt;=23</p>
+<p>返回结果有三种 状态</p>
+<ul>
+<li>PermissionChecker.PERMISSION_GRANTED; //有权限</li>
+<li>PermissionChecker.PERMISSION_DENIED ; //无权限</li>
+<li>PermissionChecker.PERMISSION_DENIED_APP_OP;//无权限</li>
+</ul>
+<p>PermissionChecker.PERMISSION_DENIED 和 PermissionChecker.PERMISSION_DENIED_APP_OP 的区别:</p>
+<ul>
+<li>targetSDKVersion 小于23没有权限就返回 PermissionChecker.PERMISSION_DENIED_APP_OP</li>
+<li>targetSdkVersion23或者以上的返回 PermissionChecker.PERMISSION_DENIED</li>
+</ul>
+</blockquote>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//检测targetSDKVersion 是否在23以上</span></div><div class="line"><span class="keyword">if</span> (checkTargetSdkVersion())&#123;</div><div class="line">    <span class="comment">//targetSDKVersion &gt;=23</span></div><div class="line">    <span class="comment">//检查是否具有读取短信的权限</span></div><div class="line">    result = checkSelfPermission(permission);</div><div class="line">&#125;<span class="keyword">else</span>&#123;</div><div class="line">    <span class="comment">//targetSDKVersion &lt;23</span></div><div class="line">    <span class="comment">//检查是否具有读取短信的权限</span></div><div class="line">    result= PermissionChecker.checkSelfPermission(<span class="keyword">this</span>,permission);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="请求权限-1"><a href="#请求权限-1" class="headerlink" title="请求权限"></a>请求权限</h3><blockquote>
+<p>使用 requestPermissions() 方法去请求权限 参数有两个 权限数组 和请求码</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">requestPermissions(<span class="keyword">new</span> String[]&#123;<span class="string">"android.permission.READ_SMS"</span>&#125;,<span class="number">10</span>);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在请求权限之前最好是跟用户解释清楚为什么要使用这个权限 ，用时候用户并不清楚为什么使用权限 就会被拒绝，如果一个权限被请求一次以上 在系统申请权限的Dialog会出现一个不再提醒的复选框 那怎么判断 用户是否勾选了这个 不再提醒呢 ，Android提供了 shouldShowRequestPermissionRationale() 方法;</p>
+<p>这个方法 在 第一次请求的时候 和 在用户勾选了不再提醒时  返回false ，其他均返回true</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 第一次请求就返回false 拒绝过返回true 或者 用户选择不再提示返回false</span></div><div class="line"><span class="keyword">boolean</span> answer=  shouldShowRequestPermissionRationale(permission);</div><div class="line">log(<span class="string">"shouldShowRequestPermissionRationale :"</span>+answer);</div><div class="line"><span class="keyword">if</span> (!answer)&#123;</div><div class="line">    <span class="keyword">new</span> AlertDialog.Builder(<span class="keyword">this</span>).setTitle(<span class="string">"权限说明"</span>)</div><div class="line">            .setMessage(<span class="string">"此功能需要读取短信的权限，没有权限无法使用此功能。请在稍后授权后使用"</span>)</div><div class="line">            .setNegativeButton(<span class="string">"确定"</span>, <span class="keyword">new</span> DialogInterface.OnClickListener() &#123;</div><div class="line">                <span class="meta">@RequiresApi</span>(api = Build.VERSION_CODES.M)</div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(DialogInterface dialog, <span class="keyword">int</span> which)</span> </span>&#123;</div><div class="line"></div><div class="line">                    requestPermissions(<span class="keyword">new</span> String[]&#123;permission&#125;,SMS);</div><div class="line"></div><div class="line">                &#125;</div><div class="line">            &#125;)</div><div class="line">            .setNeutralButton(<span class="string">"取消"</span>,<span class="keyword">null</span>)</div><div class="line">            .show();</div><div class="line">&#125;<span class="keyword">else</span>&#123;</div><div class="line">    requestPermissions(<span class="keyword">new</span> String[]&#123;permission&#125;,SMS);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="\images\Android\permission\PermissionDescription.png" alt="image"></p>
+<hr>
+<h2 id="处理用户响应"><a href="#处理用户响应" class="headerlink" title="处理用户响应"></a>处理用户响应</h2><blockquote>
+<p>重写 activity的 onRequestPermissionsResult() 的方法 处理权限的响应</p>
+<p>权限的申请是可以多个权限一块申请的 ，所以 响应结果也是 数组和 请求的权限数组对应</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> *  申请权限的响应</div><div class="line"> * <span class="doctag">@param</span> requestCode 请求码</div><div class="line"> * <span class="doctag">@param</span> permissions 权限数组</div><div class="line"> * <span class="doctag">@param</span> grantResults 结果数组</div><div class="line"> */</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRequestPermissionsResult</span><span class="params">(<span class="keyword">int</span> requestCode, @NonNull String[] permissions, @NonNull <span class="keyword">int</span>[] grantResults)</span> </span>&#123;</div><div class="line">    <span class="keyword">switch</span> (requestCode)&#123;</div><div class="line">        <span class="keyword">case</span> SMS:</div><div class="line">          LogCheckResult(grantResults[<span class="number">0</span>]);</div><div class="line">            <span class="keyword">if</span> (grantResults.length&gt;<span class="number">0</span> &amp;&amp; grantResults[<span class="number">0</span>]==PermissionChecker.PERMISSION_GRANTED)&#123;</div><div class="line">                <span class="comment">//TODO 读取短信</span></div><div class="line">                Toast.makeText(<span class="keyword">this</span>,<span class="string">"读取短信授权成功"</span>,Toast.LENGTH_SHORT).show();</div><div class="line">                tv.setText(getSmsInPhone());</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                Toast.makeText(<span class="keyword">this</span>,<span class="string">"读取短信授权失败"</span>,Toast.LENGTH_SHORT).show();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">       </div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="完整的短信读取权限申请-流程"><a href="#完整的短信读取权限申请-流程" class="headerlink" title="完整的短信读取权限申请 流程"></a>完整的短信读取权限申请 流程</h2><blockquote>
+<p>请求权限<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 请求短信权限</div><div class="line"> */</div><div class="line"><span class="meta">@RequiresApi</span>(api = Build.VERSION_CODES.M)</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">requestSms</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">// 权限</span></div><div class="line">        <span class="keyword">final</span> String permission = <span class="string">"android.permission.READ_SMS"</span>;</div><div class="line">    <span class="comment">//检查当前系统版本是否在6.0以上</span></div><div class="line">    <span class="keyword">if</span> (checkVersion())&#123;</div><div class="line">        <span class="keyword">int</span> result =-<span class="number">1</span>;</div><div class="line">        <span class="comment">//检测targetSDKVersion 是否在23以上</span></div><div class="line">            <span class="keyword">if</span> (checkTargetSdkVersion())&#123;</div><div class="line">                <span class="comment">//targetSDKVersion &gt;=23</span></div><div class="line">                <span class="comment">//检查是否具有读取短信的权限</span></div><div class="line">                result = checkSelfPermission(permission);</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                <span class="comment">//targetSDKVersion &lt;23</span></div><div class="line">                <span class="comment">//检查是否具有读取短信的权限</span></div><div class="line">                result= PermissionChecker.checkSelfPermission(<span class="keyword">this</span>,permission);</div><div class="line">            &#125;</div><div class="line">            LogCheckResult(result);</div><div class="line">            <span class="keyword">if</span>(result==PermissionChecker.PERMISSION_GRANTED)&#123;</div><div class="line">                <span class="comment">//已经有了权限</span></div><div class="line">                <span class="comment">//TODO 读取短信</span></div><div class="line">                Toast.makeText(<span class="keyword">this</span>,<span class="string">"读取短信授权成功"</span>,Toast.LENGTH_SHORT).show();</div><div class="line">                tv.setText(getSmsInPhone());</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                <span class="comment">//没有权限</span></div><div class="line">                <span class="comment">//TODO 请求权限</span></div><div class="line">                <span class="comment">// 第一次请求就返回false 拒绝过返回true 或者 用户选择不再提示返回false</span></div><div class="line">              <span class="keyword">boolean</span> answer=  shouldShowRequestPermissionRationale(permission);</div><div class="line">                log(<span class="string">"shouldShowRequestPermissionRationale :"</span>+answer);</div><div class="line">                <span class="keyword">if</span> (!answer)&#123;</div><div class="line">                    <span class="keyword">new</span> AlertDialog.Builder(<span class="keyword">this</span>).setTitle(<span class="string">"权限说明"</span>)</div><div class="line">                            .setMessage(<span class="string">"此功能需要读取短信的权限，没有权限无法使用此功能。请在稍后授权后使用"</span>)</div><div class="line">                            .setNegativeButton(<span class="string">"确定"</span>, <span class="keyword">new</span> DialogInterface.OnClickListener() &#123;</div><div class="line">                                <span class="meta">@RequiresApi</span>(api = Build.VERSION_CODES.M)</div><div class="line">                                <span class="meta">@Override</span></div><div class="line">                                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(DialogInterface dialog, <span class="keyword">int</span> which)</span> </span>&#123;</div><div class="line">                                    requestPermissions(<span class="keyword">new</span> String[]&#123;permission&#125;,SMS);</div><div class="line">                                &#125;</div><div class="line">                            &#125;)</div><div class="line">                            .setNeutralButton(<span class="string">"取消"</span>,<span class="keyword">null</span>)</div><div class="line">                            .show();</div><div class="line">                &#125;<span class="keyword">else</span>&#123;</div><div class="line">                    requestPermissions(<span class="keyword">new</span> String[]&#123;permission&#125;,SMS);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">        <span class="comment">//无需请求</span></div><div class="line">        Toast.makeText(<span class="keyword">this</span>,<span class="string">"读取短信授权成功"</span>,Toast.LENGTH_SHORT).show();</div><div class="line">        tv.setText(getSmsInPhone());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>响应处理</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRequestPermissionsResult</span><span class="params">(<span class="keyword">int</span> requestCode, @NonNull String[] permissions, @NonNull <span class="keyword">int</span>[] grantResults)</span> </span>&#123;</div><div class="line">    <span class="keyword">switch</span> (requestCode)&#123;</div><div class="line">        <span class="keyword">case</span> SMS:</div><div class="line">          LogCheckResult(grantResults[<span class="number">0</span>]);</div><div class="line">            <span class="keyword">if</span> (grantResults.length&gt;<span class="number">0</span> &amp;&amp; grantResults[<span class="number">0</span>]==PermissionChecker.PERMISSION_GRANTED)&#123;</div><div class="line">                <span class="comment">//TODO 读取短信</span></div><div class="line">                Toast.makeText(<span class="keyword">this</span>,<span class="string">"读取短信授权成功"</span>,Toast.LENGTH_SHORT).show();</div><div class="line">                tv.setText(getSmsInPhone());</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                Toast.makeText(<span class="keyword">this</span>,<span class="string">"读取短信授权失败"</span>,Toast.LENGTH_SHORT).show();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">       </div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>短信读取 代码</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getSmsInPhone</span><span class="params">()</span> </span>&#123;</div><div class="line">    log(<span class="string">"开始读取短信"</span>);</div><div class="line">    <span class="keyword">final</span> String SMS_URI_ALL = <span class="string">"content://sms/"</span>;</div><div class="line">    <span class="keyword">final</span> String SMS_URI_INBOX = <span class="string">"content://sms/inbox"</span>;</div><div class="line">    <span class="keyword">final</span> String SMS_URI_SEND = <span class="string">"content://sms/sent"</span>;</div><div class="line">    <span class="keyword">final</span> String SMS_URI_DRAFT = <span class="string">"content://sms/draft"</span>;</div><div class="line">    <span class="keyword">final</span> String SMS_URI_OUTBOX = <span class="string">"content://sms/outbox"</span>;</div><div class="line">    <span class="keyword">final</span> String SMS_URI_FAILED = <span class="string">"content://sms/failed"</span>;</div><div class="line">    <span class="keyword">final</span> String SMS_URI_QUEUED = <span class="string">"content://sms/queued"</span>;</div><div class="line"></div><div class="line">    StringBuilder smsBuilder = <span class="keyword">new</span> StringBuilder();</div><div class="line"></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        Uri uri = Uri.parse(SMS_URI_ALL);</div><div class="line">        String[] projection = <span class="keyword">new</span> String[] &#123; <span class="string">"_id"</span>, <span class="string">"address"</span>, <span class="string">"person"</span>, <span class="string">"body"</span>, <span class="string">"date"</span>, <span class="string">"type"</span> &#125;;</div><div class="line">        Cursor cur = getContentResolver().query(uri, projection, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="string">"date desc"</span>);      <span class="comment">// 获取手机内部短信</span></div><div class="line">        log(<span class="string">"cursor:"</span>+cur.getCount());</div><div class="line">        <span class="keyword">if</span> (cur.moveToFirst()) &#123;</div><div class="line">            <span class="keyword">int</span> index_Address = cur.getColumnIndex(<span class="string">"address"</span>);</div><div class="line">            <span class="keyword">int</span> index_Person = cur.getColumnIndex(<span class="string">"person"</span>);</div><div class="line">            <span class="keyword">int</span> index_Body = cur.getColumnIndex(<span class="string">"body"</span>);</div><div class="line">            <span class="keyword">int</span> index_Date = cur.getColumnIndex(<span class="string">"date"</span>);</div><div class="line">            <span class="keyword">int</span> index_Type = cur.getColumnIndex(<span class="string">"type"</span>);</div><div class="line"></div><div class="line">            do &#123;</div><div class="line">                String strAddress = cur.getString(index_Address);</div><div class="line">                <span class="keyword">int</span> intPerson = cur.getInt(index_Person);</div><div class="line">                String strbody = cur.getString(index_Body);</div><div class="line">                <span class="keyword">long</span> longDate = cur.getLong(index_Date);</div><div class="line">                <span class="keyword">int</span> intType = cur.getInt(index_Type);</div><div class="line"></div><div class="line">                SimpleDateFormat dateFormat = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd hh:mm:ss"</span>);</div><div class="line">                Date d = <span class="keyword">new</span> Date(longDate);</div><div class="line">                String strDate = dateFormat.format(d);</div><div class="line"></div><div class="line">                String strType = <span class="string">""</span>;</div><div class="line">                <span class="keyword">if</span> (intType == <span class="number">1</span>) &#123;</div><div class="line">                    strType = <span class="string">"接收"</span>;</div><div class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (intType == <span class="number">2</span>) &#123;</div><div class="line">                    strType = <span class="string">"发送"</span>;</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    strType = <span class="string">"null"</span>;</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                smsBuilder.append(<span class="string">"[ "</span>);</div><div class="line">                smsBuilder.append(strAddress + <span class="string">", "</span>);</div><div class="line">                smsBuilder.append(intPerson + <span class="string">", "</span>);</div><div class="line">                smsBuilder.append(strbody + <span class="string">", "</span>);</div><div class="line">                smsBuilder.append(strDate + <span class="string">", "</span>);</div><div class="line">                smsBuilder.append(strType);</div><div class="line">                smsBuilder.append(<span class="string">" ]\n\n"</span>);</div><div class="line">            &#125; <span class="keyword">while</span> (cur.moveToNext());</div><div class="line"></div><div class="line">            <span class="keyword">if</span> (!cur.isClosed()) &#123;</div><div class="line">                cur.close();</div><div class="line">                cur = <span class="keyword">null</span>;</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            smsBuilder.append(<span class="string">"no result!"</span>);</div><div class="line">        &#125; <span class="comment">// end if</span></div><div class="line"></div><div class="line">        smsBuilder.append(<span class="string">"getSmsInPhone has executed!"</span>);</div><div class="line"></div><div class="line">    &#125; <span class="keyword">catch</span> (SQLiteException ex) &#123;</div><div class="line">        log(<span class="string">"SQLiteException in getSmsInPhone"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> smsBuilder.toString();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>读取短信的代码参考这位大神的代码：<a href="http://blog.csdn.net/ithomer/article/details/7328321" target="_blank" rel="external">http://blog.csdn.net/ithomer/article/details/7328321</a></p>
+<p>github 地址：</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Permission/" rel="tag">#Permission</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/05/Animation/" rel="next" title="Animation">
+                <i class="fa fa-chevron-left"></i> Animation
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/08/permission/"
+           data-title="6.0 运行时权限处理" data-url="https://sky-mxc.github.io/2016/10/08/permission/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/top.jpg"
+               alt="sky-mxc" />
+          <p class="site-author-name" itemprop="name">sky-mxc</p>
+          <p class="site-description motion-element" itemprop="description">编码路漫漫 总结很重要</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">博文</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sky-mxc" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#6-0-运行时权限处理"><span class="nav-number">1.</span> <span class="nav-text">6.0 运行时权限处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#危险权限"><span class="nav-number">1.1.</span> <span class="nav-text">危险权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#普通权限"><span class="nav-number">1.2.</span> <span class="nav-text">普通权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#请求权限"><span class="nav-number">1.3.</span> <span class="nav-text">请求权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#targetSdkVerion"><span class="nav-number">1.3.1.</span> <span class="nav-text">targetSdkVerion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查权限"><span class="nav-number">1.3.2.</span> <span class="nav-text">检查权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求权限-1"><span class="nav-number">1.3.3.</span> <span class="nav-text">请求权限</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理用户响应"><span class="nav-number">1.4.</span> <span class="nav-text">处理用户响应</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整的短信读取权限申请-流程"><span class="nav-number">1.5.</span> <span class="nav-text">完整的短信读取权限申请 流程</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sky-mxc</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"sky-mxc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
