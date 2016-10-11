@@ -7,7 +7,7 @@
       <title><![CDATA[ViewPager 获取当前显示的Fragment]]></title>
       <url>https://sky-mxc.github.io/2016/10/11/getCurrentFragment/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/10/11/getCurrentFragment/">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="Viewpager-获取当前显示的fragment"><a href="#Viewpager-获取当前显示的fragment" class="headerlink" title="Viewpager 获取当前显示的fragment"></a>Viewpager 获取当前显示的fragment</h1><h2 id="使用-getSupportFragmentManager-findFragmentByTag-方法"><a href="#使用-getSupportFragmentManager-findFragmentByTag-方法" class="headerlink" title="使用 getSupportFragmentManager().findFragmentByTag()方法"></a>使用 <code>getSupportFragmentManager().findFragmentByTag()</code>方法</h2><blockquote>
 <p><code>Viewpager + FragmentPagerAdapter</code> 情况下 才好使； <code>FragmentPagerAdapter</code> 有一个特点 凡是加载过的Fragment 都会被保留,既然Fragment不会被销毁，那我们就可以使用<code>findFragmentByTag()</code> 方法找到它；但问题是动态创建的话 tag的设置；我们知道动态加载时是可以设置tag的，但是动态创建就没法设置了;如果viewpager使用的是适配器是 FragmentPagerAdapter 的话 ，Fragment就会被设置上<code>tag</code> 根据这个<code>tag</code> 我们就可以获取到当前显示的<code>fragment</code>了；下面看看这个过程</p>
