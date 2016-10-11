@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="sky-mxc, 孟祥超" />
+  <meta name="keywords" content="sky-mxc ,ViewPager获取当前显示的Fragment 两种办法" />
 
 
 
@@ -84,15 +84,16 @@
 
 
 
-<meta name="description" content="编码路漫漫 总结很重要">
-<meta property="og:type" content="website">
-<meta property="og:title" content="孟祥超">
-<meta property="og:url" content="https://sky-mxc.github.io/categories/hexo/index.html">
+<meta name="description" content="ViewPager 获取当前显示的Fragment ；两种办法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ViewPager 获取当前显示的Fragment">
+<meta property="og:url" content="https://sky-mxc.github.io/2016/10/11/getCurrentFragment/index.html">
 <meta property="og:site_name" content="孟祥超">
-<meta property="og:description" content="编码路漫漫 总结很重要">
+<meta property="og:description" content="ViewPager 获取当前显示的Fragment ；两种办法">
+<meta property="og:updated_time" content="2016-10-11T11:04:52.763Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="孟祥超">
-<meta name="twitter:description" content="编码路漫漫 总结很重要">
+<meta name="twitter:title" content="ViewPager 获取当前显示的Fragment">
+<meta name="twitter:description" content="ViewPager 获取当前显示的Fragment ；两种办法">
 
 
 
@@ -113,9 +114,9 @@
 
 
 
-  <link rel="canonical" href="https://sky-mxc.github.io/categories/hexo/"/>
+  <link rel="canonical" href="https://sky-mxc.github.io/2016/10/11/getCurrentFragment/"/>
 
-  <title> 分类: hexo | 孟祥超 </title>
+  <title> ViewPager 获取当前显示的Fragment | 孟祥超 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -146,7 +147,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -277,75 +278,189 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        hexo
-        <small>分类</small>
-      </h2>
-    </div>
-
+  <div id="posts" class="posts-expand">
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/09/29/buildBlogs/" itemprop="url">
-              
-                <span itemprop="name">使用github+hexo 搭建个人博客</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-09-29T23:34:05+08:00"
-              content="2016-09-29" >
-          09-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/09/04/hello-world/" itemprop="url">
-              
-                <span itemprop="name">Hello World</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-09-04T23:20:56+08:00"
-              content="2016-09-04" >
-          09-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-  </section>
 
   
+  
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ViewPager 获取当前显示的Fragment
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-11T18:55:38+08:00" content="2016-10-11">
+              2016-10-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/11/getCurrentFragment/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/11/getCurrentFragment/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io">https://sky-mxc.github.io</a></p>
+</blockquote>
+<h1 id="Viewpager-获取当前显示的fragment"><a href="#Viewpager-获取当前显示的fragment" class="headerlink" title="Viewpager 获取当前显示的fragment"></a>Viewpager 获取当前显示的fragment</h1><h2 id="使用-getSupportFragmentManager-findFragmentByTag-方法"><a href="#使用-getSupportFragmentManager-findFragmentByTag-方法" class="headerlink" title="使用 getSupportFragmentManager().findFragmentByTag()方法"></a>使用 <code>getSupportFragmentManager().findFragmentByTag()</code>方法</h2><blockquote>
+<p><code>Viewpager + FragmentPagerAdapter</code> 情况下 才好使； <code>FragmentPagerAdapter</code> 有一个特点 凡是加载过的Fragment 都会被保留,既然Fragment不会被销毁，那我们就可以使用<code>findFragmentByTag()</code> 方法找到它；但问题是动态创建的话 tag的设置；我们知道动态加载时是可以设置tag的，但是动态创建就没法设置了;如果viewpager使用的是适配器是 FragmentPagerAdapter 的话 ，Fragment就会被设置上<code>tag</code> 根据这个<code>tag</code> 我们就可以获取到当前显示的<code>fragment</code>了；下面看看这个过程</p>
+<p>新创建时 tag ==null</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> Fragment <span class="title">getItem</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</div><div class="line">   PageTab  pageTab = tabs.get(position);</div><div class="line">    TabFragment tab = <span class="keyword">new</span> TabFragment();</div><div class="line">    Log.e(TAG,<span class="string">"====getItem===新创建时的tag:=="</span>+tab.getTag());</div><div class="line">    tab.getArguments().putSerializable(<span class="string">"tab"</span>,pageTab);</div><div class="line">    <span class="comment">//取出数据 新建Fragment</span></div><div class="line">    <span class="keyword">return</span> tab;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Log 查看 <code>tag</code> 时为 null</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">E/FileListPagerAdapter: ====getItem===新创建时的tag:==null</div></pre></td></tr></table></figure>
+<blockquote>
+<p>将 适配器设置给Viewpager后 的<code>tag</code></p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">E/MainActivity: ==findCurrentFragment==pagerId:2131492976</div><div class="line">E/MainActivity: ==findCurrentFragment==currentItem:0</div><div class="line">E/MainActivity: =======findCurrentFragment=========完整Tag===android:switcher:2131492976:0</div><div class="line">E/MainActivity: =======findCurrentFragment=========当前显示的Fragment 的tag===:android:switcher:2131492976:0</div></pre></td></tr></table></figure>
+<blockquote>
+<p> 可以看到 <code>tag</code>的组成；四部分 </p>
+<ul>
+<li>android :   &nbsp;&nbsp;&nbsp;&nbsp;   固定部分</li>
+<li>switcher :  &nbsp;&nbsp;&nbsp;&nbsp;    固定部分</li>
+<li>2131492976 : &nbsp;&nbsp;&nbsp;&nbsp;  ViewPager 的id</li>
+<li>0     :     &nbsp;&nbsp;&nbsp;&nbsp;    ViewPager 当前显示的itemPostion</li>
+</ul>
+<p>既然<code>FragmentPagerAdapter</code>的特点是保存fragment状态。  就可以利用这个特点通过 <code>findFragmentByTag()</code> 找到这个Fragment</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Viewpager + FragmentPagerAdapter 情况下 获取 当前显示的Fragment,只能找已经加载过的Fragment</span></div><div class="line">Fragment fragment =  getSupportFragmentManager().findFragmentByTag(<span class="string">"android:switcher:"</span>+pager.getId()+<span class="string">":"</span>+pager.getCurrentItem());</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="重写适配器的-setPrimaryItem-方法"><a href="#重写适配器的-setPrimaryItem-方法" class="headerlink" title="重写适配器的 setPrimaryItem()方法 ;"></a>重写适配器的 <code>setPrimaryItem()</code>方法 ;</h2><blockquote>
+<p>这个方法在每次viewpager滑动后都会被调用 而 object参数就是显示的Fragment ；可以在适配器中定义个变量 <code>currentFragment</code> 每次改变时都会获取到显示的Fragment</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPrimaryItem</span><span class="params">(ViewGroup container, <span class="keyword">int</span> position, Object object)</span> </span>&#123;</div><div class="line">    currentFragment = (TabFragment) object;</div><div class="line">    <span class="keyword">super</span>.setPrimaryItem(container, position, object);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这种方式有一个缺陷 <code>setPrimaryItem()</code>是在 <code>viewpager</code>的滑动监听执行完后才会调用的；所以在 换的个滑动监听中获取当前显示的Fragment 是不对的</p>
+</blockquote>
+<hr>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ViewPager/" rel="tag">#ViewPager</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/08/permission/" rel="next" title="6.0 运行时权限处理">
+                <i class="fa fa-chevron-left"></i> 6.0 运行时权限处理
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
 
 
           </div>
@@ -353,6 +468,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/11/getCurrentFragment/"
+           data-title="ViewPager 获取当前显示的Fragment" data-url="https://sky-mxc.github.io/2016/10/11/getCurrentFragment/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -372,8 +495,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/top.jpg"
@@ -434,6 +566,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Viewpager-获取当前显示的fragment"><span class="nav-number">1.</span> <span class="nav-text">Viewpager 获取当前显示的fragment</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-getSupportFragmentManager-findFragmentByTag-方法"><span class="nav-number">1.1.</span> <span class="nav-text">使用 getSupportFragmentManager().findFragmentByTag()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重写适配器的-setPrimaryItem-方法"><span class="nav-number">1.2.</span> <span class="nav-text">重写适配器的 setPrimaryItem()方法 ;</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -530,6 +673,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 

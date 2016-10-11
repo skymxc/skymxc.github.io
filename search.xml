@@ -4,6 +4,48 @@
   
     
     <entry>
+      <title><![CDATA[ViewPager 获取当前显示的Fragment]]></title>
+      <url>https://sky-mxc.github.io/2016/10/11/getCurrentFragment/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io">https://sky-mxc.github.io</a></p>
+</blockquote>
+<h1 id="Viewpager-获取当前显示的fragment"><a href="#Viewpager-获取当前显示的fragment" class="headerlink" title="Viewpager 获取当前显示的fragment"></a>Viewpager 获取当前显示的fragment</h1><h2 id="使用-getSupportFragmentManager-findFragmentByTag-方法"><a href="#使用-getSupportFragmentManager-findFragmentByTag-方法" class="headerlink" title="使用 getSupportFragmentManager().findFragmentByTag()方法"></a>使用 <code>getSupportFragmentManager().findFragmentByTag()</code>方法</h2><blockquote>
+<p><code>Viewpager + FragmentPagerAdapter</code> 情况下 才好使； <code>FragmentPagerAdapter</code> 有一个特点 凡是加载过的Fragment 都会被保留,既然Fragment不会被销毁，那我们就可以使用<code>findFragmentByTag()</code> 方法找到它；但问题是动态创建的话 tag的设置；我们知道动态加载时是可以设置tag的，但是动态创建就没法设置了;如果viewpager使用的是适配器是 FragmentPagerAdapter 的话 ，Fragment就会被设置上<code>tag</code> 根据这个<code>tag</code> 我们就可以获取到当前显示的<code>fragment</code>了；下面看看这个过程</p>
+<p>新创建时 tag ==null</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> Fragment <span class="title">getItem</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</div><div class="line">   PageTab  pageTab = tabs.get(position);</div><div class="line">    TabFragment tab = <span class="keyword">new</span> TabFragment();</div><div class="line">    Log.e(TAG,<span class="string">"====getItem===新创建时的tag:=="</span>+tab.getTag());</div><div class="line">    tab.getArguments().putSerializable(<span class="string">"tab"</span>,pageTab);</div><div class="line">    <span class="comment">//取出数据 新建Fragment</span></div><div class="line">    <span class="keyword">return</span> tab;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Log 查看 <code>tag</code> 时为 null</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">E/FileListPagerAdapter: ====getItem===新创建时的tag:==null</div></pre></td></tr></table></figure>
+<blockquote>
+<p>将 适配器设置给Viewpager后 的<code>tag</code></p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">E/MainActivity: ==findCurrentFragment==pagerId:2131492976</div><div class="line">E/MainActivity: ==findCurrentFragment==currentItem:0</div><div class="line">E/MainActivity: =======findCurrentFragment=========完整Tag===android:switcher:2131492976:0</div><div class="line">E/MainActivity: =======findCurrentFragment=========当前显示的Fragment 的tag===:android:switcher:2131492976:0</div></pre></td></tr></table></figure>
+<blockquote>
+<p> 可以看到 <code>tag</code>的组成；四部分 </p>
+<ul>
+<li>android :   &nbsp;&nbsp;&nbsp;&nbsp;   固定部分</li>
+<li>switcher :  &nbsp;&nbsp;&nbsp;&nbsp;    固定部分</li>
+<li>2131492976 : &nbsp;&nbsp;&nbsp;&nbsp;  ViewPager 的id</li>
+<li>0     :     &nbsp;&nbsp;&nbsp;&nbsp;    ViewPager 当前显示的itemPostion</li>
+</ul>
+<p>既然<code>FragmentPagerAdapter</code>的特点是保存fragment状态。  就可以利用这个特点通过 <code>findFragmentByTag()</code> 找到这个Fragment</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Viewpager + FragmentPagerAdapter 情况下 获取 当前显示的Fragment,只能找已经加载过的Fragment</span></div><div class="line">Fragment fragment =  getSupportFragmentManager().findFragmentByTag(<span class="string">"android:switcher:"</span>+pager.getId()+<span class="string">":"</span>+pager.getCurrentItem());</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="重写适配器的-setPrimaryItem-方法"><a href="#重写适配器的-setPrimaryItem-方法" class="headerlink" title="重写适配器的 setPrimaryItem()方法 ;"></a>重写适配器的 <code>setPrimaryItem()</code>方法 ;</h2><blockquote>
+<p>这个方法在每次viewpager滑动后都会被调用 而 object参数就是显示的Fragment ；可以在适配器中定义个变量 <code>currentFragment</code> 每次改变时都会获取到显示的Fragment</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPrimaryItem</span><span class="params">(ViewGroup container, <span class="keyword">int</span> position, Object object)</span> </span>&#123;</div><div class="line">    currentFragment = (TabFragment) object;</div><div class="line">    <span class="keyword">super</span>.setPrimaryItem(container, position, object);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这种方式有一个缺陷 <code>setPrimaryItem()</code>是在 <code>viewpager</code>的滑动监听执行完后才会调用的；所以在 换的个滑动监听中获取当前显示的Fragment 是不对的</p>
+</blockquote>
+<hr>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[6.0 运行时权限处理]]></title>
       <url>https://sky-mxc.github.io/2016/10/08/permission/</url>
       <content type="html"><![CDATA[<blockquote>
