@@ -1,0 +1,909 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="sky-mxc,Broadcast ,BroadcastReceiver" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/top.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Android中的广播 本地广播的 接受 发送">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android的广播">
+<meta property="og:url" content="https://sky-mxc.github.io/2016/10/16/Broadcast/index.html">
+<meta property="og:site_name" content="孟祥超">
+<meta property="og:description" content="Android中的广播 本地广播的 接受 发送">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\broadcast\Type.png">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\broadcast\注册类型.png">
+<meta property="og:updated_time" content="2016-10-16T12:35:01.260Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android的广播">
+<meta name="twitter:description" content="Android中的广播 本地广播的 接受 发送">
+<meta name="twitter:image" content="https://sky-mxc.github.io/\images\Android\broadcast\Type.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'sky-mxc'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://sky-mxc.github.io/2016/10/16/Broadcast/"/>
+
+  <title> Android的广播 | 孟祥超 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?e9d2c08c26634692a2d82ea974373245";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">孟祥超</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">总结&分享</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friend">
+          <a href="/friend" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user-plus"></i> <br />
+            
+            好基友
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android的广播
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-16T20:21:45+08:00" content="2016-10-16">
+              2016-10-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/16/Broadcast/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/16/Broadcast/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/10/16/Broadcast/">https://sky-mxc.github.io</a></p>
+</blockquote>
+<h1 id="Broadcast"><a href="#Broadcast" class="headerlink" title="Broadcast"></a>Broadcast</h1><p>在Android中 Broadcast是一种 广泛运用在引用程序之间传输信息的机制。<br>而BroadcastReceiver 是对发送出来的Broadcaset进行过滤接受并响应的一类组件。<br>如果不需发送广播到别的应用 使用 LocalBroadcastManger就可以了。</p>
+<h2 id="发送和接收流程"><a href="#发送和接收流程" class="headerlink" title="发送和接收流程"></a>发送和接收流程</h2><p>发送和接受的过程：</p>
+<ol>
+<li>发送<br>首先在需要发送信息的地方 ，把要发送的信息和用于过滤的信息（如action 和 category）封装进intent对象，然后调用 Context.sendBroadcast() 、sendOrderBroadcast()或sendStickBroadcast()方法，把intent对象以广播的形式发送出去</li>
+<li>接收<br>当intent发送后，所有已经注册的BroadcastReceiver会检查注册时的IntentFilter是否与发送的intent匹配。若匹配就会调用BroadcastReceiver的onReceiver() 方法。所以 我们定义一个BroadcastReceiver的时候必须实现onReceiver()方法</li>
+<li>Note：<br>若在使用sendBroadcast()的方法时指定了接受权限，则只有在AndroidManifest.xml文件中声明了对应权限的BroadcastReceiver才能就收到；<br>同样的，如果在注册BroadcastReceiver时指定了可接受的Broadcast的权限，则只有在包的AndroidManifest.xml中用标签声明了。拥有此权限的Context对象所发送的Broadcast才能被这个BroadcastReceiver所接收。</li>
+</ol>
+<blockquote>
+<p><em>虽然 广播的发送和接受都是通过intent类，但是广播intent完全和 启动activity的intent不同。<br>BroadcastReceiver是无法看到启动activity的intent的。同样的，当你发送一个Broadcast Intent 是不会去发现或启动一个activity的。<br>两者是完全不同的。启动activity的intent是属于前台用户可以看到的操作，而 Broadcat Intent是后台操作 。通常用户是看不到 的。</em></p>
+</blockquote>
+<hr>
+<h2 id="广播类型"><a href="#广播类型" class="headerlink" title="广播类型"></a>广播类型</h2><blockquote>
+<p>两大类 广播类型 ：</p>
+</blockquote>
+<ol>
+<li>Normal broadcasts(普通广播) :使用 Context.sendBroadcast ;完全是异步操作，广播发出后广播的所有接受者通常都在同一时间运行并得到结果，但是顺序不固定。这样效率是很高的但是 接收器的结果并不能影响其他的接受者</li>
+<li>Orderd broadcasts(有序广播) :同步操作一次发送到一个接受者 ，按照预先声明的顺序依次接受，（-1000~1000）优先级高的优先接受到广播，优先级高的可以更改广播或者完全终止这个广播（abortBroadcast()），那优先级低的接受者将不能接受到</li>
+</ol>
+<p><img src="\images\Android\broadcast\Type.png" alt="两大类型"></p>
+<hr>
+<h2 id="接收广播"><a href="#接收广播" class="headerlink" title="接收广播"></a>接收广播</h2><blockquote>
+<p>使用broadcastsReceiver 接受广播，定义自己的广播接收器 只需继承BroadcastsReceiver；<br>    广播接收器创建完毕后需要注册才能接受到。注册分为两种 动态和静态；如果发送的广播附带有权限 ，那接受者必须有相应的权限才能接受到</p>
+<ul>
+<li>在BroadcastReceiver中一般是用来启动 某个activity或者启动某个服务，不允许执行耗时操作，也不允许开线程，最好是操作不要超过10秒。*</li>
+</ul>
+</blockquote>
+<h3 id="定义-接收器-接收网络变化"><a href="#定义-接收器-接收网络变化" class="headerlink" title="定义 接收器  接收网络变化"></a>定义 接收器  接收网络变化</h3><blockquote>
+<p>继承 <code>BroadcastReceiver</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by sky-mxc</div><div class="line"> * 网络状态改变接收器</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NetworkReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"NetworkReceiver"</span>;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span> </span>&#123;</div><div class="line">        Log.i(TAG,<span class="string">"=====网络状态改变了"</span>);</div><div class="line">        Toast.makeText(context,<span class="string">"网络状态改变了"</span>,Toast.LENGTH_LONG).show();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="静态注册"><a href="#静态注册" class="headerlink" title="静态注册"></a>静态注册</h3><blockquote>
+<p>静态注册：在manifest文件  使用 <receiver> 标签注册 ，并在标签内设置过滤器(intentFilter) 什么时候都可以接受到广播，只要应用程序安装了 就是注册了，如果有广播就能接受 但是规定有部分广播 静态注册无法接受 例如屏幕的关闭和点亮广播。 </receiver></p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">receiver</span> <span class="attr">android:name</span>=<span class="string">".receiver.NetworkReceiver"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">intent-filter</span> &gt;</span></div><div class="line">    <span class="comment">&lt;!--priority 默认0--&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.net.conn.CONNECTIVITY_CHANGE"</span>&gt;</span><span class="tag">&lt;/<span class="name">action</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="动态注册"><a href="#动态注册" class="headerlink" title="动态注册"></a>动态注册</h3><blockquote>
+<p> 动态注册： 动态的在代码中定义。先定义设置好一个IntentFilter对象。然后在需要注册时调用Context.registerReceiver()，如果取消就调用Context.unregisterReceiver()方法。（动态注册的BroadcastReceiver在context被销毁后也会被干死）</p>
+<p>使用 <code>context.registerReceiver()</code> 注册</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">receiver = <span class="keyword">new</span> NetworkReceiver();</div><div class="line">IntentFilter intentFilter = <span class="keyword">new</span> IntentFilter(<span class="string">"android.net.conn.CONNECTIVITY_CHANGE"</span>);</div><div class="line">intentFilter.setPriority(<span class="number">600</span>);</div><div class="line">registerReceiver(receiver,intentFilter);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>取消注册 <code>context.unregisterReceiver();</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onDestroy();</div><div class="line">    unregisterReceiver(receiver);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="\images\Android\broadcast\注册类型.png" alt="注册类型"></p>
+<hr>
+<h2 id="发送广播"><a href="#发送广播" class="headerlink" title="发送广播"></a>发送广播</h2><h3 id="发送普通广播"><a href="#发送普通广播" class="headerlink" title="发送普通广播"></a>发送普通广播</h3><blockquote>
+<p>使用方法 <code>sendBroadcast()</code> 发送广播。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//发送普通广播</span></div><div class="line">Intent intent = <span class="keyword">new</span> Intent(<span class="string">"com.mxc.example.broadcast.normal"</span>);</div><div class="line">intent.putExtra(<span class="string">"type"</span>,<span class="string">"normal"</span>);</div><div class="line">sendBroadcast(intent);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>接收发送的广播</p>
+</blockquote>
+<p>Manifest文件注册</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">receiver</span> <span class="attr">android:name</span>=<span class="string">".receiver.MyReceiver"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.mxc.example.broadcast.normal"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>接收发送的数据<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"MyReceiver"</span>;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span> </span>&#123;</div><div class="line">        Log.i(TAG,<span class="string">"==action:"</span>+intent.getAction()+<span class="string">"===time:"</span>+ SystemClock.currentThreadTimeMillis());</div><div class="line">        Log.i(TAG,<span class="string">"==type:"</span>+intent.getStringExtra(<span class="string">"type"</span>));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="发送有序广播"><a href="#发送有序广播" class="headerlink" title="发送有序广播"></a>发送有序广播</h3><p>使用 <code>sendOrderedBroadcast()</code> 如果接受者不需要权限 设置为null即可<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Intent orderIntent = <span class="keyword">new</span> Intent(<span class="string">"com.mxc.example.broadcast.order"</span>);</div><div class="line">orderIntent.putExtra(<span class="string">"type"</span>,<span class="string">"order"</span>);</div><div class="line"><span class="comment">//不添加权限</span></div><div class="line">sendOrderedBroadcast(orderIntent,<span class="keyword">null</span>);</div></pre></td></tr></table></figure></p>
+<p>可以通过 <code>priority</code> 属性来设置接受者的优先级，优先级的接受者可以 终止广播的发送或者 添加额外的数据或者修改 发送的广播数据</p>
+<blockquote>
+<p>终止 广播<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (intent.getAction().equals(<span class="string">"com.mxc.example.broadcast.order"</span>))&#123;</div><div class="line">    <span class="comment">//终止广播</span></div><div class="line">    abortBroadcast();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>添加或者修改数据<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//增加额外的结果</span></div><div class="line">Bundle b = getResultExtras(<span class="keyword">true</span>);<span class="comment">//获取数据 如果没有就创建</span></div><div class="line">b.putString(<span class="string">"result"</span>,<span class="string">"MyReceiver"</span>);</div><div class="line">setResultExtras(b);</div></pre></td></tr></table></figure></p>
+<p>获取 额外的数据<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Log.e(TAG,<span class="string">"==result:"</span>+getResultExtras(<span class="keyword">true</span>).getString(<span class="string">"result"</span>));</div></pre></td></tr></table></figure></p>
+<p>Log 信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">I/MyReceiver: ==action:com.mxc.example.broadcast.order===time:390</div><div class="line">I/MyReceiver: ==type:order</div><div class="line">I/SecondReceiver: ==action:com.mxc.example.broadcast.order===time:391</div><div class="line">I/SecondReceiver: ==type:order</div><div class="line">E/SecondReceiver: ==result:MyReceiver</div></pre></td></tr></table></figure></p>
+</blockquote>
+<hr>
+<h2 id="本地广播"><a href="#本地广播" class="headerlink" title="本地广播"></a>本地广播</h2><blockquote>
+<p>本地广播和广播的操作几乎是一致的不过是使用  LocalBroadcastManager 来管理的；发送的注册都是    <code>LocalBroadcastManager</code>实例来管理</p>
+<p>本地广播和 广播一样  分为 异步广播和同步广播 </p>
+</blockquote>
+<h3 id="发送本地广播"><a href="#发送本地广播" class="headerlink" title="发送本地广播"></a>发送本地广播</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Intent localIntent = <span class="keyword">new</span> Intent(<span class="string">"com.example.broadcast.local.async"</span>);</div><div class="line">manager.sendBroadcast(localIntent);</div><div class="line"><span class="comment">//发送 同步的（有序）的广播</span></div><div class="line"><span class="comment">//manager.sendBroadcastSync(localIntent);</span></div></pre></td></tr></table></figure>
+<h3 id="接收本地广播"><a href="#接收本地广播" class="headerlink" title="接收本地广播"></a>接收本地广播</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">manager = LocalBroadcastManager.getInstance(<span class="keyword">this</span>);</div><div class="line">receiver = <span class="keyword">new</span> LocalReceiver();</div><div class="line">IntentFilter filter = <span class="keyword">new</span> IntentFilter(<span class="string">"com.example.broadcast.local.async"</span>);</div><div class="line">manager.registerReceiver(receiver,filter);</div></pre></td></tr></table></figure>
+<h2 id="各种广播"><a href="#各种广播" class="headerlink" title="各种广播"></a>各种广播</h2><ul>
+<li><code>&lt;action android:name=&quot;android.intent.action.BOOT_COMPLETED&quot;&gt;&lt;/action&gt;</code>  开机广播<ul>
+<li><code>&lt;permission android:name=&quot;android.permission.RECEIVE_BOOT_COMPLETED&quot;/&gt;</code> 接受的权限</li>
+</ul>
+</li>
+<li><code>android.intent.action.SCREEN_OFF</code> 屏幕点亮   规定 只有动态注册才可以</li>
+<li><code>android.intent.action.SCREEN_ON</code> 屏幕关闭  规定 只有动态注册才可以</li>
+<li><code>android.net.conn.CONNECTIVITY_CHANGE</code> 网络状态改变</li>
+</ul>
+<blockquote>
+<p>特别感谢： 本文中的图 都是从菜鸟扒的 </p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Broadcast/" rel="tag">#Broadcast</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/11/getCurrentFragment/" rel="next" title="ViewPager 获取当前显示的Fragment">
+                <i class="fa fa-chevron-left"></i> ViewPager 获取当前显示的Fragment
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/16/Broadcast/"
+           data-title="Android的广播" data-url="https://sky-mxc.github.io/2016/10/16/Broadcast/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/top.jpg"
+               alt="sky-mxc" />
+          <p class="site-author-name" itemprop="name">sky-mxc</p>
+          <p class="site-description motion-element" itemprop="description">编码路漫漫 总结很重要</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">博文</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sky-mxc" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Broadcast"><span class="nav-number">1.</span> <span class="nav-text">Broadcast</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#发送和接收流程"><span class="nav-number">1.1.</span> <span class="nav-text">发送和接收流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#广播类型"><span class="nav-number">1.2.</span> <span class="nav-text">广播类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接收广播"><span class="nav-number">1.3.</span> <span class="nav-text">接收广播</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义-接收器-接收网络变化"><span class="nav-number">1.3.1.</span> <span class="nav-text">定义 接收器  接收网络变化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态注册"><span class="nav-number">1.3.2.</span> <span class="nav-text">静态注册</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态注册"><span class="nav-number">1.3.3.</span> <span class="nav-text">动态注册</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发送广播"><span class="nav-number">1.4.</span> <span class="nav-text">发送广播</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#发送普通广播"><span class="nav-number">1.4.1.</span> <span class="nav-text">发送普通广播</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发送有序广播"><span class="nav-number">1.4.2.</span> <span class="nav-text">发送有序广播</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地广播"><span class="nav-number">1.5.</span> <span class="nav-text">本地广播</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#发送本地广播"><span class="nav-number">1.5.1.</span> <span class="nav-text">发送本地广播</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接收本地广播"><span class="nav-number">1.5.2.</span> <span class="nav-text">接收本地广播</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#各种广播"><span class="nav-number">1.6.</span> <span class="nav-text">各种广播</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sky-mxc</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"sky-mxc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
