@@ -1,0 +1,1125 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="sky-mxc ； WebView最基本的使用，缩放比例定义，支持缩放，自适应网页，滚动监听，回到顶部，回退网页，js调用本地API ，调用js函数；" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/top.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="WebView最基本的使用，缩放比例定义，支持缩放，自适应网页，滚动监听，回到顶部，回退网页，js调用本地API ，调用js函数；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebView最基本的使用">
+<meta property="og:url" content="https://sky-mxc.github.io/2016/10/24/WebView/index.html">
+<meta property="og:site_name" content="孟祥超">
+<meta property="og:description" content="WebView最基本的使用，缩放比例定义，支持缩放，自适应网页，滚动监听，回到顶部，回退网页，js调用本地API ，调用js函数；">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\WebView\loadData目录.jpg">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\WebView\load_0.png">
+<meta property="og:image" content="https://sky-mxc.github.io/E:\Study\hexo\source\images\Android\WebView\load_1.png">
+<meta property="og:image" content="https://sky-mxc.github.io/E:\Study\hexo\source\images\Android\WebView\load_3.png">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\WebView\laod_2.png">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\WebView\getTitleAndIcon.png">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\WebView\scaleBefore.png">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\WebView\scaleBehind.png">
+<meta property="og:updated_time" content="2016-10-24T14:08:35.446Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WebView最基本的使用">
+<meta name="twitter:description" content="WebView最基本的使用，缩放比例定义，支持缩放，自适应网页，滚动监听，回到顶部，回退网页，js调用本地API ，调用js函数；">
+<meta name="twitter:image" content="https://sky-mxc.github.io/\images\Android\WebView\loadData目录.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'sky-mxc'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://sky-mxc.github.io/2016/10/24/WebView/"/>
+
+  <title> WebView最基本的使用 | 孟祥超 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?e9d2c08c26634692a2d82ea974373245";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">孟祥超</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">总结&分享</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friend">
+          <a href="/friend" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user-plus"></i> <br />
+            
+            好基友
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                WebView最基本的使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-24T21:56:40+08:00" content="2016-10-24">
+              2016-10-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/24/WebView/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/24/WebView/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="WebView"><a href="#WebView" class="headerlink" title="WebView"></a>WebView</h1><blockquote>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/10/24/WebView">https://sky-mxc.github.io</a></p>
+<p>Android内置webkit内核的高性能浏览器,而WebView则是在这个基础上进行封装后的一个 控件,WebView直译网页视图,我们可以简单的看作一个可以嵌套到界面上的一个浏览器控件！<br>在  版本之后内核换成了 chrome 内核，但是 对外的API并没有更换</p>
+</blockquote>
+<h2 id="相关的类和方法"><a href="#相关的类和方法" class="headerlink" title="相关的类和方法"></a>相关的类和方法</h2><h3 id="WebChromeClient"><a href="#WebChromeClient" class="headerlink" title="WebChromeClient"></a>WebChromeClient</h3><blockquote>
+<p>主要处理 对话框，网站title，icon 加载进度 等;侧重于对 内容的处理</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th style="text-align:left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>onJsAlert(WebView view,String url,String message,JsResult result)</td>
+<td style="text-align:left">对js中alert对话框的处理</td>
+</tr>
+<tr>
+<td>onJsConfirm(WebView view,String url,String message,JsResult result)</td>
+<td style="text-align:left">对js中confirm对话框的处理</td>
+</tr>
+<tr>
+<td>onJsPrompt(WebView view,String url,String message,String defaultValue,JsPromptResult result)</td>
+<td style="text-align:left">对js中 Prompt对话框的处理</td>
+</tr>
+<tr>
+<td>onProgressChanged(WebView view,int newProgress)</td>
+<td style="text-align:left">当加载进度发生变化时调用</td>
+</tr>
+<tr>
+<td>onReceivedIcon(WebView view, Bitmap icon)</td>
+<td style="text-align:left">获得网页的icon</td>
+</tr>
+<tr>
+<td>onReceivedTitle(WebView view,String title)</td>
+<td style="text-align:left">获取网页的标题</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注意点： 在对话框处理完之后要对网页做出回应确认处理完成(<code>result.confirm();</code>)不让网页就会卡在 对话框那个地方 ，无法再次进行相应</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> WebChromeClient chromeClient = <span class="keyword">new</span> WebChromeClient()&#123;</div><div class="line"></div><div class="line">     <span class="comment">//网页加载进度显示</span></div><div class="line">     <span class="meta">@Override</span></div><div class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onProgressChanged</span><span class="params">(WebView view, <span class="keyword">int</span> newProgress)</span> </span>&#123;</div><div class="line">         Log.i(TAG, <span class="string">"onProgressChanged: progress="</span>+newProgress);</div><div class="line">         <span class="keyword">if</span> (newProgress!=<span class="number">100</span>)&#123;</div><div class="line">             pb.setVisibility(View.VISIBLE);</div><div class="line">             pb.setProgress(newProgress);</div><div class="line">         &#125;<span class="keyword">else</span>&#123;</div><div class="line">             pb.setVisibility(View.GONE);</div><div class="line">         &#125;</div><div class="line">     &#125;</div><div class="line"></div><div class="line">     <span class="meta">@Override</span></div><div class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onJsAlert</span><span class="params">(WebView view, String url, String message, JsResult result)</span> </span>&#123;</div><div class="line">         Toast.makeText(MainActivity.<span class="keyword">this</span>, message, Toast.LENGTH_SHORT).show();</div><div class="line">         <span class="comment">//确认交互完成 提交结果 勿忘</span></div><div class="line">         result.confirm();</div><div class="line">         <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">     &#125;</div><div class="line"> &#125;;</div></pre></td></tr></table></figure>
+<h3 id="WebViewClient"><a href="#WebViewClient" class="headerlink" title="WebViewClient"></a>WebViewClient</h3><blockquote>
+<p>主要处理WebView的各种请求通知； 侧重于对<em>浏览器</em>本身事件重写</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th style="text-align:left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>onPageStared(WebView view,String url)</td>
+<td style="text-align:left">通知主程序网页开始加载</td>
+</tr>
+<tr>
+<td>onPageFinished(WebView view,String url,Bitmap favicon)</td>
+<td style="text-align:left">通知主程序网页加载完毕</td>
+</tr>
+<tr>
+<td>doUpdateVisitedHistory(WebView view,String url,boolean isReload)</td>
+<td style="text-align:left">更新历史记录</td>
+</tr>
+<tr>
+<td>onLoadResource(WebView view,String url)</td>
+<td style="text-align:left">通知主程序即将加载指定url的资源</td>
+</tr>
+<tr>
+<td>onScaleChanged(WebView view,float oldScale,float newScale)</td>
+<td style="text-align:left">WebView的缩放改变时调用</td>
+</tr>
+<tr>
+<td>shouldOverrideKeyEvent(WebView view,KeyEvent event)</td>
+<td style="text-align:left">控制WebView是否处理按键事件，如果返回true则处理，返回false则不处理</td>
+</tr>
+<tr>
+<td>shouldOverrideUrlLoading(WebView view,String url)</td>
+<td style="text-align:left">控制对新加载的url的处理;例如在本view打开，返回true说明 处理 ，返回false说明不处理;</td>
+</tr>
+<tr>
+<td>onReceivedError(WebView view,int errorCode,String description,String failingUrl)</td>
+<td style="text-align:left">遇到不可恢复的错误信息时调用</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>注意点：</strong><br><code>shouldOverrideUrlLoading(WebView view,String url)</code> 在 API 21中过时； 替代方法为<code>shouldOverrideUrlLoading(WebView view, WebResourceRequest request)</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//主要处理WebView的各种请求通知 侧重于 对 浏览器本身事件重写</span></div><div class="line"><span class="keyword">private</span> WebViewClient viewClient = <span class="keyword">new</span> WebViewClient()&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">shouldOverrideUrlLoading</span><span class="params">(WebView view, String url)</span> </span>&#123;</div><div class="line">        Log.i(TAG, <span class="string">"shouldOverrideUrlLoading: url="</span>+url);</div><div class="line">        <span class="comment">//当打开一个新的 url 时在本view打开，不跳转至浏览器</span></div><div class="line">        view.loadUrl(url);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="WebSettings"><a href="#WebSettings" class="headerlink" title="WebSettings"></a>WebSettings</h3><blockquote>
+<p>WebView相关配置的设置，比如setJavaScriptEnabled()设置是否允许JS脚本执行 部分方法如下：</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th style="text-align:left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>setUseWideViewPort(boolean enabled)</td>
+<td style="text-align:left">是否支持viewPort</td>
+</tr>
+<tr>
+<td>setLoadWithOverviewMode(boolean enabled)</td>
+<td style="text-align:left">自适应屏幕</td>
+</tr>
+<tr>
+<td>setSupportZoom(boolean enabled)</td>
+<td style="text-align:left">是否支持缩放</td>
+</tr>
+<tr>
+<td>setBuiltInZoomControls(boolean enabled)</td>
+<td style="text-align:left">目前没测试</td>
+</tr>
+<tr>
+<td>setDisplayZoomControls(boolean enabled)</td>
+<td style="text-align:left">是否支持缩放控件</td>
+</tr>
+<tr>
+<td>setDefaultFontSize(int size)</td>
+<td style="text-align:left">设置默认字体大小</td>
+</tr>
+<tr>
+<td>setDefaultTextEncodingName(String encoding)</td>
+<td style="text-align:left">默认字符编码可用来解决中文乱码问题</td>
+</tr>
+<tr>
+<td>setJavaScriptEnabled(boolean enabled)</td>
+<td style="text-align:left">是否支持js交互</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//支持js交互</span></div><div class="line">webView.getSettings().setJavaScriptEnabled(<span class="keyword">true</span>);</div><div class="line"></div><div class="line"><span class="comment">//设置默认编码方式</span></div><div class="line">webView.getSettings().setDefaultTextEncodingName(<span class="string">"utf-8"</span>);</div><div class="line"></div><div class="line"> webView.getSettings().setDefaultFontSize(<span class="number">20</span>);</div></pre></td></tr></table></figure>
+<h3 id="WebView-自身的常用方法"><a href="#WebView-自身的常用方法" class="headerlink" title="WebView 自身的常用方法"></a>WebView 自身的常用方法</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th style="text-align:left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>loadUrl(String url)</td>
+<td style="text-align:left">加载指定的url</td>
+</tr>
+<tr>
+<td>loadData(String data,String mimeType,String encoding)</td>
+<td style="text-align:left">加载指定的Data到WebView中.使用”data:”作为标记头,该方法不能加载网络数据.其中mimeType为数据类型如:textml,image/jpeg. encoding为字符的编码方式</td>
+</tr>
+<tr>
+<td>loadDataWithBaseURL(String baseUrl, String data, String mimeType, String encoding, String historyUrl)</td>
+<td style="text-align:left">loadData的升级版 可以以baseUrl为标准路径加载相应的文件等</td>
+</tr>
+<tr>
+<td>getSettings()</td>
+<td style="text-align:left">返回一个WebSettings对象,用来控制WebView的属性设置</td>
+</tr>
+<tr>
+<td>setWebViewClient(WebViewClient client)</td>
+<td style="text-align:left">为WebView指定一个WebViewClient对象</td>
+</tr>
+<tr>
+<td>setWebChromeClient(WebChromeClient client)</td>
+<td style="text-align:left">为WebView制定一个 WebChromeClient对象</td>
+</tr>
+<tr>
+<td>setBackgroundColor(int color)</td>
+<td style="text-align:left">设置WebView的背景颜色</td>
+</tr>
+<tr>
+<td>setOnScrollChangeListener(View.OnScrollChangeListener changeListener)</td>
+<td style="text-align:left">滚动条滚动监听，在API 23 加入</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>注意点：</strong> <em>WebView 背景色 需要代码进行设置 ；xml属性不好使；</em></p>
+<p>加载指定的Url <code>loadUrl()</code>;<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">//url</span></div><div class="line">webView.loadUrl(<span class="string">"http://baidu.com"</span>);</div></pre></td></tr></table></figure></p>
+<p>加载网页代码 <code>loadData()</code>;如果出现中文乱码问题 需要修改 mimeType 为<code>text/html;charset=utf-8</code><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//加载网页代码</span></div><div class="line">webView.loadData(<span class="string">"&lt;h1&gt;title&lt;/h1&gt;"</span>,<span class="string">"text/html"</span>,<span class="string">"utf-8"</span>);</div></pre></td></tr></table></figure></p>
+<p>基于一个url加载代码 <code>loadDataWithBaseURL()</code>不需要考虑中文乱码问题<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//加载 以url为基准的数据 比loadData 更加强大</span></div><div class="line"><span class="comment">//parameter1 ：代码内容中相对地址的基准路径</span></div><div class="line"><span class="comment">//parameter2 ：网页代码</span></div><div class="line"><span class="comment">//parameter3 ：数据的内容类型</span></div><div class="line"><span class="comment">//parameter4 : 编码</span></div><div class="line"><span class="comment">//parameter5 ：上一个页面地址</span></div><div class="line">webView.loadDataWithBaseURL(<span class="string">"http://www.baidu.com"</span>,<span class="string">"&lt;html&gt;&lt;h1&gt;title&lt;/h1&gt;this is content&lt;/html&gt;"</span>,<span class="string">"text/html"</span>,<span class="string">"utf-8"</span>,<span class="keyword">null</span>);</div></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p><strong>加载 assets 目录下网页</strong></p>
+<ul>
+<li><p>目录结构</p>
+<p> <img src="\images\Android\WebView\loadData目录.jpg" alt="目录结构"></p>
+</li>
+<li><p>html  代码</p>
+  <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">     <span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">link</span> <span class="attr">type</span>=<span class="string">"text/css"</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"css/index.css"</span>/&gt;</span></div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"js/index.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">table</span> <span class="attr">class</span>=<span class="string">"table"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">tr</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>编号<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>名称<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>价格<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>操作<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">tr</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>0<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>节操<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>0<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">td</span> <span class="attr">onclick</span>=<span class="string">"del(this)"</span>&gt;</span>删除<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">tr</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>1<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>贞操<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>0<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">td</span> <span class="attr">onclick</span>=<span class="string">"del(this)"</span>&gt;</span>删除<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">table</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>css</p>
+ <figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">   <span class="selector-tag">table</span>&#123;</div><div class="line">   <span class="attribute">border</span>:double <span class="number">2px</span> <span class="number">#ccc</span> ;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>js</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">del</span>(<span class="params">delBt</span>)</span>&#123;</div><div class="line">   <span class="keyword">var</span> result = confirm(<span class="string">"确定删除吗？"</span>);</div><div class="line">   alert(<span class="string">"===="</span>+result);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>加载html文件</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> *  加载 assets目录下文件</div><div class="line"> * <span class="doctag">@return</span></div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getIndex</span><span class="params">()</span> </span>&#123;</div><div class="line">    InputStream  is =<span class="keyword">null</span>;</div><div class="line">    BufferedReader reader = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">         is = getAssets().open(<span class="string">"index.html"</span>);</div><div class="line">         reader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(is));</div><div class="line">        StringBuffer sb = <span class="keyword">new</span> StringBuffer();</div><div class="line">        <span class="keyword">while</span> (reader.ready())&#123;</div><div class="line">            sb.append(reader.readLine().trim());</div><div class="line">        &#125;</div><div class="line">        Log.i(TAG, <span class="string">"getIndex: html="</span>+sb.toString());</div><div class="line">        <span class="keyword">return</span> sb.toString();</div><div class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;<span class="keyword">finally</span> &#123;</div><div class="line"></div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                 <span class="keyword">if</span> (is!=<span class="keyword">null</span>)&#123;</div><div class="line">                     is.close();</div><div class="line">                 &#125;</div><div class="line">                <span class="keyword">if</span> (reader!=<span class="keyword">null</span>)&#123;</div><div class="line">                    reader.close();</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line"></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="string">""</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><code>loadDataWithBaseURL</code>加载html网页<blockquote>
+<p>因为使用外部样式 需要使用 loadDataWithBaseUrl() 因为这个可以使用相对基准路径 可以将assets目录作为 基准目录；html 根据基准目录加载响应的css</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> String data = getIndex();</div><div class="line">webView.loadDataWithBaseURL(<span class="string">"file:///android_asset/"</span>,data,<span class="string">"text/html"</span>,<span class="string">"utf-8"</span>,<span class="keyword">null</span>);</div></pre></td></tr></table></figure>
+<pre><code>注意点：
+     路径的格式  ：file:///android_asset/
+</code></pre><ul>
+<li><p>开启 js交互</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">//支持js交互</span></div><div class="line">webView.getSettings().setJavaScriptEnabled(<span class="keyword">true</span>);</div><div class="line"><span class="comment">//背景色</span></div><div class="line">webView.setBackgroundColor(Color.GRAY);</div></pre></td></tr></table></figure>
+</li>
+<li><p>效果</p>
+<blockquote>
+<p> 可以看到 css文件 加载到了 边框已经显示出来了</p>
+</blockquote>
+<p> <img src="\images\Android\WebView\load_0.png" alt="效果">;</p>
+<blockquote>
+<p>原始的 网页confirm 确认框</p>
+</blockquote>
+<p> <img src="E:\Study\hexo\source\images\Android\WebView\load_1.png" alt="效果">;</p>
+<blockquote>
+<p>处理原始网页confirm 改为 AlertDialog对话框</p>
+</blockquote>
+<pre><code>//处理JavaScript confirm 对话框
+@Override
+public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
+    new AlertDialog.Builder(MainActivity.this)
+        .setTitle(&quot;确认提示&quot;)
+        .setMessage(message)
+        .setNegativeButton(&quot;Ok&quot;, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                result.confirm();
+            }
+        })
+        .setNeutralButton(&quot;cancel&quot;, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                result.cancel();
+            }
+        })
+        .show();
+    return true;
+}
+</code></pre><p>  <img src="E:\Study\hexo\source\images\Android\WebView\load_3.png" alt="效果">;</p>
+<blockquote>
+<p>对 alert 对话框进行处理 改为 Toast显示</p>
+</blockquote>
+<pre><code>            @Override
+public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+    //确认交互完成 提交结果 勿忘
+    result.confirm();
+    return true;
+}
+</code></pre></li>
+</ul>
+<p><img src="\images\Android\WebView\laod_2.png" alt="效果">;</p>
+<h2 id="获取网站的-title-ico信息"><a href="#获取网站的-title-ico信息" class="headerlink" title="获取网站的 title ico信息"></a>获取网站的 title ico信息</h2><blockquote>
+<p>重写 <code>WebChromeClient</code>内部方法</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">chromeClient = <span class="keyword">new</span> WebChromeClient()&#123;</div><div class="line">    <span class="comment">//获取 title</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceivedTitle</span><span class="params">(WebView view, String title)</span></span>&#123;</div><div class="line">        tvTitle.setText(title);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//获取 icon</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceivedIcon</span><span class="params">(WebView view, Bitmap icon)</span> </span>&#123;</div><div class="line">        ImgIcon.setImageBitmap(icon);</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p><img src="\images\Android\WebView\getTitleAndIcon.png" alt="效果">;</p>
+<h2 id="WebView-的滚动监听"><a href="#WebView-的滚动监听" class="headerlink" title="WebView 的滚动监听"></a>WebView 的滚动监听</h2><blockquote>
+<p>在API 23 加入了滚动监听的 get/set方法 ；<br>在API 23之前需要重写 WebView的  <code>protected void onScrollChanged(final int l, final int t, final int oldl,final int oldt){}</code>然后再对外提供一个接口</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//滚动条监听</span></div><div class="line">webView.setOnScrollChangeListener(<span class="keyword">new</span> View.OnScrollChangeListener() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onScrollChange</span><span class="params">(View v, <span class="keyword">int</span> scrollX, <span class="keyword">int</span> scrollY, <span class="keyword">int</span> oldScrollX, <span class="keyword">int</span> oldScrollY)</span> </span>&#123;</div><div class="line"><span class="comment">//                Log.e(TAG, "onScrollChange: scrollX="+scrollX);</span></div><div class="line"><span class="comment">//                Log.e(TAG, "onScrollChange: oldScrollX="+oldScrollX);</span></div><div class="line">        Log.e(TAG, <span class="string">"onScrollChange: scrollY="</span>+scrollY);</div><div class="line"><span class="comment">//                Log.e(TAG, "onScrollChange: oldScrollY="+oldScrollY);</span></div><div class="line">        <span class="keyword">if</span> (scrollY&gt;<span class="number">0</span>)&#123;</div><div class="line">            floatButton.setVisibility(View.VISIBLE);</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            floatButton.setVisibility(View.GONE);</div><div class="line">        &#125;</div><div class="line">        dy = scrollX;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>关于滚动条的设置</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">webView.setHorizontalScrollBarEnabled(<span class="keyword">false</span>);  <span class="comment">//水平滚动条不显示</span></div><div class="line">webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY); <span class="comment">//WebView内部显示</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>回到顶部 实现 使用 方法 <code>scrollTo(x,y);</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">floatButton.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">            Log.i(TAG, <span class="string">"onClick: dy="</span>+dy);</div><div class="line">            webView.scrollTo(<span class="number">0</span>,<span class="number">0</span>);</div><div class="line">            floatButton.setVisibility(View.GONE);</div><div class="line">        &#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure>
+<h2 id="网页自适应"><a href="#网页自适应" class="headerlink" title="网页自适应"></a>网页自适应</h2><blockquote>
+<p>必须两个都写上, 缺一不可<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">settings.setUseWideViewPort(<span class="keyword">true</span>);    <span class="comment">//支持 viewport</span></div><div class="line">settings.setLoadWithOverviewMode(<span class="keyword">true</span>);   <span class="comment">//自适应屏幕</span></div></pre></td></tr></table></figure></p>
+</blockquote>
+<p><img src="\images\Android\WebView\scaleBefore.png" alt="效果">;<br><img src="\images\Android\WebView\scaleBehind.png" alt="效果">;</p>
+<h2 id="支持缩放网页隐蔽缩放控件"><a href="#支持缩放网页隐蔽缩放控件" class="headerlink" title="支持缩放网页隐蔽缩放控件"></a>支持缩放网页隐蔽缩放控件</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//保留缩放功能 隐藏缩放控件</span></div><div class="line">settings.setBuiltInZoomControls(<span class="keyword">true</span>);</div><div class="line">settings.setDisplayZoomControls(<span class="keyword">false</span>);</div><div class="line">settings.setSupportZoom(<span class="keyword">true</span>);        <span class="comment">//支持缩放</span></div></pre></td></tr></table></figure>
+<h2 id="回退键实现-返回网页回退-而不退出程序"><a href="#回退键实现-返回网页回退-而不退出程序" class="headerlink" title="回退键实现 返回网页回退 而不退出程序"></a>回退键实现 返回网页回退 而不退出程序</h2><blockquote>
+<p>重写 <code>onBackPressed()</code> 通过 <code>canGoBack()</code>判断是否能够回退 ，通过 <code>goBack()</code>实现回退 </p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBackPressed</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">//判断 WebView 是否可以回退</span></div><div class="line">    <span class="keyword">if</span> (webView.canGoBack())&#123;</div><div class="line">        webView.goBack();</div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">            Log.e(TAG, <span class="string">"onBackPressed: currentTimeMillis="</span>+System.currentTimeMillis());</div><div class="line">            Log.e(TAG, <span class="string">"onBackPressed: exit="</span>+exit);</div><div class="line">            Log.e(TAG, <span class="string">"onBackPressed: currentTimeMillis- exit="</span>+(System.currentTimeMillis()-exit));</div><div class="line">        <span class="keyword">if</span> (System.currentTimeMillis()-exit &gt;<span class="number">2000</span>)&#123;</div><div class="line">            Toast.makeText(<span class="keyword">this</span>, <span class="string">"再按一次退出"</span>, Toast.LENGTH_SHORT).show();</div><div class="line">            exit= System.currentTimeMillis();</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            <span class="keyword">super</span>.onBackPressed();</div><div class="line"></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="与js交互-js调用本地API"><a href="#与js交互-js调用本地API" class="headerlink" title="与js交互 js调用本地API"></a>与js交互 js调用本地API</h2><h2 id="调用js-function"><a href="#调用js-function" class="headerlink" title="调用js function"></a>调用js function</h2><h1 id="未完待续。。。。"><a href="#未完待续。。。。" class="headerlink" title="未完待续。。。。"></a>未完待续。。。。</h1><blockquote>
+<p>参考文章： <a href="http://www.runoob.com/w3cnote/android-tutorial-webview.html" target="_blank" rel="external">http://www.runoob.com/w3cnote/android-tutorial-webview.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/WebView/" rel="tag">#WebView</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/16/Broadcast/" rel="next" title="Android的广播">
+                <i class="fa fa-chevron-left"></i> Android的广播
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/24/WebView/"
+           data-title="WebView最基本的使用" data-url="https://sky-mxc.github.io/2016/10/24/WebView/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/top.jpg"
+               alt="sky-mxc" />
+          <p class="site-author-name" itemprop="name">sky-mxc</p>
+          <p class="site-description motion-element" itemprop="description">编码路漫漫 总结很重要</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">博文</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sky-mxc" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#WebView"><span class="nav-number">1.</span> <span class="nav-text">WebView</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#相关的类和方法"><span class="nav-number">1.1.</span> <span class="nav-text">相关的类和方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WebChromeClient"><span class="nav-number">1.1.1.</span> <span class="nav-text">WebChromeClient</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WebViewClient"><span class="nav-number">1.1.2.</span> <span class="nav-text">WebViewClient</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WebSettings"><span class="nav-number">1.1.3.</span> <span class="nav-text">WebSettings</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WebView-自身的常用方法"><span class="nav-number">1.1.4.</span> <span class="nav-text">WebView 自身的常用方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例"><span class="nav-number">1.2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取网站的-title-ico信息"><span class="nav-number">1.3.</span> <span class="nav-text">获取网站的 title ico信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebView-的滚动监听"><span class="nav-number">1.4.</span> <span class="nav-text">WebView 的滚动监听</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网页自适应"><span class="nav-number">1.5.</span> <span class="nav-text">网页自适应</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#支持缩放网页隐蔽缩放控件"><span class="nav-number">1.6.</span> <span class="nav-text">支持缩放网页隐蔽缩放控件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回退键实现-返回网页回退-而不退出程序"><span class="nav-number">1.7.</span> <span class="nav-text">回退键实现 返回网页回退 而不退出程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与js交互-js调用本地API"><span class="nav-number">1.8.</span> <span class="nav-text">与js交互 js调用本地API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用js-function"><span class="nav-number">1.9.</span> <span class="nav-text">调用js function</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#未完待续。。。。"><span class="nav-number">2.</span> <span class="nav-text">未完待续。。。。</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sky-mxc</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"sky-mxc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
