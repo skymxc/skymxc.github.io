@@ -1,0 +1,869 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="自定义圆形图片控件的实现思路，现在普通用于头像的显示，sky-mxc" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/top.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="自定义圆形图片控件的实现思路，现在普通用于头像的显示">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义圆形图片控件">
+<meta property="og:url" content="https://sky-mxc.github.io/2016/11/03/customCircleImageView/index.html">
+<meta property="og:site_name" content="孟祥超">
+<meta property="og:description" content="自定义圆形图片控件的实现思路，现在普通用于头像的显示">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\CircleImageView\shader_0.png">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\CircleImageView\shader_1.png">
+<meta property="og:updated_time" content="2016-11-03T01:17:42.061Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义圆形图片控件">
+<meta name="twitter:description" content="自定义圆形图片控件的实现思路，现在普通用于头像的显示">
+<meta name="twitter:image" content="https://sky-mxc.github.io/\images\Android\CircleImageView\shader_0.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'sky-mxc'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://sky-mxc.github.io/2016/11/03/customCircleImageView/"/>
+
+  <title> 自定义圆形图片控件 | 孟祥超 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?e9d2c08c26634692a2d82ea974373245";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">孟祥超</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">总结&分享</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friend">
+          <a href="/friend" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user-plus"></i> <br />
+            
+            好基友
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                自定义圆形图片控件
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-03T09:08:05+08:00" content="2016-11-03">
+              2016-11-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/03/customCircleImageView/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/03/customCircleImageView/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><strong>sky-mxc</strong> 总结 转载注明<a href="https://sky-mxc.github.io/2016/11/03/customCircleImageView">https://sky-mxc.github.io</a></p>
+</blockquote>
+<h1 id="自定义圆形ImageView"><a href="#自定义圆形ImageView" class="headerlink" title="自定义圆形ImageView"></a>自定义圆形ImageView</h1><p>圆形ImageView在头像显示用的比较普遍了，今天对于实现圆形ImageView做个总结；</p>
+<p>主要思路是 重写 onDraw() ;方法有两个：</p>
+<ul>
+<li>使用paint的Shader(着色器)将图片印在一个圆的画板上</li>
+<li>使用Bitmap创建一个空的Canvas(画板)，在画板上画一个圆和显示的图片，paint图像混合模式显示</li>
+</ul>
+<h2 id="着色器-方式"><a href="#着色器-方式" class="headerlink" title="着色器 方式"></a>着色器 方式</h2><h2 id="不带边框"><a href="#不带边框" class="headerlink" title="不带边框"></a>不带边框</h2><blockquote>
+<p>思路</p>
+</blockquote>
+<ul>
+<li>将图片压缩到和控件的大小一致</li>
+<li>创建Bitmap 着色器</li>
+<li>创建画笔并设置着色器</li>
+<li>使用带有着色器的画笔在画板上画圆 </li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">drawShader</span><span class="params">(Canvas canvas)</span> </span>&#123;</div><div class="line">    Drawable mDrawable = getDrawable();</div><div class="line">    <span class="keyword">if</span> (mDrawable == <span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line">    <span class="keyword">if</span> (mDrawable <span class="keyword">instanceof</span> BitmapDrawable)&#123;</div><div class="line">        Bitmap bmp = ((BitmapDrawable)mDrawable).getBitmap();</div><div class="line">        <span class="keyword">if</span> (bmp == <span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line">        <span class="comment">//图片缩放，参数2 目标宽度，参数3目标高度，参数4 是否过滤</span></div><div class="line">        bmp = Bitmap.createScaledBitmap(bmp,getWidth(),getHeight(),<span class="keyword">true</span>);</div><div class="line">        <span class="comment">//着色器</span></div><div class="line">        Shader shader = <span class="keyword">new</span> BitmapShader(bmp, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);</div><div class="line">        paint = <span class="keyword">new</span> Paint();</div><div class="line">        paint.setShader(shader);</div><div class="line">        canvas.drawCircle(getWidth()/<span class="number">2</span>,getWidth()/<span class="number">2</span>,getWidth()/<span class="number">2</span>,paint);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>效果</p>
+</blockquote>
+<p><img src="\images\Android\CircleImageView\shader_0.png" alt="无边框效果"></p>
+<h2 id="加边框"><a href="#加边框" class="headerlink" title="加边框"></a>加边框</h2><p>有时候我们需要为头像加上一个圆的边框显得更好看一点，其实这个也很好实现，在绘制图片之前先绘制一个带有颜色的圆，根据边框的大小，将图片缩小一点，这样就将边框显示出来了。</p>
+<h3 id="画边框"><a href="#画边框" class="headerlink" title="画边框"></a>画边框</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">paint = <span class="keyword">new</span> Paint(Paint.ANTI_ALIAS_FLAG);</div><div class="line">paint.setColor(outColor);</div><div class="line">paint.setStyle(Paint.Style.FILL);</div><div class="line">canvas.drawCircle(getWidth()/<span class="number">2</span>,getHeight()/<span class="number">2</span>,getWidth()/<span class="number">2</span>,paint);</div></pre></td></tr></table></figure>
+<h3 id="绘制图片-将边框大小空出来-getWidth-outWidth-2-2"><a href="#绘制图片-将边框大小空出来-getWidth-outWidth-2-2" class="headerlink" title="绘制图片 将边框大小空出来 (getWidth()-outWidth*2)/2"></a>绘制图片 将边框大小空出来 <code>(getWidth()-outWidth*2)/2</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">drawShader</span><span class="params">(Canvas canvas)</span> </span>&#123;</div><div class="line">    Drawable mDrawable = getDrawable();</div><div class="line">    <span class="keyword">if</span> (mDrawable == <span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line">    <span class="keyword">if</span> (mDrawable <span class="keyword">instanceof</span> BitmapDrawable)&#123;</div><div class="line">        Bitmap bmp = ((BitmapDrawable)mDrawable).getBitmap();</div><div class="line">        <span class="keyword">if</span> (bmp == <span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line">        <span class="comment">//图片缩放，参数2 目标宽度，参数3目标高度，参数4 是否过滤</span></div><div class="line">        bmp = Bitmap.createScaledBitmap(bmp,getWidth(),getHeight(),<span class="keyword">true</span>);</div><div class="line">        <span class="comment">//着色器</span></div><div class="line">        Shader shader = <span class="keyword">new</span> BitmapShader(bmp, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);</div><div class="line">        paint = <span class="keyword">new</span> Paint();</div><div class="line">        paint.setShader(shader);</div><div class="line">        canvas.drawCircle(getWidth()/<span class="number">2</span>,getWidth()/<span class="number">2</span>,(getWidth()-outWidth*<span class="number">2</span>)/<span class="number">2</span>,paint);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>效果</p>
+</blockquote>
+<p><img src="\images\Android\CircleImageView\shader_1.png" alt="边框效果"></p>
+<h3 id="着色器方式全部代码"><a href="#着色器方式全部代码" class="headerlink" title="着色器方式全部代码"></a>着色器方式全部代码</h3><h3 id="自定义属性-边框颜色和宽度"><a href="#自定义属性-边框颜色和宽度" class="headerlink" title="自定义属性 边框颜色和宽度"></a>自定义属性 边框颜色和宽度</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">declare-styleable</span> <span class="attr">name</span>=<span class="string">"CircleImageView"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"out_width"</span> <span class="attr">format</span>=<span class="string">"dimension"</span>&gt;</span><span class="tag">&lt;/<span class="name">attr</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"out_color"</span> <span class="attr">format</span>=<span class="string">"color"</span>&gt;</span><span class="tag">&lt;/<span class="name">attr</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">declare-styleable</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="重写-onDraw-绘制图片"><a href="#重写-onDraw-绘制图片" class="headerlink" title="重写 onDraw() 绘制图片"></a>重写 onDraw() 绘制图片</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.skymxc.lesson_36_view_override;</div><div class="line"></div><div class="line"><span class="keyword">import</span> android.content.Context;</div><div class="line"><span class="keyword">import</span> android.content.res.TypedArray;</div><div class="line"><span class="keyword">import</span> android.graphics.Bitmap;</div><div class="line"><span class="keyword">import</span> android.graphics.BitmapShader;</div><div class="line"><span class="keyword">import</span> android.graphics.Canvas;</div><div class="line"><span class="keyword">import</span> android.graphics.Color;</div><div class="line"><span class="keyword">import</span> android.graphics.Paint;</div><div class="line"><span class="keyword">import</span> android.graphics.PorterDuff;</div><div class="line"><span class="keyword">import</span> android.graphics.PorterDuffXfermode;</div><div class="line"><span class="keyword">import</span> android.graphics.Rect;</div><div class="line"><span class="keyword">import</span> android.graphics.RectF;</div><div class="line"><span class="keyword">import</span> android.graphics.Shader;</div><div class="line"><span class="keyword">import</span> android.graphics.drawable.BitmapDrawable;</div><div class="line"><span class="keyword">import</span> android.graphics.drawable.Drawable;</div><div class="line"><span class="keyword">import</span> android.util.AttributeSet;</div><div class="line"><span class="keyword">import</span> android.util.Log;</div><div class="line"><span class="keyword">import</span> android.widget.ImageView;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by sky-mxc</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CircleImageView</span> <span class="keyword">extends</span> <span class="title">ImageView</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"CircleImageView"</span>;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> outWidth = <span class="number">2</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> outColor = Color.RED;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Paint paint;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CircleImageView</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>(context,<span class="keyword">null</span>,<span class="number">0</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CircleImageView</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>(context, attrs,<span class="number">0</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CircleImageView</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyleAttr)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(context, attrs, defStyleAttr);</div><div class="line">        initAttrs(attrs);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</div><div class="line">        paint = <span class="keyword">new</span> Paint(Paint.ANTI_ALIAS_FLAG);</div><div class="line"><span class="comment">//        canvas.drawColor(Color.YELLOW);</span></div><div class="line">        paint.setColor(outColor);</div><div class="line">        paint.setStyle(Paint.Style.FILL);</div><div class="line">        canvas.drawCircle(getWidth()/<span class="number">2</span>,getHeight()/<span class="number">2</span>,getWidth()/<span class="number">2</span>,paint);</div><div class="line">        drawShader(canvas);</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">drawShader</span><span class="params">(Canvas canvas)</span> </span>&#123;</div><div class="line">        Drawable mDrawable = getDrawable();</div><div class="line">        <span class="keyword">if</span> (mDrawable == <span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line">        <span class="keyword">if</span> (mDrawable <span class="keyword">instanceof</span> BitmapDrawable)&#123;</div><div class="line">            Bitmap bmp = ((BitmapDrawable)mDrawable).getBitmap();</div><div class="line">            <span class="keyword">if</span> (bmp == <span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line">            <span class="comment">//图片缩放，参数2 目标宽度，参数3目标高度，参数4 是否过滤</span></div><div class="line">            bmp = Bitmap.createScaledBitmap(bmp,getWidth(),getHeight(),<span class="keyword">true</span>);</div><div class="line">            <span class="comment">//着色器</span></div><div class="line">            Shader shader = <span class="keyword">new</span> BitmapShader(bmp, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);</div><div class="line">            paint = <span class="keyword">new</span> Paint();</div><div class="line">            paint.setShader(shader);</div><div class="line">            canvas.drawCircle(getWidth()/<span class="number">2</span>,getWidth()/<span class="number">2</span>,(getWidth()-outWidth*<span class="number">2</span>)/<span class="number">2</span>,paint);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initAttrs</span><span class="params">(AttributeSet attrs)</span></span>&#123;</div><div class="line">        TypedArray array = getContext().obtainStyledAttributes(attrs,R.styleable.CircleImageView);</div><div class="line">        <span class="keyword">int</span> len =  array.length();</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</div><div class="line">            <span class="keyword">int</span> attr = array.getIndex(i);</div><div class="line">            <span class="keyword">switch</span> (attr)&#123;</div><div class="line">                <span class="keyword">case</span> R.styleable.CircleImageView_out_color:</div><div class="line">                    <span class="keyword">this</span>.outColor = array.getColor(attr,Color.GREEN);</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                <span class="keyword">case</span> R.styleable.CircleImageView_out_width:</div><div class="line">                    <span class="keyword">this</span>.outWidth = (<span class="keyword">int</span>) array.getDimension(attr,<span class="number">2</span>);</div><div class="line">                    Log.i(TAG, <span class="string">"initAttrs: outWidth="</span>+<span class="keyword">this</span>.outWidth);</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        array.recycle();</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="使用图片混合模式显示"><a href="#使用图片混合模式显示" class="headerlink" title="　使用图片混合模式显示"></a>　使用图片混合模式显示</h2><blockquote>
+<p>创建 Bitmap 使用图片混合模式 将图片和圆形交叉显示</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">  <span class="function"><span class="keyword">private</span> Bitmap <span class="title">getCircleBitmap</span><span class="params">()</span></span>&#123;</div><div class="line">        Drawable mDrawable = getDrawable();</div><div class="line">        <span class="keyword">if</span> (mDrawable == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">if</span> (mDrawable <span class="keyword">instanceof</span> BitmapDrawable)&#123;</div><div class="line">            Bitmap bmp = ((BitmapDrawable)mDrawable).getBitmap();</div><div class="line">            <span class="keyword">if</span> (bmp == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">            paint  = <span class="keyword">new</span> Paint();</div><div class="line">            paint.setAntiAlias(<span class="keyword">true</span>);</div><div class="line">            <span class="comment">//创建空的位图</span></div><div class="line">            Bitmap output = Bitmap.createBitmap(getWidth(),getHeight(), Bitmap.Config.ARGB_8888);</div><div class="line">            <span class="comment">//创建画板，以位图进行创建</span></div><div class="line">            Canvas canvas= <span class="keyword">new</span> Canvas(output);</div><div class="line">            <span class="comment">//Bitmap就成了 透明的图片</span></div><div class="line">            canvas.drawColor(Color.TRANSPARENT);</div><div class="line"></div><div class="line">            <span class="comment">//画一个圆形 和图像大小一致</span></div><div class="line">            paint.setColor(Color.WHITE);</div><div class="line">            canvas.drawCircle(output.getWidth()/<span class="number">2</span>,output.getHeight()/<span class="number">2</span>,output.getWidth()/<span class="number">2</span>,paint);</div><div class="line"></div><div class="line"><span class="comment">//            //paint 相交模式 必须在 两者中间定义  显示交叉的地方  ;前面是 dst;后面是 src</span></div><div class="line">            paint.setXfermode(<span class="keyword">new</span> PorterDuffXfermode(PorterDuff.Mode.SRC_IN));</div><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">//            //绘制 Bitmap</span></div><div class="line">            Rect src = <span class="keyword">new</span> Rect(<span class="number">0</span>,<span class="number">0</span>,bmp.getWidth(),bmp.getHeight());</div><div class="line">            RectF dst = <span class="keyword">new</span> RectF(<span class="number">0</span>,<span class="number">0</span>,output.getWidth(),output.getHeight());</div><div class="line">            canvas.drawBitmap(bmp,src,dst,paint);</div><div class="line">            <span class="keyword">return</span>  output;</div><div class="line"></div><div class="line"></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span>  <span class="keyword">null</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</div><div class="line">      Bitmap bmp=  getCircleBitmap();</div><div class="line">       canvas.drawBitmap(bmp,<span class="number">0</span>,<span class="number">0</span>,paint);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>对于这种方式的实现主要在于 paint 的交叉模式； PorterDuffXfermode</p>
+</blockquote>
+<p>实现的方式有很多种 目前是两种.  未完待续。。。。。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/自定义圆形图片控件/" rel="tag">#自定义圆形图片控件</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/24/WebView/" rel="next" title="WebView最基本的使用">
+                <i class="fa fa-chevron-left"></i> WebView最基本的使用
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/03/SelectPhoto/" rel="prev" title="相机和相册选取图片并剪裁">
+                相机和相册选取图片并剪裁 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/03/customCircleImageView/"
+           data-title="自定义圆形图片控件" data-url="https://sky-mxc.github.io/2016/11/03/customCircleImageView/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/top.jpg"
+               alt="sky-mxc" />
+          <p class="site-author-name" itemprop="name">sky-mxc</p>
+          <p class="site-description motion-element" itemprop="description">编码路漫漫 总结很重要</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-name">博文</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sky-mxc" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义圆形ImageView"><span class="nav-number">1.</span> <span class="nav-text">自定义圆形ImageView</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#着色器-方式"><span class="nav-number">1.1.</span> <span class="nav-text">着色器 方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不带边框"><span class="nav-number">1.2.</span> <span class="nav-text">不带边框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加边框"><span class="nav-number">1.3.</span> <span class="nav-text">加边框</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#画边框"><span class="nav-number">1.3.1.</span> <span class="nav-text">画边框</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制图片-将边框大小空出来-getWidth-outWidth-2-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">绘制图片 将边框大小空出来 (getWidth()-outWidth*2)/2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#着色器方式全部代码"><span class="nav-number">1.3.3.</span> <span class="nav-text">着色器方式全部代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义属性-边框颜色和宽度"><span class="nav-number">1.3.4.</span> <span class="nav-text">自定义属性 边框颜色和宽度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重写-onDraw-绘制图片"><span class="nav-number">1.3.5.</span> <span class="nav-text">重写 onDraw() 绘制图片</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用图片混合模式显示"><span class="nav-number">1.4.</span> <span class="nav-text">　使用图片混合模式显示</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sky-mxc</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"sky-mxc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
