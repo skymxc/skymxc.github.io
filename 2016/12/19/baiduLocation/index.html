@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="seekbar使用，sky-mxc" />
+  <meta name="keywords" content="使用百度定位sdk定位当前位置，并获取附近poi" />
 
 
 
@@ -84,18 +84,20 @@
 
 
 
-<meta name="description" content="SeekBar的使用 ,自定义背景 ，进度值 滑块">
+<meta name="description" content="使用百度定位sdk 定位当前位置，并获取附近poi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="seekbar">
-<meta property="og:url" content="https://sky-mxc.github.io/2016/09/30/SeekBar/index.html">
+<meta property="og:title" content="使用百度定位当前位置并获取附近的位置">
+<meta property="og:url" content="https://sky-mxc.github.io/2016/12/19/baiduLocation/index.html">
 <meta property="og:site_name" content="孟祥超">
-<meta property="og:description" content="SeekBar的使用 ,自定义背景 ，进度值 滑块">
-<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\SeekBar\Seekbar.png">
-<meta property="og:updated_time" content="2016-09-30T08:00:19.868Z">
+<meta property="og:description" content="使用百度定位sdk 定位当前位置，并获取附近poi">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\BaiduLocation\getDebugSHA1.png">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\BaiduLocation\getReleaseSHA1.png">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\BaiduLocation\申请key.png">
+<meta property="og:updated_time" content="2016-12-19T11:06:12.489Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="seekbar">
-<meta name="twitter:description" content="SeekBar的使用 ,自定义背景 ，进度值 滑块">
-<meta name="twitter:image" content="https://sky-mxc.github.io/\images\Android\SeekBar\Seekbar.png">
+<meta name="twitter:title" content="使用百度定位当前位置并获取附近的位置">
+<meta name="twitter:description" content="使用百度定位sdk 定位当前位置，并获取附近poi">
+<meta name="twitter:image" content="https://sky-mxc.github.io/\images\Android\BaiduLocation\getDebugSHA1.png">
 
 
 
@@ -123,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="https://sky-mxc.github.io/2016/09/30/SeekBar/"/>
+  <link rel="canonical" href="https://sky-mxc.github.io/2016/12/19/baiduLocation/"/>
 
 
 
 
 
-  <title> seekbar | 孟祥超 </title>
+  <title> 使用百度定位当前位置并获取附近的位置 | 孟祥超 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -293,7 +295,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://sky-mxc.github.io/2016/09/30/SeekBar/">
+  <link itemprop="mainEntityOfPage" href="https://sky-mxc.github.io/2016/12/19/baiduLocation/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="sky-mxc">
@@ -317,7 +319,7 @@
             
             
               
-                seekbar
+                使用百度定位当前位置并获取附近的位置
               
             
           </h1>
@@ -329,8 +331,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-30T14:20:46+08:00">
-              2016-09-30
+            <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-19T17:44:35+08:00">
+              2016-12-19
             </time>
 
             &nbsp;|&nbsp;
@@ -338,8 +340,8 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-check-o"></i>
             </span>
-            <time title="Post modified" itemprop="dateModified" datetime="2016-09-30T16:00:19+08:00">
-              2016-09-30
+            <time title="Post modified" itemprop="dateModified" datetime="2016-12-19T19:06:12+08:00">
+              2016-12-19
             </time>
             
           </span>
@@ -369,8 +371,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/09/30/SeekBar/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/30/SeekBar/" itemprop="commentCount"></span>
+                <a href="/2016/12/19/baiduLocation/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/19/baiduLocation/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -385,7 +387,7 @@
           
           
               <div class="post-description">
-                  SeekBar的使用 ,自定义背景 ，进度值 滑块
+                  使用百度定位sdk 定位当前位置，并获取附近poi
               </div>
           
 
@@ -400,55 +402,36 @@
       
 
       
-        <h1 id="SeekBar-可拖动进度条"><a href="#SeekBar-可拖动进度条" class="headerlink" title="SeekBar 可拖动进度条"></a>SeekBar 可拖动进度条</h1><blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/09/30/SeekBar">https://sky-mxc.github.io/2016/09/30/SeekBar</a></p>
+        <blockquote>
+<p><strong>sky-mxc</strong> 总结 ；欢迎转载交流 <a href="https://sky-mxc.github.io/2016/12/19/baiduLocation/">https://sky-mxc.github.io</a></p>
 </blockquote>
-<ul>
-<li>常用属性</li>
-<li>常用方法</li>
-<li>自定义样式</li>
-</ul>
-<h2 id="常用的属性"><a href="#常用的属性" class="headerlink" title="常用的属性"></a>常用的属性</h2><ul>
-<li>max            最大值</li>
-<li>progress        进度值</li>
-<li>secondaryProgress        第二进度条</li>
-<li>progressDrawable        进度图片</li>
-<li>thumb        拖拽按钮</li>
-<li>thumbOffset        拖拽按钮位置补偿</li>
-<li>maxHeight/maxWidth        最大宽高</li>
-<li>minHeight/minWidth        最小宽高</li>
-</ul>
-<blockquote>
-<p>可通过 maxHeight ，minHeight 控制 高度</p>
+<pre><code>1. 下载sdk
+2. 生成 SHA1码（debug,和release版本）
+3. 申请key
+4. 集成sdk
+5. 获取位置（包含附近poi）
+</code></pre><h2 id="下载定位sdk"><a href="#下载定位sdk" class="headerlink" title="下载定位sdk"></a>下载定位sdk</h2><p>链接 <a href="http://lbsyun.baidu.com/index.php?title=android-locsdk/geosdk-android-download" title="http://lbsyun.baidu.com/index.php?title=android-locsdk/geosdk-android-download" target="_blank" rel="external">http://lbsyun.baidu.com/index.php?title=android-locsdk/geosdk-android-download</a></p>
+<h2 id="生成-SHA1-码"><a href="#生成-SHA1-码" class="headerlink" title="生成 SHA1 码"></a>生成 SHA1 码</h2><blockquote>
+<p>在填写 SHA1码的时候能填写两个，发布版和开发版，如果是的一个人开发的话两个都填一个电脑生成的就好了，如果是多人的话，最好是两个码从两个电脑生成；因为如果码不对的话，定位是无法使用的；</p>
 </blockquote>
-<hr>
-<h2 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h2><ul>
-<li>setProgress()        设置进度值</li>
-<li>getProgress()        获取进度值</li>
-<li>setSecondaryProgress()        设置第二进度值</li>
-<li>getSecondaryProgress()        获取第二进度值</li>
-<li>setSeekBarChangeListener()        设置seekbar拖动改变监听</li>
-</ul>
-<hr>
-<h2 id="自定义样式"><a href="#自定义样式" class="headerlink" title="自定义样式"></a>自定义样式</h2><ul>
-<li>自定义 背景</li>
-<li>自定义进度样式</li>
-<li>自定义滑块</li>
-</ul>
+<h3 id="debug-版"><a href="#debug-版" class="headerlink" title="debug 版"></a>debug 版</h3><ol>
+<li>定位到  .android 目录下：</li>
+<li>打开cmd  输入命令  keytool -list -v -keystore debug.keystore</li>
+<li>输入口令 ：android （百度地图官网提供）</li>
+<li>就得到了SHA1 码：<br><img src="\images\Android\BaiduLocation\getDebugSHA1.png" alt="开发版SHA1码"></li>
+</ol>
+<h3 id="发布版"><a href="#发布版" class="headerlink" title="发布版"></a>发布版</h3><p>在获取发布版的SHA1前 要对项目进行签名</p>
+<ol>
+<li>输入命令 keytool -list -v -keystore jrjh.jks   （ps:jrjh.jks 是你签名是的keystore）</li>
+<li>口令输入你的密码</li>
+<li>得到 发布版的SHA1<br><img src="\images\Android\BaiduLocation\getReleaseSHA1.png" alt="发布版SHA1码"></li>
+</ol>
+<h2 id="申请key"><a href="#申请key" class="headerlink" title="申请key"></a>申请key</h2><p><img src="\images\Android\BaiduLocation\申请key.png" alt="申请key"></p>
+<h2 id="集成sdk"><a href="#集成sdk" class="headerlink" title="集成sdk"></a>集成sdk</h2><p>详细文档地址：<a href="http://lbsyun.baidu.com/index.php?title=android-locsdk/guide/buildprojec" target="_blank" rel="external">http://lbsyun.baidu.com/index.php?title=android-locsdk/guide/buildprojec</a></p>
+<h2 id="获取位置"><a href="#获取位置" class="headerlink" title="获取位置"></a>获取位置</h2><h3 id="定义位置帮助类"><a href="#定义位置帮助类" class="headerlink" title="定义位置帮助类"></a>定义位置帮助类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">import</span> android.content.Intent;</div><div class="line"><span class="keyword">import</span> android.util.Log;</div><div class="line"><span class="keyword">import</span> com.baidu.location.BDLocation;</div><div class="line"><span class="keyword">import</span> com.baidu.location.BDLocationListener;</div><div class="line"><span class="keyword">import</span> com.baidu.location.LocationClient;</div><div class="line"><span class="keyword">import</span> com.baidu.location.LocationClientOption;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line"> * Location utils.</div><div class="line"> * 位置 帮助类</div><div class="line"> * <span class="doctag">@author</span> 孟祥超 on 2016.12.15</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LocationHelper</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"LocationHelper"</span>;</div><div class="line">    <span class="keyword">public</span> LocationClient client= <span class="keyword">new</span> LocationClient(AppUtils.getAppContext());</div><div class="line">    <span class="comment">//位置监听</span></div><div class="line">    <span class="keyword">private</span> BDLocationListener locationListener = <span class="keyword">new</span> BDLocationListener() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceiveLocation</span><span class="params">(BDLocation bdLocation)</span> </span>&#123;</div><div class="line">            <span class="comment">//  2016/12/15 发送一个广播啊</span></div><div class="line">            Log.i(TAG, <span class="string">"onReceiveLocation: address="</span>+bdLocation.getAddrStr());</div><div class="line">            Intent intent =<span class="keyword">new</span> Intent(Constants.Intent.LOCATION_CHANGE);</div><div class="line">            intent.putExtra(<span class="string">"location"</span>,bdLocation);</div><div class="line">            AppUtils.getAppContext().sendBroadcast(intent);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"> </div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> LocationHelper locationHelper;</div><div class="line"> </div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 获取位置帮助类</div><div class="line">     * <span class="doctag">@return</span> location helper</div><div class="line">     * <span class="doctag">@author</span> 孟祥超 on 2016.12.15 14:16:01</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> LocationHelper <span class="title">getInstance</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">if</span> (locationHelper == <span class="keyword">null</span>)&#123;</div><div class="line">            locationHelper = <span class="keyword">new</span> LocationHelper();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span>  locationHelper;</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">LocationHelper</span><span class="params">()</span></span>&#123;</div><div class="line">        initLocation();</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    <span class="comment">//初始化 定位</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initLocation</span><span class="params">()</span></span>&#123;</div><div class="line">        LocationClientOption option = <span class="keyword">new</span> LocationClientOption();</div><div class="line">        option.setIsNeedLocationPoiList(<span class="keyword">true</span>);  <span class="comment">//获取附近 poi</span></div><div class="line">        option.setIsNeedAddress(<span class="keyword">true</span>);  <span class="comment">//需要详细位置</span></div><div class="line">        option.setCoorType(<span class="string">"bd09ll"</span>);   <span class="comment">//百度的编码</span></div><div class="line">        option.setScanSpan(<span class="number">1000</span>*<span class="number">3</span>); <span class="comment">//3秒 一次</span></div><div class="line">        option.setIsNeedLocationDescribe(<span class="keyword">true</span>); <span class="comment">//位置语义化</span></div><div class="line">        client.setLocOption(option);    <span class="comment">//设置参数</span></div><div class="line">        client.registerLocationListener(locationListener);  <span class="comment">//注册获取位置监听</span></div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 释放 位置对象</div><div class="line">     * <span class="doctag">@author</span> 孟祥超 on 2016.12.15 14:23:04</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">release</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">if</span> (locationHelper == <span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line">        client.unRegisterLocationListener(locationListener);</div><div class="line">        locationHelper = <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="接受广播并更新UI"><a href="#接受广播并更新UI" class="headerlink" title="接受广播并更新UI"></a>接受广播并更新UI</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">    <span class="comment">//获取到 位置信息</span></div><div class="line">    <span class="keyword">private</span> BroadcastReceiver locationChangeReceiver = <span class="keyword">new</span> BroadcastReceiver() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span> </span>&#123;</div><div class="line">            BDLocation location =intent.getParcelableExtra(<span class="string">"location"</span>);</div><div class="line">            <span class="keyword">if</span> (location == <span class="keyword">null</span> || TextUtils.isEmpty(location.getAddrStr()))&#123;</div><div class="line">                letterCreateAddress.setText(<span class="string">"没有定位的外星球....."</span>);</div><div class="line">                <span class="keyword">return</span>;</div><div class="line">            &#125;</div><div class="line">            Log.i(TAG, <span class="string">"onReceive: address ="</span>+location.getAddrStr());</div><div class="line">            letterCreateAddress.setText(location.getAddrStr());</div><div class="line">            List&lt;Poi&gt; pois = location.getPoiList();</div><div class="line">            <span class="keyword">if</span> (pois != <span class="keyword">null</span> &amp;&amp; pois.size() != <span class="number">0</span>)&#123;</div><div class="line">                nearbyAddress = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                <span class="keyword">return</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">for</span> (Poi poi :pois)&#123;</div><div class="line">                Log.i(TAG, <span class="string">"onReceive: poi ="</span>+poi.getName());</div><div class="line">                nearbyAddress.add(poi.getName());</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div></pre></td></tr></table></figure>
 <blockquote>
-<p>自定义背景和进度样式 这里使用简单的shape图片 通过 progressDrawable 属性设置</p>
-</blockquote>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">layer-list</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:id</span>=<span class="string">"@android:id/background"</span>&gt;</span></div><div class="line"></div><div class="line">            <span class="tag">&lt;<span class="name">shape</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">solid</span> <span class="attr">android:color</span>=<span class="string">"#353b35"</span>/&gt;</span></div><div class="line"></div><div class="line">                <span class="tag">&lt;<span class="name">corners</span> <span class="attr">android:radius</span>=<span class="string">"10dp"</span>/&gt;</span></div><div class="line"></div><div class="line">            <span class="tag">&lt;/<span class="name">shape</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:id</span>=<span class="string">"@android:id/progress"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">clip</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">shape</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">solid</span> <span class="attr">android:color</span>=<span class="string">"#10b410"</span>/&gt;</span></div><div class="line"></div><div class="line">                <span class="tag">&lt;<span class="name">corners</span> <span class="attr">android:radius</span>=<span class="string">"10dp"</span>/&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">shape</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">clip</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">layer-list</span>&gt;</span></div></pre></td></tr></table></figure>
-<blockquote>
-<p>自定义滑块 通过 属性thumb 设置 这里也是通过shape图形绘制，滑块的高度 是可以自定义的 在这里就可以设置</p>
-</blockquote>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">selector</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></div><div class="line"></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:state_pressed</span>=<span class="string">"true"</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!--按下--&gt;</span></div><div class="line"></div><div class="line">            <span class="tag">&lt;<span class="name">shape</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">solid</span> <span class="attr">android:color</span>=<span class="string">"#b31395"</span>/&gt;</span></div><div class="line"></div><div class="line">                <span class="tag">&lt;<span class="name">corners</span> <span class="attr">android:radius</span>=<span class="string">"10dp"</span>/&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">size</span> <span class="attr">android:height</span>=<span class="string">"40dp"</span></span></div><div class="line">                    <span class="attr">android:width</span>=<span class="string">"20dp"</span>/&gt;</div><div class="line">            <span class="tag">&lt;/<span class="name">shape</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:state_focused</span>=<span class="string">"false"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">shape</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">solid</span> <span class="attr">android:color</span>=<span class="string">"#362d35"</span>/&gt;</span></div><div class="line"></div><div class="line">            <span class="tag">&lt;<span class="name">corners</span> <span class="attr">android:radius</span>=<span class="string">"10dp"</span>/&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">size</span> <span class="attr">android:height</span>=<span class="string">"40dp"</span></span></div><div class="line">                <span class="attr">android:width</span>=<span class="string">"20dp"</span>/&gt;</div><div class="line">        <span class="tag">&lt;/<span class="name">shape</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> &gt;</span></div><div class="line"></div><div class="line">           <span class="tag">&lt;<span class="name">shape</span>&gt;</span></div><div class="line">               <span class="tag">&lt;<span class="name">solid</span> <span class="attr">android:color</span>=<span class="string">"#362d35"</span>/&gt;</span></div><div class="line"></div><div class="line">               <span class="tag">&lt;<span class="name">corners</span> <span class="attr">android:radius</span>=<span class="string">"10dp"</span>/&gt;</span></div><div class="line">               <span class="tag">&lt;<span class="name">size</span> <span class="attr">android:height</span>=<span class="string">"40dp"</span></span></div><div class="line">                   <span class="attr">android:width</span>=<span class="string">"20dp"</span>/&gt;</div><div class="line">           <span class="tag">&lt;/<span class="name">shape</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">selector</span>&gt;</span></div></pre></td></tr></table></figure>
-<blockquote>
-<p>高度通过 minHeight maxHeight 设置</p>
-</blockquote>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">SeekBar</span></span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/seek_bar_0"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">    <span class="attr">android:max</span>=<span class="string">"100"</span></div><div class="line">    <span class="attr">android:progress</span>=<span class="string">"20"</span></div><div class="line">    <span class="attr">android:layout_margin</span>=<span class="string">"10dp"</span></div><div class="line">    <span class="attr">android:maxHeight</span>=<span class="string">"20dp"</span></div><div class="line">    <span class="attr">android:minHeight</span>=<span class="string">"20dp"</span></div><div class="line">    <span class="attr">android:thumb</span>=<span class="string">"@drawable/selector_seek_thumb_bg"</span></div><div class="line">    <span class="attr">android:progressDrawable</span>=<span class="string">"@drawable/selector_seekbar_bg"</span>/&gt;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>实例图<br><img src="\images\Android\SeekBar\Seekbar.png" alt="实例图"></p>
+<p>在项目中已经测试可用；这里做个总结</p>
 </blockquote>
 
       
@@ -473,7 +456,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/SeekBar/" rel="tag"># SeekBar</a>
+            <a href="/tags/百度定位/" rel="tag"># 百度定位</a>
           
         </div>
       
@@ -482,15 +465,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/12/04/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/09/30/activity/" rel="prev" title="Activity">
-                Activity <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -522,8 +505,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/09/30/SeekBar/"
-           data-title="seekbar" data-url="https://sky-mxc.github.io/2016/09/30/SeekBar/">
+      <div class="ds-thread" data-thread-key="2016/12/19/baiduLocation/"
+           data-title="使用百度定位当前位置并获取附近的位置" data-url="https://sky-mxc.github.io/2016/12/19/baiduLocation/">
       </div>
     
   </div>
@@ -631,7 +614,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SeekBar-可拖动进度条"><span class="nav-number">1.</span> <span class="nav-text">SeekBar 可拖动进度条</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用的属性"><span class="nav-number">1.1.</span> <span class="nav-text">常用的属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用方法"><span class="nav-number">1.2.</span> <span class="nav-text">常用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义样式"><span class="nav-number">1.3.</span> <span class="nav-text">自定义样式</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载定位sdk"><span class="nav-number">1.</span> <span class="nav-text">下载定位sdk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成-SHA1-码"><span class="nav-number">2.</span> <span class="nav-text">生成 SHA1 码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#debug-版"><span class="nav-number">2.1.</span> <span class="nav-text">debug 版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布版"><span class="nav-number">2.2.</span> <span class="nav-text">发布版</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#申请key"><span class="nav-number">3.</span> <span class="nav-text">申请key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集成sdk"><span class="nav-number">4.</span> <span class="nav-text">集成sdk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取位置"><span class="nav-number">5.</span> <span class="nav-text">获取位置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义位置帮助类"><span class="nav-number">5.1.</span> <span class="nav-text">定义位置帮助类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接受广播并更新UI"><span class="nav-number">5.2.</span> <span class="nav-text">接受广播并更新UI</span></a></li></ol></li></ol></div>
             
 
           </div>
