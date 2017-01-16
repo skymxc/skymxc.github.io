@@ -185,7 +185,7 @@
       <title><![CDATA[hibernate 关联映射]]></title>
       <url>https://sky-mxc.github.io/2017/01/13/hibernate-relate/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/01/13/hibernate-relate">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/01/13/hibernate-relate/">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="Hibernate中的关联映射"><a href="#Hibernate中的关联映射" class="headerlink" title="Hibernate中的关联映射"></a>Hibernate中的关联映射</h1><h2 id="关联关系"><a href="#关联关系" class="headerlink" title="关联关系"></a>关联关系</h2><blockquote>
 <p>平时开发中，类与类之间最普遍的的关系就是关联关系，而且关联是有方向的。<br>以部门（Dept）和员工（Employee）为例：一个部门下有多个员工，而一个员工只能属于一个部门。</p>
@@ -290,7 +290,7 @@
       <title><![CDATA[HQL的使用]]></title>
       <url>https://sky-mxc.github.io/2017/01/12/Hibernate-HQL/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/01/12/Hibernate-HQL">https://sky-mxc.github.io/2017/01/12/Hibernate-HQL</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/01/12/Hibernate-HQL/">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="HQL"><a href="#HQL" class="headerlink" title="HQL"></a>HQL</h1><blockquote>
 <p>Hibernate 支持三种查询方式</p>
@@ -397,7 +397,7 @@
       <title><![CDATA[MySql命令集锦]]></title>
       <url>https://sky-mxc.github.io/2017/01/08/mysqlcommand/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/01/08/mysqlcommand">https://sky-mxc.github.io/2017/01/08/mysqlcommand</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/01/08/mysqlcommand/">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="MySQL命令"><a href="#MySQL命令" class="headerlink" title="MySQL命令"></a>MySQL命令</h1><h2 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h2><blockquote>
 <p>如果存在就先删了吧</p>
@@ -479,7 +479,7 @@
       <title><![CDATA[Mysql5.7.17解压版安装教程]]></title>
       <url>https://sky-mxc.github.io/2017/01/05/installMysql5-7/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc</strong>总结 转载注明: <a href="https://sky-mxc.github.io//2017/01/05/installMysql5-7">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc</strong>总结 转载注明: <a href="https://sky-mxc.github.io/2017/01/05/installMysql5-7/">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="Mysql5-7-17-解压版安装"><a href="#Mysql5-7-17-解压版安装" class="headerlink" title="Mysql5.7.17 解压版安装"></a>Mysql5.7.17 解压版安装</h1><h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>解压版下载地址(需要登录) <a href="http://dev.mysql.com/downloads/mysql/" target="_blank" rel="external">http://dev.mysql.com/downloads/mysql/</a></p>
 <p><img src="\images\database\msyql\install\download.png" alt="下载"></p>
