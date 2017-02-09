@@ -469,6 +469,8 @@
 <h2 id="为已存在的表添加外键"><a href="#为已存在的表添加外键" class="headerlink" title="为已存在的表添加外键"></a>为已存在的表添加外键</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">alter table 表名 add constraint 外键名字 foreign key(外键字段名） references 外表(对应表的字段);</div><div class="line"></div><div class="line"># 为 employee 添加外键  employee表的dept字段对应dept表里的 d_id字段</div><div class="line">alter table employee add constraint FK_ED foreign key(dept) references dept(d_id);</div></pre></td></tr></table></figure>
 <h2 id="查看创建表的SQL语句"><a href="#查看创建表的SQL语句" class="headerlink" title="查看创建表的SQL语句"></a>查看创建表的SQL语句</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show create table 表名;</div></pre></td></tr></table></figure>
 <p><img src="\images\database\msyql\commands\show_create_table.png" alt="查看创建表的SQL语句"></p>
+<h2 id="添加列"><a href="#添加列" class="headerlink" title="添加列"></a>添加列</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">alter table 表名 add 列名 数据类型;</div><div class="line"># 为 dept表增加 d_location列</div><div class="line">alter table dept add d_location varchar(200);</div></pre></td></tr></table></figure>
+<p><img src="\images\database\msyql\commands\alter_table_add_column.png" alt="添加列"></p>
 <h1 id="description"><a href="#description" class="headerlink" title="description"></a>description</h1><blockquote>
 <p>平时用到的SQL语句记录，持续更新中….</p>
 </blockquote>
