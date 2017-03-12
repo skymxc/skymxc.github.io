@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Android 导入现有数据库,sky-mxc," />
+  <meta name="keywords" content="UUId的生成，uuid，byte[]，16进制字符串之间的转换，sqlite数据库uuid类型的操作" />
 
 
 
@@ -84,16 +84,18 @@
 
 
 
-<meta name="description" content="Android 导入现有数据库">
+<meta name="description" content="UUId的生成，uuid，byte[]，16进制字符串之间的转换，sqlite数据库uuid类型的操作">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android 导入现有数据库">
-<meta property="og:url" content="https://sky-mxc.github.io/2017/02/26/copyDB/index.html">
+<meta property="og:title" content="Android中关于UUID的操作">
+<meta property="og:url" content="https://sky-mxc.github.io/2017/03/12/android-uuid/index.html">
 <meta property="og:site_name" content="孟祥超">
-<meta property="og:description" content="Android 导入现有数据库">
-<meta property="og:updated_time" content="2017-02-26T10:23:04.712Z">
+<meta property="og:description" content="UUId的生成，uuid，byte[]，16进制字符串之间的转换，sqlite数据库uuid类型的操作">
+<meta property="og:image" content="https://sky-mxc.github.io/\images\Android\uuid\table.png">
+<meta property="og:updated_time" content="2017-03-12T03:05:18.564Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android 导入现有数据库">
-<meta name="twitter:description" content="Android 导入现有数据库">
+<meta name="twitter:title" content="Android中关于UUID的操作">
+<meta name="twitter:description" content="UUId的生成，uuid，byte[]，16进制字符串之间的转换，sqlite数据库uuid类型的操作">
+<meta name="twitter:image" content="https://sky-mxc.github.io/\images\Android\uuid\table.png">
 
 
 
@@ -121,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="https://sky-mxc.github.io/2017/02/26/copyDB/"/>
+  <link rel="canonical" href="https://sky-mxc.github.io/2017/03/12/android-uuid/"/>
 
 
 
 
 
-  <title> Android 导入现有数据库 | 孟祥超 </title>
+  <title> Android中关于UUID的操作 | 孟祥超 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -281,7 +283,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://sky-mxc.github.io/2017/02/26/copyDB/">
+  <link itemprop="mainEntityOfPage" href="https://sky-mxc.github.io/2017/03/12/android-uuid/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="sky-mxc">
@@ -305,7 +307,7 @@
             
             
               
-                Android 导入现有数据库
+                Android中关于UUID的操作
               
             
           </h1>
@@ -317,8 +319,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-26T17:21:13+08:00">
-              2017-02-26
+            <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-12T10:28:34+08:00">
+              2017-03-12
             </time>
 
             &nbsp;|&nbsp;
@@ -326,8 +328,8 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-check-o"></i>
             </span>
-            <time title="Post modified" itemprop="dateModified" datetime="2017-02-26T18:23:04+08:00">
-              2017-02-26
+            <time title="Post modified" itemprop="dateModified" datetime="2017-03-12T11:05:18+08:00">
+              2017-03-12
             </time>
             
           </span>
@@ -357,8 +359,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/02/26/copyDB/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/26/copyDB/" itemprop="commentCount"></span>
+                <a href="/2017/03/12/android-uuid/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/12/android-uuid/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -373,7 +375,7 @@
           
           
               <div class="post-description">
-                  Android 导入现有数据库
+                  UUId的生成，uuid，byte[]，16进制字符串之间的转换，sqlite数据库uuid类型的操作
               </div>
           
 
@@ -389,10 +391,26 @@
 
       
         <blockquote>
-<p> <strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/03/12/android-uuid/">https://sky-mxc.github.io</a></p>
 </blockquote>
-<p>我们都知道 Android的 数据库默认是放在data\data\packageName\datbases\下的;<br>要导入现有的数据库将我们的数据库在 程序第一次启动的时候将数据库放在这个目录下，然后我们配置好SqliteDabase对象就可以 直接操作了。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 将 数据库从 assets 复制到 databases下</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">copyDB</span><span class="params">()</span> </span>&#123;</div><div class="line">   <span class="comment">//data/data/packageName/databases/</span></div><div class="line">   File mkdir = <span class="keyword">new</span> File(getFilesDir().getParent(),<span class="string">"databases"</span>);</div><div class="line">   <span class="comment">//创建 databases文件夹</span></div><div class="line">    <span class="keyword">if</span> (!mkdir.exists()) mkdir.mkdirs();</div><div class="line">    Log.e(TAG, <span class="string">"copyDb: mkdir="</span>+mkdir.getPath());</div><div class="line">    <span class="comment">//数据库文件</span></div><div class="line">    File file = <span class="keyword">new</span> File(mkdir,<span class="string">"SinBusinessWssm1.db"</span>);</div><div class="line">    <span class="comment">//只是在程序第一次启动时创建</span></div><div class="line">    <span class="keyword">if</span>(!file.exists())&#123;</div><div class="line">      <span class="comment">//获取 assets管理</span></div><div class="line">        AssetManager assets = getAssets();</div><div class="line">        <span class="comment">//执行文件复制</span></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            InputStream open = assets.open(<span class="string">"SinBusinessWssm1.db"</span>);</div><div class="line">            FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(file);</div><div class="line">            <span class="keyword">byte</span>[] bs = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</div><div class="line">            <span class="keyword">int</span> len ;</div><div class="line">            <span class="keyword">while</span> ((len = open.read(bs))!=-<span class="number">1</span>)&#123;</div><div class="line">                fos.write(bs,<span class="number">0</span>,len);</div><div class="line">            &#125;</div><div class="line">            fos.flush();</div><div class="line">            fos.close();</div><div class="line">            open.close();</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    Log.e(TAG, <span class="string">"copyDb: exists="</span>+file.getPath());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="UUID"><a href="#UUID" class="headerlink" title="UUID"></a>UUID</h1><blockquote>
+<p>通用唯一识别码（Universally Unique Identifier）是一种软件建构的标准；<br>UUID的目的，是让分布式系统中的所有元素，都能有唯一的辨识信息，而不是需要通过中央控制端来做辨识信息的指定。如此以阿里，每个人都可以创建与其他人不冲突的UUID。在这种情况下，就不需要考虑数据库创建时的重复问题；</p>
+<p>UUID是由一组32位数的16进制数字构成，UUID的标准形式包含32个16进制数字，以连字号分为五段。形式为 8-4-4-12的32个字符。</p>
+<p>550e8400-e29b-41d4-a716-446655440000</p>
+</blockquote>
+<p>参考链接：<a href="https://zh.wikipedia.org/wiki/%E9%80%9A%E7%94%A8%E5%94%AF%E4%B8%80%E8%AF%86%E5%88%AB%E7%A0%81" title="https://zh.wikipedia.org/wiki/%E9%80%9A%E7%94%A8%E5%94%AF%E4%B8%80%E8%AF%86%E5%88%AB%E7%A0%81" target="_blank" rel="external">https://zh.wikipedia.org/wiki</a></p>
+<h2 id="UUID的生成"><a href="#UUID的生成" class="headerlink" title="UUID的生成"></a>UUID的生成</h2><p>java中提供了 UUID类来生成UUID</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">UUID uuid = UUID.randomUUID();</div></pre></td></tr></table></figure>
+<h2 id="UUID-，byte-，16进制字符串之间的转换"><a href="#UUID-，byte-，16进制字符串之间的转换" class="headerlink" title="UUID ，byte[]，16进制字符串之间的转换"></a>UUID ，byte[]，16进制字符串之间的转换</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * uuid转化 byte[]</div><div class="line"> * @param uuid</div><div class="line"> * @return</div><div class="line"> */</div><div class="line">public static byte[] toByte(UUID uuid) &#123;</div><div class="line">    ByteBuffer buffer = ByteBuffer.wrap(new byte[16]);</div><div class="line">    buffer.putLong(uuid.getMostSignificantBits());</div><div class="line">    buffer.putLong(uuid.getLeastSignificantBits());</div><div class="line">    return buffer.array();</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * byte[] 转换 uuid</div><div class="line"> * @param bytes</div><div class="line"> * @return</div><div class="line"> */</div><div class="line">public static UUID toUUID(byte[] bytes) &#123;</div><div class="line">    ByteBuffer buffer = ByteBuffer.wrap(bytes);</div><div class="line">    long fistLong = buffer.getLong();</div><div class="line">    long secondLong = buffer.getLong();</div><div class="line">    return new UUID(fistLong, secondLong);</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * byte[] 转换为 16进制字符串啊</div><div class="line"> * @param bytes</div><div class="line"> * @return</div><div class="line"> */</div><div class="line">public static String bytesToHexStr(byte[] bytes) &#123;</div><div class="line">    StringBuffer sb = new StringBuffer();</div><div class="line">    for (byte b : bytes) &#123;</div><div class="line">        int v = b &amp; 0xff;</div><div class="line">        String hv = Integer.toHexString(v);</div><div class="line">        if (hv.length() &lt; 2) &#123;</div><div class="line">            sb.append(&quot;0&quot;);</div><div class="line">        &#125;</div><div class="line">        sb.append(hv);</div><div class="line">    &#125;</div><div class="line">    return sb.toString();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>参考链接：<a href="http://stackoverflow.com/questions/17893609/convert-uuid-to-byte-that-works-when-using-uuid-nameuuidfrombytesb" title="http://stackoverflow.com/questions/17893609/convert-uuid-to-byte-that-works-when-using-uuid-nameuuidfrombytesb" target="_blank" rel="external">http://stackoverflow.com/questions/17893609/convert-uuid-to-byte-that-works-when-using-uuid-nameuuidfrombytesb</a></p>
+<p><a href="https://my.oschina.net/u/347386/blog/182717" title="https://my.oschina.net/u/347386/blog/182717" target="_blank" rel="external">https://my.oschina.net/u/347386/blog/182717</a></p>
+<h2 id="sqlite中-guid类型数据的操作"><a href="#sqlite中-guid类型数据的操作" class="headerlink" title="sqlite中 guid类型数据的操作"></a>sqlite中 guid类型数据的操作</h2><blockquote>
+<p>表结构</p>
+</blockquote>
+<p><img src="\images\Android\uuid\table.png" alt="表结构"></p>
+<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">private void insert() &#123;</div><div class="line">    UUID uuid = UUID.randomUUID();</div><div class="line">    String name = &quot;mxc&quot;;</div><div class="line">    byte[] bytes = UUIDUtils.toByte(uuid);</div><div class="line">    ContentValues cv = new ContentValues();</div><div class="line">    cv.put(&quot;id&quot;,bytes);</div><div class="line">    cv.put(&quot;name&quot;,name);</div><div class="line"></div><div class="line">    SQLiteDatabase db = helper.getWritableDatabase();</div><div class="line">    db.beginTransaction();</div><div class="line">    db.insert(&quot;tb0&quot;,null,cv);</div><div class="line">    db.setTransactionSuccessful();</div><div class="line">    db.endTransaction();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">private void update()&#123;</div><div class="line">    /**</div><div class="line">     * 对于uuid的比较 ，转换为16进制字符串</div><div class="line">     */</div><div class="line">    String hexStr = UUIDUtils.bytesToHexStr(bytes);</div><div class="line">    SQLiteDatabase db = helper.getWritableDatabase();</div><div class="line">    ContentValues cv = new ContentValues();</div><div class="line">    cv.put(&quot;name&quot;,&quot;sky-mxc&quot;);</div><div class="line">    cv.put(&quot;age&quot;,23);</div><div class="line">    Log.e(TAG, &quot;update: hexStr=&quot;+hexStr);</div><div class="line">    db.beginTransaction();</div><div class="line">    db.update(&quot;tb0&quot;,cv,&quot;id = x&apos;&quot;+hexStr+&quot;&apos;&quot;,null);</div><div class="line">    db.setTransactionSuccessful();</div><div class="line">    db.endTransaction();</div><div class="line">    query();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">private void query()&#123;</div><div class="line">    StringBuffer sb = new StringBuffer(&quot;数据如下：\n&quot;);</div><div class="line">    SQLiteDatabase db = helper.getReadableDatabase();</div><div class="line">    Cursor cursor = db.query(&quot;tb0&quot;, new String[]&#123;&quot;id&quot;, &quot;name&quot;, &quot;age&quot;&#125;, null, null, null, null, null);</div><div class="line">    while (cursor.moveToNext())&#123;</div><div class="line">        byte[] ids = cursor.getBlob(cursor.getColumnIndex(&quot;id&quot;));</div><div class="line">        bytes = ids;</div><div class="line">        UUID uuid = UUIDUtils.toUUID(ids);</div><div class="line">        String name = cursor.getString(cursor.getColumnIndex(&quot;name&quot;));</div><div class="line">        int age = cursor.getInt(cursor.getColumnIndex(&quot;age&quot;));</div><div class="line">        sb.append(&quot;uuid=&quot;+uuid.toString());</div><div class="line">        sb.append(&quot;;\n&quot;);</div><div class="line">        String hexStr = UUIDUtils.bytesToHexStr(ids);</div><div class="line">       sb.append(&quot;hexStr=&quot;+hexStr);</div><div class="line">        sb.append(&quot;;\n&quot;);</div><div class="line">        Log.e(TAG, &quot;query: hexStr=&quot;+hexStr);</div><div class="line">        sb.append(&quot;name=&quot;+name);</div><div class="line">        sb.append(&quot;;\n&quot;);</div><div class="line">        sb.append(&quot;age=&quot;+age);</div><div class="line">        sb.append(&quot;;\n&quot;);</div><div class="line">        sb.append(&quot;---------------------------\n&quot;);</div><div class="line">    &#125;</div><div class="line">    cursor.close();</div><div class="line">    tvShow.setText(sb.toString());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -416,7 +434,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Android导入现有数据库/" rel="tag"># Android导入现有数据库</a>
+            <a href="/tags/UUID/" rel="tag"># UUID</a>
           
         </div>
       
@@ -425,8 +443,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/01/15/hibernate-capability-optimize/" rel="next" title="Hibernate 缓存解析和性能优化">
-                <i class="fa fa-chevron-left"></i> Hibernate 缓存解析和性能优化
+              <a href="/2017/03/06/opeateSDCardDb/" rel="next" title="Android操作位于sd卡上的sqlite数据库">
+                <i class="fa fa-chevron-left"></i> Android操作位于sd卡上的sqlite数据库
               </a>
             
           </div>
@@ -434,10 +452,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/06/opeateSDCardDb/" rel="prev" title="Android操作位于sd卡上的sqlite数据库">
-                Android操作位于sd卡上的sqlite数据库 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -452,10 +466,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2017/02/26/copyDB/"
-     data-title="Android 导入现有数据库"
+        <div class="ds-share flat" data-thread-key="2017/03/12/android-uuid/"
+     data-title="Android中关于UUID的操作"
      data-content=""
-     data-url="https://sky-mxc.github.io/2017/02/26/copyDB/">
+     data-url="https://sky-mxc.github.io/2017/03/12/android-uuid/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -482,8 +496,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/02/26/copyDB/"
-           data-title="Android 导入现有数据库" data-url="https://sky-mxc.github.io/2017/02/26/copyDB/">
+      <div class="ds-thread" data-thread-key="2017/03/12/android-uuid/"
+           data-title="Android中关于UUID的操作" data-url="https://sky-mxc.github.io/2017/03/12/android-uuid/">
       </div>
     
   </div>
@@ -507,8 +521,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/user.jpg"
@@ -586,6 +609,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#UUID"><span class="nav-number">1.</span> <span class="nav-text">UUID</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#UUID的生成"><span class="nav-number">1.1.</span> <span class="nav-text">UUID的生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UUID-，byte-，16进制字符串之间的转换"><span class="nav-number">1.2.</span> <span class="nav-text">UUID ，byte[]，16进制字符串之间的转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sqlite中-guid类型数据的操作"><span class="nav-number">1.3.</span> <span class="nav-text">sqlite中 guid类型数据的操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#插入"><span class="nav-number">1.3.1.</span> <span class="nav-text">插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改"><span class="nav-number">1.3.2.</span> <span class="nav-text">修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询"><span class="nav-number">1.3.3.</span> <span class="nav-text">查询</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
     </div>
