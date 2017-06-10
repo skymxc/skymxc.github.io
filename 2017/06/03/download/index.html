@@ -90,7 +90,7 @@
 <meta property="og:url" content="https://sky-mxc.github.io/2017/06/03/download/index.html">
 <meta property="og:site_name" content="孟祥超">
 <meta property="og:description" content="单线程,多线程断点续传">
-<meta property="og:updated_time" content="2017-06-03T14:27:57.031Z">
+<meta property="og:updated_time" content="2017-06-10T03:11:12.059Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 文件下载">
 <meta name="twitter:description" content="单线程,多线程断点续传">
@@ -326,8 +326,8 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-check-o"></i>
             </span>
-            <time title="Post modified" itemprop="dateModified" datetime="2017-06-03T22:27:57+08:00">
-              2017-06-03
+            <time title="Post modified" itemprop="dateModified" datetime="2017-06-10T11:11:12+08:00">
+              2017-06-10
             </time>
             
           </span>
@@ -388,7 +388,22 @@
       
 
       
-        <h1 id="文件下载"><a href="#文件下载" class="headerlink" title="文件下载"></a>文件下载</h1><h2 id="用到的知识点"><a href="#用到的知识点" class="headerlink" title="用到的知识点"></a>用到的知识点</h2><h2 id="流程分析"><a href="#流程分析" class="headerlink" title="流程分析"></a>流程分析</h2>
+        <blockquote>
+<p>时间问题，延期</p>
+</blockquote>
+<h1 id="文件下载"><a href="#文件下载" class="headerlink" title="文件下载"></a>文件下载</h1><h2 id="用到的知识点"><a href="#用到的知识点" class="headerlink" title="用到的知识点"></a>用到的知识点</h2><ul>
+<li>多线程，线程池</li>
+<li>http协议</li>
+<li>RandomAccessFile 类</li>
+<li>properties文件</li>
+</ul>
+<h2 id="流程分析"><a href="#流程分析" class="headerlink" title="流程分析"></a>流程分析</h2><ol>
+<li>确定文件流长度</li>
+<li>创建线程池</li>
+<li>确定每个线程的下载起点，止点，长度</li>
+<li>记录每个线程的进度 </li>
+</ol>
+
       
     </div>
 
