@@ -5,7 +5,7 @@
     
     <entry>
       <title><![CDATA[ViewDragHelper使用笔记及侧滑菜单实践]]></title>
-      <url>https://sky-mxc.github.io/2017/07/29/android-ViewDragHelper/</url>
+      <url>http://blog.skymxc.com/2017/07/29/android-ViewDragHelper/</url>
       <content type="html"><![CDATA[<h2 id="ViewDragHelper"><a href="#ViewDragHelper" class="headerlink" title="ViewDragHelper"></a>ViewDragHelper</h2><blockquote>
 <p>一个拖拽实现的帮助类，存在于v4包中，对于实现简单的拖拽简直不要太简单；再也不用去重写onTouch()了；</p>
 </blockquote>
@@ -115,7 +115,7 @@
     
     <entry>
       <title><![CDATA[Android 文件下载]]></title>
-      <url>https://sky-mxc.github.io/2017/06/03/download/</url>
+      <url>http://blog.skymxc.com/2017/06/03/download/</url>
       <content type="html"><![CDATA[<blockquote>
 <p>时间问题，延期</p>
 </blockquote>
@@ -136,9 +136,9 @@
     
     <entry>
       <title><![CDATA[Android中关于UUID的操作]]></title>
-      <url>https://sky-mxc.github.io/2017/03/12/android-uuid/</url>
+      <url>http://blog.skymxc.com/2017/03/12/android-uuid/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/03/12/android-uuid/">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/03/12/android-uuid/" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="UUID"><a href="#UUID" class="headerlink" title="UUID"></a>UUID</h1><blockquote>
 <p>通用唯一识别码（Universally Unique Identifier）是一种软件建构的标准；<br>UUID的目的，是让分布式系统中的所有元素，都能有唯一的辨识信息，而不是需要通过中央控制端来做辨识信息的指定。如此以阿里，每个人都可以创建与其他人不冲突的UUID。在这种情况下，就不需要考虑数据库创建时的重复问题；</p>
@@ -163,9 +163,9 @@
     
     <entry>
       <title><![CDATA[Android操作位于sd卡上的sqlite数据库]]></title>
-      <url>https://sky-mxc.github.io/2017/03/06/opeateSDCardDb/</url>
+      <url>http://blog.skymxc.com/2017/03/06/opeateSDCardDb/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明出处：<a href="https://sky-mxc.github.io/2017/03/06/opeateSDCardDb/">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明出处：<a href="https://sky-mxc.github.io/2017/03/06/opeateSDCardDb/" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="对-sd卡上sqlite-数据库的操作"><a href="#对-sd卡上sqlite-数据库的操作" class="headerlink" title="对 sd卡上sqlite 数据库的操作"></a>对 sd卡上sqlite 数据库的操作</h1><blockquote>
 <p>Android默认的数据库位置是在 data\data\packageName\databases\目录下的；<br>有时候因为业务需要我们需要操作位于sd卡的数据库，就可以通过重写 Context类的方法来实现</p>
@@ -183,9 +183,9 @@
     
     <entry>
       <title><![CDATA[Android 导入现有数据库]]></title>
-      <url>https://sky-mxc.github.io/2017/02/26/copyDB/</url>
+      <url>http://blog.skymxc.com/2017/02/26/copyDB/</url>
       <content type="html"><![CDATA[<blockquote>
-<p> <strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io">https://sky-mxc.github.io</a></p>
+<p> <strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <p>我们都知道 Android的 数据库默认是放在data\data\packageName\datbases\下的;<br>要导入现有的数据库将我们的数据库在 程序第一次启动的时候将数据库放在这个目录下，然后我们配置好SqliteDabase对象就可以 直接操作了。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 将 数据库从 assets 复制到 databases下</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">copyDB</span><span class="params">()</span> </span>&#123;</div><div class="line">   <span class="comment">//data/data/packageName/databases/</span></div><div class="line">   File mkdir = <span class="keyword">new</span> File(getFilesDir().getParent(),<span class="string">"databases"</span>);</div><div class="line">   <span class="comment">//创建 databases文件夹</span></div><div class="line">    <span class="keyword">if</span> (!mkdir.exists()) mkdir.mkdirs();</div><div class="line">    Log.e(TAG, <span class="string">"copyDb: mkdir="</span>+mkdir.getPath());</div><div class="line">    <span class="comment">//数据库文件</span></div><div class="line">    File file = <span class="keyword">new</span> File(mkdir,<span class="string">"SinBusinessWssm1.db"</span>);</div><div class="line">    <span class="comment">//只是在程序第一次启动时创建</span></div><div class="line">    <span class="keyword">if</span>(!file.exists())&#123;</div><div class="line">      <span class="comment">//获取 assets管理</span></div><div class="line">        AssetManager assets = getAssets();</div><div class="line">        <span class="comment">//执行文件复制</span></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            InputStream open = assets.open(<span class="string">"SinBusinessWssm1.db"</span>);</div><div class="line">            FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(file);</div><div class="line">            <span class="keyword">byte</span>[] bs = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</div><div class="line">            <span class="keyword">int</span> len ;</div><div class="line">            <span class="keyword">while</span> ((len = open.read(bs))!=-<span class="number">1</span>)&#123;</div><div class="line">                fos.write(bs,<span class="number">0</span>,len);</div><div class="line">            &#125;</div><div class="line">            fos.flush();</div><div class="line">            fos.close();</div><div class="line">            open.close();</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    Log.e(TAG, <span class="string">"copyDb: exists="</span>+file.getPath());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -194,9 +194,9 @@
     
     <entry>
       <title><![CDATA[Hibernate 缓存解析和性能优化]]></title>
-      <url>https://sky-mxc.github.io/2017/01/15/hibernate-capability-optimize/</url>
+      <url>http://blog.skymxc.com/2017/01/15/hibernate-capability-optimize/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/01/15/hibernate-capability-optimize">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/01/15/hibernate-capability-optimize" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="缓存概念"><a href="#缓存概念" class="headerlink" title="缓存概念"></a>缓存概念</h1><blockquote>
 <p><strong>缓存</strong> 介于应用程序和永久性数据源（文件，数据库等）之间<br>作用就是降低应用程序直接读取数据源的频率，从而提高应用程序的运行性能。<br>缓存中的数据就是数据源中数据的复制，应用程序在运行时直接读取缓存中的数据。<br>缓存的物理介质通常是内存，而永久性数据存储源的物理介质通常是硬盘或磁盘，应用程序读写内存的速度显然比读写硬盘的速度快。<br>如果缓存存放的数据非常大，也会用硬盘作为缓存的物理介质。</p>
@@ -372,9 +372,9 @@
     
     <entry>
       <title><![CDATA[hibernate 关联映射]]></title>
-      <url>https://sky-mxc.github.io/2017/01/13/hibernate-relate/</url>
+      <url>http://blog.skymxc.com/2017/01/13/hibernate-relate/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/01/13/hibernate-relate/">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/01/13/hibernate-relate/" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="Hibernate中的关联映射"><a href="#Hibernate中的关联映射" class="headerlink" title="Hibernate中的关联映射"></a>Hibernate中的关联映射</h1><h2 id="关联关系"><a href="#关联关系" class="headerlink" title="关联关系"></a>关联关系</h2><blockquote>
 <p>平时开发中，类与类之间最普遍的的关系就是关联关系，而且关联是有方向的。<br>以部门（Dept）和员工（Employee）为例：一个部门下有多个员工，而一个员工只能属于一个部门。</p>
@@ -477,9 +477,9 @@
     
     <entry>
       <title><![CDATA[HQL的使用]]></title>
-      <url>https://sky-mxc.github.io/2017/01/12/Hibernate-HQL/</url>
+      <url>http://blog.skymxc.com/2017/01/12/Hibernate-HQL/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/01/12/Hibernate-HQL/">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/01/12/Hibernate-HQL/" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="HQL"><a href="#HQL" class="headerlink" title="HQL"></a>HQL</h1><blockquote>
 <p>Hibernate 支持三种查询方式</p>
@@ -584,9 +584,9 @@
     
     <entry>
       <title><![CDATA[MySql命令集锦]]></title>
-      <url>https://sky-mxc.github.io/2017/01/08/mysqlcommand/</url>
+      <url>http://blog.skymxc.com/2017/01/08/mysqlcommand/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/01/08/mysqlcommand/">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2017/01/08/mysqlcommand/" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="MySQL命令"><a href="#MySQL命令" class="headerlink" title="MySQL命令"></a>MySQL命令</h1><h2 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h2><blockquote>
 <p>如果存在就先删了吧</p>
@@ -668,9 +668,9 @@
     
     <entry>
       <title><![CDATA[Mysql5.7.17解压版安装教程]]></title>
-      <url>https://sky-mxc.github.io/2017/01/05/installMysql5-7/</url>
+      <url>http://blog.skymxc.com/2017/01/05/installMysql5-7/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc</strong>总结 转载注明: <a href="https://sky-mxc.github.io/2017/01/05/installMysql5-7/">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc</strong>总结 转载注明: <a href="https://sky-mxc.github.io/2017/01/05/installMysql5-7/" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="Mysql5-7-17-解压版安装"><a href="#Mysql5-7-17-解压版安装" class="headerlink" title="Mysql5.7.17 解压版安装"></a>Mysql5.7.17 解压版安装</h1><h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>解压版下载地址(需要登录) <a href="http://dev.mysql.com/downloads/mysql/" target="_blank" rel="external">http://dev.mysql.com/downloads/mysql/</a></p>
 <p><img src="\images\database\msyql\install\download.png" alt="下载"></p>
@@ -721,9 +721,9 @@
     
     <entry>
       <title><![CDATA[观察者模式]]></title>
-      <url>https://sky-mxc.github.io/2016/12/25/designModel-observer/</url>
+      <url>http://blog.skymxc.com/2016/12/25/designModel-observer/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc总结</strong> 转载请注明：<a href="https://sky-mxc.github.io/2016/12/25/designModel-observer">https://sky-mxc.github.io/2016/12/25/designModel-observer</a></p>
+<p><strong>sky-mxc总结</strong> 转载请注明：<a href="https://sky-mxc.github.io/2016/12/25/designModel-observer" target="_blank" rel="external">https://sky-mxc.github.io/2016/12/25/designModel-observer</a></p>
 </blockquote>
 <h1 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h1><blockquote>
 <p>观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听一个主题对象，当主题对象在状态上发生改变时，通知所有的观察者对象，并让他们自动更新自己；</p>
@@ -765,9 +765,9 @@
     
     <entry>
       <title><![CDATA[使用百度定位当前位置并获取附近的位置]]></title>
-      <url>https://sky-mxc.github.io/2016/12/19/baiduLocation/</url>
+      <url>http://blog.skymxc.com/2016/12/19/baiduLocation/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc</strong> 总结 ；欢迎转载交流 <a href="https://sky-mxc.github.io/2016/12/19/baiduLocation/">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc</strong> 总结 ；欢迎转载交流 <a href="https://sky-mxc.github.io/2016/12/19/baiduLocation/" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <pre><code>1. 下载sdk
 2. 生成 SHA1码（debug,和release版本）
@@ -802,7 +802,7 @@
     
     <entry>
       <title><![CDATA[Hello World]]></title>
-      <url>https://sky-mxc.github.io/2016/12/04/hello-world/</url>
+      <url>http://blog.skymxc.com/2016/12/04/hello-world/</url>
       <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
@@ -817,9 +817,9 @@
     
     <entry>
       <title><![CDATA[使用github+hexo 搭建个人博客]]></title>
-      <url>https://sky-mxc.github.io/2016/12/04/buildBlogs/</url>
+      <url>http://blog.skymxc.com/2016/12/04/buildBlogs/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc总结</strong> 转载注明：<a href="https://sky-mxc.github.io/2016/09/29/buildBlogs">https://sky-mxc.github.io/2016/09/29/buildBlogs</a></p>
+<p><strong>sky-mxc总结</strong> 转载注明：<a href="https://sky-mxc.github.io/2016/09/29/buildBlogs" target="_blank" rel="external">https://sky-mxc.github.io/2016/09/29/buildBlogs</a></p>
 </blockquote>
 <h1 id="githubPages-hexo-搭建个人博客"><a href="#githubPages-hexo-搭建个人博客" class="headerlink" title="githubPages + hexo 搭建个人博客"></a>githubPages + hexo 搭建个人博客</h1><blockquote>
 <p>hexo是基于git和Node.js的 必须先安装 git和Node.js;</p>
@@ -876,7 +876,7 @@
 <p><em>还需要修改 _config.yml  ;参考官网得说明</em><br><img src="/images/github+hexo/发布到github前的配置.png" alt=""></p>
 <p><strong>我的配置如下：</strong><br><img src="/images/github+hexo/我的发布配置.png" alt=""></p>
 <p>配置完之后 就可以发布到 github上了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo d  #发布</div></pre></td></tr></table></figure></p>
-<p>发布完成之后 就可输入网址查看了 这里贴一下我的吧：<a href="https://sky-mxc.github.io">https://sky-mxc.github.io</a></p>
+<p>发布完成之后 就可输入网址查看了 这里贴一下我的吧：<a href="https://sky-mxc.github.io" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <p><img src="/images/github+hexo/发布完成0.png" alt=""></p>
 <blockquote>
@@ -898,14 +898,14 @@
     
     <entry>
       <title><![CDATA[相机和相册选取图片并剪裁]]></title>
-      <url>https://sky-mxc.github.io/2016/11/03/SelectPhoto/</url>
+      <url>http://blog.skymxc.com/2016/11/03/SelectPhoto/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc</strong> 总结 转载注明<a href="https://sky-mxc.github.io/2016/11/03/SelectPhoto">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc</strong> 总结 转载注明<a href="https://sky-mxc.github.io/2016/11/03/SelectPhoto" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="图片的选择"><a href="#图片的选择" class="headerlink" title="图片的选择"></a>图片的选择</h1><blockquote>
 <p>这两天做头像模块的时候，使用到了相册，相机，剪裁，自定义圆形图片；这里做个总结吧</p>
 </blockquote>
-<p>这里关于权限的处理 之前已经做过总结了，就不再写了 <a href="https://sky-mxc.github.io/2016/10/08/permission">https://sky-mxc.github.io/2016/10/08/permission</a></p>
+<p>这里关于权限的处理 之前已经做过总结了，就不再写了 <a href="https://sky-mxc.github.io/2016/10/08/permission" target="_blank" rel="external">https://sky-mxc.github.io/2016/10/08/permission</a></p>
 <ul>
 <li>相册选取</li>
 <li>相机选取</li>
@@ -928,15 +928,15 @@
 <p>剪裁后获取</p>
 </blockquote>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (data != <span class="keyword">null</span>) &#123;</div><div class="line">    Bitmap bmp = data.getParcelableExtra(<span class="string">"data"</span>);</div><div class="line">    headImg.setImageBitmap(bmp);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="自定义圆形图片"><a href="#自定义圆形图片" class="headerlink" title="自定义圆形图片"></a>自定义圆形图片</h2><p>对于这个实现方式想到了两种，看连接<br><a href="https://sky-mxc.github.io/2016/11/03/customCircleImageView">https://sky-mxc.github.io/2016/11/03/customCircleImageView</a></p>
+<h2 id="自定义圆形图片"><a href="#自定义圆形图片" class="headerlink" title="自定义圆形图片"></a>自定义圆形图片</h2><p>对于这个实现方式想到了两种，看连接<br><a href="https://sky-mxc.github.io/2016/11/03/customCircleImageView" target="_blank" rel="external">https://sky-mxc.github.io/2016/11/03/customCircleImageView</a></p>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[自定义圆形图片控件]]></title>
-      <url>https://sky-mxc.github.io/2016/11/03/customCircleImageView/</url>
+      <url>http://blog.skymxc.com/2016/11/03/customCircleImageView/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc</strong> 总结 转载注明<a href="https://sky-mxc.github.io/2016/11/03/customCircleImageView">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc</strong> 总结 转载注明<a href="https://sky-mxc.github.io/2016/11/03/customCircleImageView" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="自定义圆形ImageView"><a href="#自定义圆形ImageView" class="headerlink" title="自定义圆形ImageView"></a>自定义圆形ImageView</h1><p>圆形ImageView在头像显示用的比较普遍了，今天对于实现圆形ImageView做个总结；</p>
 <p>主要思路是 重写 onDraw() ;方法有两个：</p>
@@ -981,9 +981,9 @@
     
     <entry>
       <title><![CDATA[WebView最基本的使用]]></title>
-      <url>https://sky-mxc.github.io/2016/10/24/WebView/</url>
+      <url>http://blog.skymxc.com/2016/10/24/WebView/</url>
       <content type="html"><![CDATA[<h1 id="WebView"><a href="#WebView" class="headerlink" title="WebView"></a>WebView</h1><blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/10/24/WebView">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/10/24/WebView" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 <p>Android内置webkit内核的高性能浏览器,而WebView则是在这个基础上进行封装后的一个 控件,WebView直译网页视图,我们可以简单的看作一个可以嵌套到界面上的一个浏览器控件！<br>在  版本之后内核换成了 chrome 内核，但是 对外的API并没有更换</p>
 </blockquote>
 <h2 id="相关的类和方法"><a href="#相关的类和方法" class="headerlink" title="相关的类和方法"></a>相关的类和方法</h2><h3 id="WebChromeClient"><a href="#WebChromeClient" class="headerlink" title="WebChromeClient"></a>WebChromeClient</h3><blockquote>
@@ -1282,9 +1282,9 @@ public boolean onJsAlert(WebView view, String url, String message, JsResult resu
     
     <entry>
       <title><![CDATA[Android的广播]]></title>
-      <url>https://sky-mxc.github.io/2016/10/16/Broadcast/</url>
+      <url>http://blog.skymxc.com/2016/10/16/Broadcast/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/10/16/Broadcast/">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/10/16/Broadcast/" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="Broadcast"><a href="#Broadcast" class="headerlink" title="Broadcast"></a>Broadcast</h1><p>在Android中 Broadcast是一种 广泛运用在引用程序之间传输信息的机制。<br>而BroadcastReceiver 是对发送出来的Broadcaset进行过滤接受并响应的一类组件。<br>如果不需发送广播到别的应用 使用 LocalBroadcastManger就可以了。</p>
 <h2 id="发送和接收流程"><a href="#发送和接收流程" class="headerlink" title="发送和接收流程"></a>发送和接收流程</h2><p>发送和接受的过程：</p>
@@ -1373,9 +1373,9 @@ public boolean onJsAlert(WebView view, String url, String message, JsResult resu
     
     <entry>
       <title><![CDATA[ViewPager 获取当前显示的Fragment]]></title>
-      <url>https://sky-mxc.github.io/2016/10/11/getCurrentFragment/</url>
+      <url>http://blog.skymxc.com/2016/10/11/getCurrentFragment/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/10/11/getCurrentFragment/">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/10/11/getCurrentFragment/" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="Viewpager-获取当前显示的fragment"><a href="#Viewpager-获取当前显示的fragment" class="headerlink" title="Viewpager 获取当前显示的fragment"></a>Viewpager 获取当前显示的fragment</h1><h2 id="使用-getSupportFragmentManager-findFragmentByTag-方法"><a href="#使用-getSupportFragmentManager-findFragmentByTag-方法" class="headerlink" title="使用 getSupportFragmentManager().findFragmentByTag()方法"></a>使用 <code>getSupportFragmentManager().findFragmentByTag()</code>方法</h2><blockquote>
 <p><code>Viewpager + FragmentPagerAdapter</code> 情况下 才好使； <code>FragmentPagerAdapter</code> 有一个特点 凡是加载过的Fragment 都会被保留,既然Fragment不会被销毁，那我们就可以使用<code>findFragmentByTag()</code> 方法找到它；但问题是动态创建的话 tag的设置；我们知道动态加载时是可以设置tag的，但是动态创建就没法设置了;如果viewpager使用的是适配器是 FragmentPagerAdapter 的话 ，Fragment就会被设置上<code>tag</code> 根据这个<code>tag</code> 我们就可以获取到当前显示的<code>fragment</code>了；下面看看这个过程</p>
@@ -1415,9 +1415,9 @@ public boolean onJsAlert(WebView view, String url, String message, JsResult resu
     
     <entry>
       <title><![CDATA[6.0 运行时权限处理]]></title>
-      <url>https://sky-mxc.github.io/2016/10/08/permission/</url>
+      <url>http://blog.skymxc.com/2016/10/08/permission/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明出处：<a href="https://sky-mxc.github.io/2016/10/08/permission">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明出处：<a href="https://sky-mxc.github.io/2016/10/08/permission" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="6-0-运行时权限处理"><a href="#6-0-运行时权限处理" class="headerlink" title="6.0 运行时权限处理"></a>6.0 运行时权限处理</h1><blockquote>
 <p>在6.0以前 权限都是在安装时授权的，如果用户不授权就无法安装；<br>Android从6.0（API 23）开始 使用运行时权限，而不是像以前那样安装时授权。当你需要某些权限时，系统会向用户去申请权限。用户可以随时取消授权给你的权限。<br>6.0中权限分为两类 普通权限和危险权限，普通权限在AndroidManifest 文件中注册就可以得到，对于能获得用户隐私的权限属于危险权限。在使用的时候必须用户授权才能使用。例如 拍照，录音 sd卡的操作，危险权限被分为很多组，只要一组中的其中一项被授权 Android 就会将这一组的权限打包都授权给你app</p>
@@ -1552,9 +1552,9 @@ STORAGE    • READ_EXTERNAL_STORAGE
     
     <entry>
       <title><![CDATA[Animation]]></title>
-      <url>https://sky-mxc.github.io/2016/10/05/Animation/</url>
+      <url>http://blog.skymxc.com/2016/10/05/Animation/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/10/05/Animation">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/10/05/Animation" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h1><ul>
 <li>帧动画</li>
@@ -1699,9 +1699,9 @@ Tween动画的每一帧都根据Interpolator对view的内容做一次图像变�
     
     <entry>
       <title><![CDATA[ContentProvider]]></title>
-      <url>https://sky-mxc.github.io/2016/10/03/ContentProvider/</url>
+      <url>http://blog.skymxc.com/2016/10/03/ContentProvider/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <h1 id="ContentProvider"><a href="#ContentProvider" class="headerlink" title="ContentProvider"></a>ContentProvider</h1><blockquote>
 <p>内容提供者，应用程序间的数据交互，是为存储和获取数据提供的统一接口。<br>Contentprovider为应用间数据交互提供了安全的环境，它允许把自己的应用数据开放给其他应用进行 CRUD。怎么样进行操作可以自己规定，不用担心权限的问题。</p>
@@ -1753,10 +1753,10 @@ Tween动画的每一帧都根据Interpolator对view的内容做一次图像变�
     
     <entry>
       <title><![CDATA[ACTION_SEND]]></title>
-      <url>https://sky-mxc.github.io/2016/10/01/ACTION-SEND/</url>
+      <url>http://blog.skymxc.com/2016/10/01/ACTION-SEND/</url>
       <content type="html"><![CDATA[<hr>
 <blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/10/01/ACTION-SEND">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/10/01/ACTION-SEND" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
 </blockquote>
 <hr>
 <h1 id="不使用第三方-SDK-实现简单分享"><a href="#不使用第三方-SDK-实现简单分享" class="headerlink" title="不使用第三方 SDK 实现简单分享"></a>不使用第三方 SDK 实现简单分享</h1><blockquote>
@@ -1799,9 +1799,9 @@ Tween动画的每一帧都根据Interpolator对view的内容做一次图像变�
     
     <entry>
       <title><![CDATA[Activity]]></title>
-      <url>https://sky-mxc.github.io/2016/09/30/activity/</url>
+      <url>http://blog.skymxc.com/2016/09/30/activity/</url>
       <content type="html"><![CDATA[<blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/09/30/activity">https://sky-mxc.github.io/2016/09/30/activity</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/09/30/activity" target="_blank" rel="external">https://sky-mxc.github.io/2016/09/30/activity</a></p>
 </blockquote>
 <h1 id="Activity"><a href="#Activity" class="headerlink" title="Activity"></a>Activity</h1><ul>
 <li>什么是Activity</li>
@@ -1886,9 +1886,9 @@ Tween动画的每一帧都根据Interpolator对view的内容做一次图像变�
     
     <entry>
       <title><![CDATA[seekbar]]></title>
-      <url>https://sky-mxc.github.io/2016/09/30/SeekBar/</url>
+      <url>http://blog.skymxc.com/2016/09/30/SeekBar/</url>
       <content type="html"><![CDATA[<h1 id="SeekBar-可拖动进度条"><a href="#SeekBar-可拖动进度条" class="headerlink" title="SeekBar 可拖动进度条"></a>SeekBar 可拖动进度条</h1><blockquote>
-<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/09/30/SeekBar">https://sky-mxc.github.io/2016/09/30/SeekBar</a></p>
+<p><strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io/2016/09/30/SeekBar" target="_blank" rel="external">https://sky-mxc.github.io/2016/09/30/SeekBar</a></p>
 </blockquote>
 <ul>
 <li>常用属性</li>
