@@ -4,6 +4,81 @@
   
     
     <entry>
+      <title><![CDATA[EventBus3 学习笔记]]></title>
+      <url>http://blog.skymxc.com/2017/08/08/EventBus/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>未完，待续</p>
+</blockquote>
+<h1 id="脑图"><a href="#脑图" class="headerlink" title="脑图"></a>脑图</h1><p><img src="\images\Android\EventBus\EventBus.png" alt="EventBus学习笔记"></p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><strong>EventBus</strong> 是一款针对Android优化的发布/订阅(publish/subscribe)事件总线。主要功能是替代Intent，Handler，Broadcast在Fragment，Activity，Service，线程之间传递消息。简化了应用程序内各组件，组件与后台线程间的通信。优点代码简洁，以及将发送者和订阅者解耦。</p>
+<h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><p><strong>使用步骤</strong></p>
+<ul>
+<li>添加依赖</li>
+<li>定义事件</li>
+<li>注册/取消订阅</li>
+<li>发送事件</li>
+</ul>
+<h2 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile &apos;org.greenrobot:eventbus:3.0.0&apos;</div></pre></td></tr></table></figure>
+<h2 id="定义事件"><a href="#定义事件" class="headerlink" title="定义事件"></a>定义事件</h2><blockquote>
+<p>这里的事件是一个任意的POJO 没有任何要求</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public class MessageEvent &#123;</div><div class="line"></div><div class="line">    public final String message;</div><div class="line"></div><div class="line">    public MessageEvent(String message) &#123;</div><div class="line">        this.message = message;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="订阅"><a href="#订阅" class="headerlink" title="订阅"></a>订阅</h2><blockquote>
+<p>准备订阅者</p>
+</blockquote>
+<p>使用注解 <strong>@Subscribe</strong> ，在3.0中对方法名称没有任何要求 当发送事件时EventBus会调用方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// This method will be called when a MessageEvent is posted (in the UI thread for Toast)</div><div class="line">@Subscribe(threadMode = ThreadMode.MAIN)</div><div class="line">public void onMessageEvent(MessageEvent event) &#123;</div><div class="line">    Toast.makeText(getActivity(), event.message, Toast.LENGTH_SHORT).show();</div><div class="line">&#125;</div><div class="line"></div><div class="line">// This method will be called when a SomeOtherEvent is posted</div><div class="line">@Subscribe</div><div class="line">public void handleSomethingElse(SomeOtherEvent event) &#123;</div><div class="line">    doSomethingWith(event);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注册/取消订阅</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public void onStart() &#123;</div><div class="line">    super.onStart();</div><div class="line">    EventBus.getDefault().register(this);</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public void onStop() &#123;</div><div class="line">    EventBus.getDefault().unregister(this);</div><div class="line">    super.onStop();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>发送事件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EventBus.getDefault().post(new MessageEvent(&quot;Hello everyone!&quot;));</div></pre></td></tr></table></figure>
+<h1 id="交付线程-Delivery-Threads-ThreadMode"><a href="#交付线程-Delivery-Threads-ThreadMode" class="headerlink" title="交付线程 Delivery Threads (ThreadMode)"></a>交付线程 Delivery Threads (ThreadMode)</h1><p>EventBus 通过 threadMode 决定订阅事件 在哪个线程处理，threadMode的取值 有四个枚举类型</p>
+<ul>
+<li>POSTING</li>
+<li>MAIN</li>
+<li>BACKGROUND</li>
+<li>ASYNC</li>
+</ul>
+<blockquote>
+<p>POSTING。 默认值，将会与发送线程一致，发送事件在哪个线程，订阅者就在哪个线程处理</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// Called in the same thread (default)</div><div class="line">// ThreadMode is optional here</div><div class="line">@Subscribe(threadMode = ThreadMode.POSTING)</div><div class="line">public void onMessage(MessageEvent event) &#123;</div><div class="line">    log(event.message);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>MAIN 。 UI线程，订阅者将会在UI线程处理</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// Called in Android UI&apos;s main thread</div><div class="line">@Subscribe(threadMode = ThreadMode.MAIN)</div><div class="line">public void onMessage(MessageEvent event) &#123;</div><div class="line">textField.setText(event.message);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>BACKGROUND 。 后台线程处理，如果发送者在UI线程发出就会另开线程处理，否则就直接在同一线程处理，不会在UI线程处理就对了</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// Called in the background thread</div><div class="line">@Subscribe(threadMode = ThreadMode.BACKGROUND)</div><div class="line">public void onMessage(MessageEvent event)&#123;</div><div class="line">    saveToDisk(event.message);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>ASYNC 。异步，订阅者将会另开一个线程处理，无论发送者从哪个线程发出</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// Called in a separate thread</div><div class="line">@Subscribe(threadMode = ThreadMode.ASYNC)</div><div class="line">public void onMessage(MessageEvent event)&#123;</div><div class="line">    backend.send(event.message);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="优先级及事件取消-Priorities-and-Event-Cancellation"><a href="#优先级及事件取消-Priorities-and-Event-Cancellation" class="headerlink" title="优先级及事件取消 Priorities and Event Cancellation"></a>优先级及事件取消 Priorities and Event Cancellation</h1><blockquote>
+<p>优先级</p>
+</blockquote>
+<p>EventBus 通过 <code>priority</code> 属性决定优先级 ，默认0 值越高 优先级越高。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">@Subscribe(priority = 1);</div><div class="line">public void onEvent(MessageEvent event) &#123;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>事件取消</p>
+</blockquote>
+<p> EventBus 通过 <code>cancelEventDelivery(Object event)</code> 取消事件，这可是优先级高的特权了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// Called in the same thread (default)</div><div class="line">@Subscribe</div><div class="line">public void onEvent(MessageEvent event)&#123;</div><div class="line">    // Process the event</div><div class="line">    ...</div><div class="line">    // Prevent delivery to other subscribers</div><div class="line">    EventBus.getDefault().cancelEventDelivery(event) ;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="配置-Configuration"><a href="#配置-Configuration" class="headerlink" title="配置 Configuration"></a>配置 Configuration</h1><h1 id="粘性事件-Sticky-Events"><a href="#粘性事件-Sticky-Events" class="headerlink" title="粘性事件 Sticky Events"></a>粘性事件 Sticky Events</h1><h1 id="订阅索引-Subscriber-Index"><a href="#订阅索引-Subscriber-Index" class="headerlink" title="订阅索引 Subscriber Index"></a>订阅索引 Subscriber Index</h1><h1 id="混淆-ProGuard"><a href="#混淆-ProGuard" class="headerlink" title="混淆 ProGuard"></a>混淆 ProGuard</h1><h1 id="AsyncExecutor"><a href="#AsyncExecutor" class="headerlink" title="AsyncExecutor"></a>AsyncExecutor</h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><em>感谢各位大神的分享</em></p>
+<ul>
+<li><a href="https://juejin.im/entry/570ae5668ac247004c3128a4" target="_blank" rel="external">https://juejin.im/entry/570ae5668ac247004c3128a4</a></li>
+<li><a href="https://dev.qq.com/topic/59190e9ae315487c53deeca3" target="_blank" rel="external">https://dev.qq.com/topic/59190e9ae315487c53deeca3</a></li>
+<li><a href="http://www.jianshu.com/p/4a3d953d1319" target="_blank" rel="external">http://www.jianshu.com/p/4a3d953d1319</a></li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[ViewDragHelper使用笔记及侧滑菜单实践]]></title>
       <url>http://blog.skymxc.com/2017/07/29/android-ViewDragHelper/</url>
       <content type="html"><![CDATA[<h2 id="ViewDragHelper"><a href="#ViewDragHelper" class="headerlink" title="ViewDragHelper"></a>ViewDragHelper</h2><blockquote>
