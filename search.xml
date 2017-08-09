@@ -6,10 +6,7 @@
     <entry>
       <title><![CDATA[EventBus3 学习笔记]]></title>
       <url>http://blog.skymxc.com/2017/08/08/EventBus/</url>
-      <content type="html"><![CDATA[<blockquote>
-<p>未完，待续</p>
-</blockquote>
-<h1 id="脑图"><a href="#脑图" class="headerlink" title="脑图"></a>脑图</h1><p><img src="\images\Android\EventBus\EventBus.png" alt="EventBus学习笔记"></p>
+      <content type="html"><![CDATA[<h1 id="脑图"><a href="#脑图" class="headerlink" title="脑图"></a>脑图</h1><p><img src="\images\Android\EventBus\EventBus.png" alt="EventBus学习笔记"></p>
 <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><strong>EventBus</strong> 是一款针对Android优化的发布/订阅(publish/subscribe)事件总线。主要功能是替代Intent，Handler，Broadcast在Fragment，Activity，Service，线程之间传递消息。简化了应用程序内各组件，组件与后台线程间的通信。优点代码简洁，以及将发送者和订阅者解耦。</p>
 <h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><p><strong>使用步骤</strong></p>
 <ul>
@@ -36,6 +33,7 @@
 <p>发送事件</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EventBus.getDefault().post(new MessageEvent(&quot;Hello everyone!&quot;));</div></pre></td></tr></table></figure>
+<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/how-to-get-started/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/how-to-get-started/</a></p>
 <h1 id="交付线程-Delivery-Threads-ThreadMode"><a href="#交付线程-Delivery-Threads-ThreadMode" class="headerlink" title="交付线程 Delivery Threads (ThreadMode)"></a>交付线程 Delivery Threads (ThreadMode)</h1><p>EventBus 通过 threadMode 决定订阅事件 在哪个线程处理，threadMode的取值 有四个枚举类型</p>
 <ul>
 <li>POSTING</li>
@@ -59,6 +57,7 @@
 <p>ASYNC 。异步，订阅者将会另开一个线程处理，无论发送者从哪个线程发出</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// Called in a separate thread</div><div class="line">@Subscribe(threadMode = ThreadMode.ASYNC)</div><div class="line">public void onMessage(MessageEvent event)&#123;</div><div class="line">    backend.send(event.message);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/delivery-threads-threadmode/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/delivery-threads-threadmode/</a></p>
 <h1 id="优先级及事件取消-Priorities-and-Event-Cancellation"><a href="#优先级及事件取消-Priorities-and-Event-Cancellation" class="headerlink" title="优先级及事件取消 Priorities and Event Cancellation"></a>优先级及事件取消 Priorities and Event Cancellation</h1><blockquote>
 <p>优先级</p>
 </blockquote>
@@ -69,6 +68,7 @@
 </blockquote>
 <p> EventBus 通过 <code>cancelEventDelivery(Object event)</code> 取消事件，这可是优先级高的特权了。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// Called in the same thread (default)</div><div class="line">@Subscribe</div><div class="line">public void onEvent(MessageEvent event)&#123;</div><div class="line">    // Process the event</div><div class="line">    ...</div><div class="line">    // Prevent delivery to other subscribers</div><div class="line">    EventBus.getDefault().cancelEventDelivery(event) ;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/priorities-and-event-cancellation/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/priorities-and-event-cancellation/</a></p>
 <h1 id="配置-Configuration"><a href="#配置-Configuration" class="headerlink" title="配置 Configuration"></a>配置 Configuration</h1><p>一般我们使用 <code>EventBus.getDefault()</code> 得到EventBus实例，<br>如果有别的需求可以使用 EventBusBuilder 类构建EventBus，例如 关闭log</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">EventBus eventBus = EventBus.builder()</div><div class="line">    .logNoSubscriberMessages(false)</div><div class="line">    .sendNoSubscriberEvent(false)</div><div class="line">    .build();</div></pre></td></tr></table></figure>
 <p>或者说 当订阅者抛出异常时 发送 <code>SubscriberExceptionEvent</code> 事件</p>
@@ -76,6 +76,7 @@
 <p>默认情况下 订阅者抛出异常EventBus会捕获异常并发一个 <code>SubscriberExceptionEvent</code> 事件</p>
 <p>我们可以通过 <code>installDefaultEventBus()</code>方法我们的配置放到默认实例上；但是要在使用 <code>EventBus.getDefault()</code>之前</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EventBus.builder().throwSubscriberException(BuildConfig.DEBUG).installDefaultEventBus();</div></pre></td></tr></table></figure>
+<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/configuration/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/configuration/</a></p>
 <h1 id="粘性事件-Sticky-Events"><a href="#粘性事件-Sticky-Events" class="headerlink" title="粘性事件 Sticky Events"></a>粘性事件 Sticky Events</h1><p><em>对于一般的事件，我们首先要注册订阅者，然后发送事件，订阅者才能收到事件。如果先发送事件，再订阅此事件，将收不到事件，而粘性事件恰恰相反，粘性事件是可以先发送，然后再注册订阅者，后注册的订阅者依然可以接收到事件（ps：在发送前注册的也可以收到）</em></p>
 <blockquote>
 <p>先发送粘性事件</p>
@@ -92,6 +93,7 @@
 </blockquote>
 <p>如果你不移除粘性事件，那么它将一直存在，直到你程序被杀死</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">MessageEvent stickyEvent = EventBus.getDefault().getStickyEvent(MessageEvent.class);</div><div class="line">// Better check that an event was actually posted before</div><div class="line">if(stickyEvent != null) &#123;</div><div class="line">    // &quot;Consume&quot; the sticky event</div><div class="line">    EventBus.getDefault().removeStickyEvent(stickyEvent);</div><div class="line">    // Now do something with it</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>官网传送门 <a href="http://greenrobot.org/eventbus/documentation/configuration/sticky-events/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/configuration/sticky-events/</a></p>
 <h1 id="订阅索引-Subscriber-Index"><a href="#订阅索引-Subscriber-Index" class="headerlink" title="订阅索引 Subscriber Index"></a>订阅索引 Subscriber Index</h1><p>订阅索引是3.0中的新特性，是可选项。</p>
 <p>在3.0中由于使用了注解，比起使用反射来遍历方法的2.4版本逊色不少。但开启索引后性能远远超出旧版本。<br>看作者放出的图</p>
 <p><img src="\images\Android\EventBus\index.png" alt="EventBus性能对比"></p>
@@ -134,12 +136,16 @@
 <p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/subscriber-index/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/subscriber-index/</a></p>
 <h1 id="混淆-ProGuard"><a href="#混淆-ProGuard" class="headerlink" title="混淆 ProGuard"></a>混淆 ProGuard</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">-keepattributes *Annotation*</div><div class="line">-keepclassmembers class ** &#123;</div><div class="line">    @org.greenrobot.eventbus.Subscribe &lt;methods&gt;;</div><div class="line">&#125;</div><div class="line">-keep enum org.greenrobot.eventbus.ThreadMode &#123; *; &#125;</div><div class="line"></div><div class="line"># Only required if you use AsyncExecutor</div><div class="line">-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent &#123;</div><div class="line">    &lt;init&gt;(java.lang.Throwable);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/proguard/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/proguard/</a></p>
-<h1 id="AsyncExecutor"><a href="#AsyncExecutor" class="headerlink" title="AsyncExecutor"></a>AsyncExecutor</h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><em>感谢各位大神的分享</em></p>
+<h1 id="AsyncExecutor"><a href="#AsyncExecutor" class="headerlink" title="AsyncExecutor"></a>AsyncExecutor</h1><blockquote>
+<p>未完，待续</p>
+</blockquote>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><em>感谢各位大神的分享</em></p>
 <ul>
 <li><a href="https://juejin.im/entry/570ae5668ac247004c3128a4" target="_blank" rel="external">https://juejin.im/entry/570ae5668ac247004c3128a4</a></li>
 <li><a href="https://dev.qq.com/topic/59190e9ae315487c53deeca3" target="_blank" rel="external">https://dev.qq.com/topic/59190e9ae315487c53deeca3</a></li>
 <li><a href="http://www.jianshu.com/p/4a3d953d1319" target="_blank" rel="external">http://www.jianshu.com/p/4a3d953d1319</a></li>
 </ul>
+<p>Demo地址： <a href="https://github.com/sky-mxc/AndroidDemo/tree/master/event" target="_blank" rel="external">https://github.com/sky-mxc/AndroidDemo/tree/master/event</a></p>
 ]]></content>
     </entry>
     
