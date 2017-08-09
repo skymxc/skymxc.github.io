@@ -85,13 +85,56 @@
 <p>再启动一个Activity 仍然可以接受到之前发送的事件</p>
 </blockquote>
 <p>属性 sticky 的取值决定是否是粘性事件</p>
+<p><em>ps:你不注册的话，啥事件也是收不到的</em></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public void onStart() &#123;</div><div class="line">    super.onStart();</div><div class="line">    EventBus.getDefault().register(this);</div><div class="line">&#125;</div><div class="line"></div><div class="line">// UI updates must run on MainThread</div><div class="line">@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)</div><div class="line">public void onEvent(MessageEvent event) &#123;   </div><div class="line">    textField.setText(event.message);</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public void onStop() &#123;</div><div class="line">    EventBus.getDefault().unregister(this);    </div><div class="line">    super.onStop();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <blockquote>
 <p>移除粘性事件</p>
 </blockquote>
 <p>如果你不移除粘性事件，那么它将一直存在，直到你程序被杀死</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">MessageEvent stickyEvent = EventBus.getDefault().getStickyEvent(MessageEvent.class);</div><div class="line">// Better check that an event was actually posted before</div><div class="line">if(stickyEvent != null) &#123;</div><div class="line">    // &quot;Consume&quot; the sticky event</div><div class="line">    EventBus.getDefault().removeStickyEvent(stickyEvent);</div><div class="line">    // Now do something with it</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h1 id="订阅索引-Subscriber-Index"><a href="#订阅索引-Subscriber-Index" class="headerlink" title="订阅索引 Subscriber Index"></a>订阅索引 Subscriber Index</h1><h1 id="混淆-ProGuard"><a href="#混淆-ProGuard" class="headerlink" title="混淆 ProGuard"></a>混淆 ProGuard</h1><h1 id="AsyncExecutor"><a href="#AsyncExecutor" class="headerlink" title="AsyncExecutor"></a>AsyncExecutor</h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><em>感谢各位大神的分享</em></p>
+<h1 id="订阅索引-Subscriber-Index"><a href="#订阅索引-Subscriber-Index" class="headerlink" title="订阅索引 Subscriber Index"></a>订阅索引 Subscriber Index</h1><p>订阅索引是3.0中的新特性，是可选项。</p>
+<p>在3.0中由于使用了注解，比起使用反射来遍历方法的2.4版本逊色不少。但开启索引后性能远远超出旧版本。<br>看作者放出的图</p>
+<p><img src="\images\Android\EventBus\index.png" alt="EventBus性能对比"></p>
+<p>既然使用索引后那么叼，那就看看怎么使用索引</p>
+<blockquote>
+<p>注意项</p>
+</blockquote>
+<ul>
+<li>只有@Subscribe 可以被索引，必须是 public修饰</li>
+<li>不能再内部类中</li>
+</ul>
+<blockquote>
+<p>使用 apt插件的方式   </p>
+</blockquote>
+<ul>
+<li>顶级 build.gradle 中加入</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">buildscript &#123;</div><div class="line">    dependencies &#123;</div><div class="line">        classpath &apos;com.neenbedankt.gradle.plugins:android-apt:1.8&apos;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>再module的build.gradle 中使用 apt插件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">apply plugin: &apos;com.android.application&apos;</div><div class="line">apply plugin: &apos;com.neenbedankt.android-apt&apos;</div></pre></td></tr></table></figure>
+<ul>
+<li>module的build.gradle 添加依赖</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    compile &apos;org.greenrobot:eventbus:3.0.0&apos;</div><div class="line">    apt &apos;org.greenrobot:eventbus-annotation-processor:3.0.1&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>module 的 build.gradle 配置参数 ，这里写自己的包名</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">apt &#123;</div><div class="line">    arguments &#123;</div><div class="line">        eventBusIndex &quot;com.example.myapp.MyEventBusIndex&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>使用索引</p>
+</blockquote>
+<p>编译过后 会生成 MyEventBusIndex类，没有生成就多编译几遍</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EventBus eventBus = EventBus.builder().addIndex(new MyEventBusIndex()).build();</div></pre></td></tr></table></figure>
+<p> 将索引配置到默认实例中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">EventBus.builder().addIndex(new MyEventBusIndex()).installDefaultEventBus();</div><div class="line">// Now the default instance uses the given index. Use it like this:</div><div class="line">EventBus eventBus = EventBus.getDefault();</div></pre></td></tr></table></figure>
+<p>还可以添加多个不同的library中索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">EventBus eventBus = EventBus.builder()</div><div class="line">    .addIndex(new MyEventBusAppIndex())</div><div class="line">    .addIndex(new MyEventBusLibIndex()).build();</div></pre></td></tr></table></figure>
+<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/subscriber-index/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/subscriber-index/</a></p>
+<h1 id="混淆-ProGuard"><a href="#混淆-ProGuard" class="headerlink" title="混淆 ProGuard"></a>混淆 ProGuard</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">-keepattributes *Annotation*</div><div class="line">-keepclassmembers class ** &#123;</div><div class="line">    @org.greenrobot.eventbus.Subscribe &lt;methods&gt;;</div><div class="line">&#125;</div><div class="line">-keep enum org.greenrobot.eventbus.ThreadMode &#123; *; &#125;</div><div class="line"></div><div class="line"># Only required if you use AsyncExecutor</div><div class="line">-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent &#123;</div><div class="line">    &lt;init&gt;(java.lang.Throwable);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/proguard/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/proguard/</a></p>
+<h1 id="AsyncExecutor"><a href="#AsyncExecutor" class="headerlink" title="AsyncExecutor"></a>AsyncExecutor</h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><em>感谢各位大神的分享</em></p>
 <ul>
 <li><a href="https://juejin.im/entry/570ae5668ac247004c3128a4" target="_blank" rel="external">https://juejin.im/entry/570ae5668ac247004c3128a4</a></li>
 <li><a href="https://dev.qq.com/topic/59190e9ae315487c53deeca3" target="_blank" rel="external">https://dev.qq.com/topic/59190e9ae315487c53deeca3</a></li>
