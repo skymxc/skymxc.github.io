@@ -4,6 +4,12 @@
   
     
     <entry>
+      <title><![CDATA[Android中的线程]]></title>
+      <url>http://blog.skymxc.com/2017/08/27/thread-in-Android/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[EventBus3 学习笔记]]></title>
       <url>http://blog.skymxc.com/2017/08/08/EventBus/</url>
       <content type="html"><![CDATA[<h1 id="脑图"><a href="#脑图" class="headerlink" title="脑图"></a>脑图</h1><p><img src="\images\Android\EventBus\EventBus.png" alt="EventBus学习笔记"></p>
