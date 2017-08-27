@@ -90,7 +90,7 @@
 <meta property="og:url" content="http://blog.skymxc.com/2017/08/27/thread-in-Android/index.html">
 <meta property="og:site_name" content="孟祥超">
 <meta property="og:description" content="Android 中的线程">
-<meta property="og:updated_time" content="2017-08-27T07:21:23.844Z">
+<meta property="og:updated_time" content="2017-08-27T07:33:45.644Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android中的线程">
 <meta name="twitter:description" content="Android 中的线程">
@@ -326,7 +326,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-check-o"></i>
             </span>
-            <time title="Post modified" itemprop="dateModified" datetime="2017-08-27T15:21:23+08:00">
+            <time title="Post modified" itemprop="dateModified" datetime="2017-08-27T15:33:45+08:00">
               2017-08-27
             </time>
             
@@ -355,6 +355,13 @@
 
           
             
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/08/27/thread-in-Android/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/08/27/thread-in-Android/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -381,7 +388,291 @@
       
 
       
-        
+        <blockquote>
+<p><strong>Android 中线程的使用</strong></p>
+</blockquote>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p><em>Android官网文档-&gt;<a href="https://developer.android.com/guide/components/processes-and-threads.html?hl=zh-cn#Threads" target="_blank" rel="external">https://developer.android.com/guide/components/processes-and-threads.html?hl=zh-cn#Threads</a></em></p>
+<blockquote>
+<p>应用启动时，系统会为应用创建一个线程，称为主线程；它负责UI的绘制以及UI的事件响应交互，也称为UI线程；<br>系统不会为每个组件实例创建单独的线程，同一进程中的所有组件都在主线程实例化，并且每个组件的资源调用都由主线程分配，因此响应系统回调都在主线程进行。<br>因为主线程要处理UI的绘制及事件的交互，所以主线程中不能进行耗时的操作（网络访问，数据库操作），一旦主线程进行耗时操作就会出现阻塞，UI事件就没办法响应了，就会出现ANR，这是非常不友好的。</p>
+</blockquote>
+<p>Android UI是非线程安全的，所以关于UI的操作只能在UI线程操作，所以Android单线程模式必须遵守两条规则</p>
+<ol>
+<li>不能阻塞UI线程</li>
+<li>UI操作要在UI线程，不要在 UI 线程之外访问 Android UI 工具包</li>
+</ol>
+<h3 id="工作线程"><a href="#工作线程" class="headerlink" title="工作线程"></a>工作线程</h3><blockquote>
+<p>为了保证应用的顺畅，所有耗时的操作都在工作线程中进行。</p>
+</blockquote>
+<p>遵循上述的两条规则，不能再UI线程之外的线程访问UI，但是网络访问结果是在工作线程，要将结果填充到UI中怎么办呢，Android提供了几种方法在工作线程中访问UI</p>
+<ul>
+<li>Activity.runOnUiThread(Runnable)</li>
+<li>View.post(Runnable)</li>
+<li>View.postDelayed(Runnable, long)</li>
+<li>Handler</li>
+</ul>
+<p><em>还有一种方式 AsyncTask;</em></p>
+<h3 id="线程相关API"><a href="#线程相关API" class="headerlink" title="线程相关API"></a>线程相关API</h3><ul>
+<li>Runnable</li>
+<li>Thread</li>
+<li>Callable<v></v></li>
+<li>Future&lt;?&gt;</li>
+<li>RunnableFuture<v></v></li>
+<li>FutureTask<v></v></li>
+<li>Executor</li>
+<li>ExecutorService</li>
+<li>ThreadPoolExecutor</li>
+<li>Executors</li>
+</ul>
+<h2 id="创建线程"><a href="#创建线程" class="headerlink" title="创建线程"></a>创建线程</h2><blockquote>
+<p>有两种方式创建一个线程。</p>
+</blockquote>
+<ol>
+<li>继承 Thread类</li>
+<li><p>实现 Runnable接口</p>
+<blockquote>
+<p>继承Thread类 重写 run方法，在调用start()后JVM会自动调用run()方法</p>
+</blockquote>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 通过继承Thread 创建一个Thread</div><div class="line"> */</div><div class="line">class MyThread extends Thread &#123;</div><div class="line"></div><div class="line">    public MyThread(String name) &#123;</div><div class="line">        super(name);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 重写run方法 JVM会自动调用此方法</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">       // logic code</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 重载（Overload）run()方法 和普通的方法一样，并不会在该线程的start()方法被调用后被JVM自动运行</div><div class="line">     *</div><div class="line">     * @param str</div><div class="line">     */</div><div class="line">    public void run(String str) &#123;</div><div class="line">        Log.e(&quot;run&quot;, str + &quot;&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>实现 Runnable接口 </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/**</div><div class="line"> * 通过实现 Runnable 创建一个线程</div><div class="line"> */</div><div class="line">class MyRunnable implements Runnable &#123;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * JVM会自动调用此方法</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">       //logic code</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="启动线程"><a href="#启动线程" class="headerlink" title="启动线程"></a>启动线程</h3><blockquote>
+<p>继承Thread方式</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">MyThread thread0 = new MyThread();</div><div class="line"> thread0.start();</div></pre></td></tr></table></figure>
+<blockquote>
+<p>实现 Runnable方式</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">MyRunnable myRunnable = new MyRunnable();</div><div class="line">Thread thread1 = new Thread(myRunnable);</div><div class="line">thread1.start();</div></pre></td></tr></table></figure>
+<h3 id="Runnable和Thread两种方式的区别和联系"><a href="#Runnable和Thread两种方式的区别和联系" class="headerlink" title="Runnable和Thread两种方式的区别和联系"></a>Runnable和Thread两种方式的区别和联系</h3><blockquote>
+<p>其实这块主要是围绕着接口和抽象类的区别以及一些设计原则而言的。</p>
+</blockquote>
+<ol>
+<li>Java是单继承的，你继承了Thread类再也无法继承别的类。</li>
+<li>Java虽然是单继承但是可以实现多接口的，即使你实现Runnable，你也可以实现别的接口。</li>
+<li>在面向对象编程中，继承一个类就意味着要使用或者改善某些功能，如果不准备改善Thread提供的封装好的功能，使用Runnable更好。</li>
+<li>Runnable接口表示一个任务，可以被任意一个普通线程，线程池或者其他方式执行。逻辑上的分离，Runnable比Thread更好。</li>
+<li>将任务分离为Runnable，就可以重用或者通过其他方式执行它，Thread一旦完成就无法重新启动了。</li>
+<li>线程池的接口接收的参数为Runnable</li>
+<li>用Runnable能够代表一个线程就不必继承Thread，那样就额外的继承了Thread的全部方法</li>
+<li>继承Thread，你就必须为每个线程都创建一个实例，然后为每个实例分配内存。</li>
+<li>写一个接口而不是实现，会让程序更容易扩展。</li>
+</ol>
+<p><em>Thread类也是实现了Runnable接口</em></p>
+<blockquote>
+<p>参考资料</p>
+</blockquote>
+<ul>
+<li><a href="https://www.linkedin.com/pulse/20140917120728-90925576-difference-between-implements-runnable-and-extends-thread-in-java" target="_blank" rel="external">https://www.linkedin.com/pulse/20140917120728-90925576-difference-between-implements-runnable-and-extends-thread-in-java</a></li>
+<li><a href="https://my.oschina.net/leejun2005/blog/483999" target="_blank" rel="external">https://my.oschina.net/leejun2005/blog/483999</a></li>
+<li>这个重点看评论-&gt;<a href="http://mars914.iteye.com/blog/1508429" target="_blank" rel="external">http://mars914.iteye.com/blog/1508429</a></li>
+</ul>
+<h2 id="资源共享及同步问题"><a href="#资源共享及同步问题" class="headerlink" title="资源共享及同步问题"></a>资源共享及同步问题</h2><blockquote>
+<p>关于多线程资源共享，多线程并发操作有随机性，不能保证每个线程都顺序的去访问某个资源，在多个线程同时去访问一个资源的时候要进行资源的同步.</p>
+</blockquote>
+<p>经典的卖票例子</p>
+<h3 id="资源共享"><a href="#资源共享" class="headerlink" title="资源共享"></a>资源共享</h3><blockquote>
+<p>资源共享，多个线程并发执行访问同一个资源，才是共享的资源。</p>
+</blockquote>
+<p><em>票</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 票</div><div class="line"> */</div><div class="line">class Tickets &#123;</div><div class="line">    int num = 5;</div><div class="line"></div><div class="line">    public int get() &#123;</div><div class="line">        return num;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void set(int num) &#123;</div><div class="line">        this.num = num;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><em>卖票程序</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/**</div><div class="line"> * 卖票 程序</div><div class="line"> */</div><div class="line">class SaleRunnable implements Runnable &#123;</div><div class="line"></div><div class="line">    private Tickets tickets;</div><div class="line"></div><div class="line">    public SaleRunnable(Tickets tickets) &#123;</div><div class="line">        this.tickets = tickets;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        while (tickets.get() &gt; 0) &#123;</div><div class="line">            Log.e(Thread.currentThread().getName(), &quot;销售第&quot; + tickets.get() + &quot;张，剩余&quot; + (tickets.get() - 1) + &quot;张&quot;);</div><div class="line">            tickets.set(tickets.get() - 1);</div><div class="line">            try &#123;</div><div class="line">                //延迟 1000</div><div class="line">                Thread.sleep(1000);</div><div class="line">            &#125; catch (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        Log.e(Thread.currentThread().getName(), &quot;没票了&quot;);</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><em>卖票</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">//票资源</div><div class="line">Tickets tickets = new Tickets();</div><div class="line">SaleRunnable saleRunnable = new SaleRunnable(tickets);</div><div class="line">//开三个窗口使用同一程序去卖票 </div><div class="line">new Thread(saleRunnable, &quot;窗口零&quot;).start();</div><div class="line">new Thread(saleRunnable, &quot;窗口一&quot;).start();</div><div class="line">new Thread(saleRunnable, &quot;窗口二&quot;).start();</div></pre></td></tr></table></figure>
+<p><em>卖票结果</em></p>
+<p>多线程并发执行的结果就是 多个窗口同时售票，同一时间销售掉了同一个票，尴尬了，一个票卖了多次</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">08-22 14:23:41.066 E/窗口零: 销售第5张，剩余4张</div><div class="line">08-22 14:23:41.066 E/窗口一: 销售第4张，剩余3张</div><div class="line">08-22 14:23:41.076 E/窗口二: 销售第3张，剩余2张</div><div class="line">08-22 14:23:42.066 E/窗口零: 销售第2张，剩余1张</div><div class="line">08-22 14:23:42.076 E/窗口二: 销售第2张，剩余1张</div><div class="line">08-22 14:23:42.076 E/窗口一: 销售第2张，剩余1张</div><div class="line">08-22 14:23:43.076 E/窗口一: 没票了</div><div class="line">08-22 14:23:43.076 E/窗口二: 没票了</div><div class="line">08-22 14:23:43.076 E/窗口零: 没票了</div><div class="line"></div><div class="line">08-22 14:24:29.866 E/窗口零: 销售第5张，剩余4张</div><div class="line">08-22 14:24:29.866 E/窗口一: 销售第4张，剩余3张</div><div class="line">08-22 14:24:29.866 E/窗口二: 销售第3张，剩余2张</div><div class="line">08-22 14:24:30.866 E/窗口零: 销售第2张，剩余1张</div><div class="line">08-22 14:24:30.866 E/窗口二: 销售第1张，剩余0张</div><div class="line">08-22 14:24:30.866 E/窗口一: 销售第2张，剩余1张</div><div class="line">08-22 14:24:31.866 E/窗口零: 没票了</div><div class="line">08-22 14:24:31.866 E/窗口二: 没票了</div><div class="line">08-22 14:24:31.866 E/窗口一: 没票了</div><div class="line"></div><div class="line">08-22 14:24:51.906 E/窗口二: 销售第5张，剩余4张</div><div class="line">08-22 14:24:51.906 E/窗口一: 销售第4张，剩余3张</div><div class="line">08-22 14:24:51.906 E/窗口零: 销售第3张，剩余2张</div><div class="line">08-22 14:24:52.906 E/窗口二: 销售第2张，剩余1张</div><div class="line">08-22 14:24:52.906 E/窗口一: 销售第2张，剩余1张</div><div class="line">08-22 14:24:52.916 E/窗口零: 没票了</div><div class="line">08-22 14:24:53.916 E/窗口二: 没票了</div><div class="line">08-22 14:24:53.916 E/窗口一: 没票了</div></pre></td></tr></table></figure>
+<h3 id="资源同步"><a href="#资源同步" class="headerlink" title="资源同步"></a>资源同步</h3><blockquote>
+<p>Java 同步块（synchronized block）用来标记方法或者代码块是同步的</p>
+</blockquote>
+<p><em>java中每个对象都对应于一个称为“互斥锁”的标志，这个标志用来保证在任何时刻，只能有一个线程访问该对象。<br>如果系统中的资源当前没有被使用，线程可以得到“互斥锁”，即线程可以得到资源的使用权。<br>当线程执行完毕后，他放弃“互斥锁”，如果一个线程获得“互斥锁”时，其余的线程就必须等待当前线程结束并放弃“互斥锁”。<br>在java中，提供了关键字synchronized来实现对象的“互斥锁”关系。<br><strong>当某个对象或方法用关键字synchronized修饰时，表明该对象或方法在任何一个时刻只能有一个线程访问。</strong><br>如果synchronized用在类的声明中，表明该类中的所有方法都是synchronized的。</em></p>
+<p>在这个例子中，我们只需要将“票”这个资源同步即可</p>
+<p>多个线程都是访问的这一个实例，所以同步这个实例方法，就可以了；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 卖票 程序</div><div class="line"> */</div><div class="line">class SaleRunnable implements Runnable &#123;</div><div class="line"></div><div class="line">    private Tickets tickets;</div><div class="line"></div><div class="line">    public SaleRunnable(Tickets tickets) &#123;</div><div class="line">        this.tickets = tickets;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        while (true) &#123;</div><div class="line">            if (sale()) &#123;</div><div class="line">                break;</div><div class="line">            &#125;</div><div class="line">            try &#123;</div><div class="line">                //延迟 1000</div><div class="line">                Thread.sleep(1000);</div><div class="line">            &#125; catch (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        Log.e(Thread.currentThread().getName(), &quot;没票了&quot;);</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private synchronized boolean sale() &#123;</div><div class="line">        if (tickets.get() &gt; 0) &#123;</div><div class="line">            Log.e(Thread.currentThread().getName(), &quot;销售第&quot; + tickets.get() + &quot;张，剩余&quot; + (tickets.get() - 1) + &quot;张&quot;);</div><div class="line">            tickets.set(tickets.get() - 1);</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line">        return true;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 卖票窗口</div><div class="line"> */</div><div class="line">class SaleThread extends Thread &#123;</div><div class="line"></div><div class="line">    private Tickets tickets;</div><div class="line"></div><div class="line">    public SaleThread(Tickets ti, String name) &#123;</div><div class="line">        super(name);</div><div class="line">        tickets = ti;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        while (true) &#123;</div><div class="line">            //同步这个资源</div><div class="line">            synchronized (tickets) &#123;</div><div class="line">                if (tickets.get() &gt; 0) &#123;</div><div class="line">                    Log.e(Thread.currentThread().getName(), &quot;销售第&quot; + tickets.get() + &quot;张，剩余&quot; + (tickets.get() - 1) + &quot;张&quot;);</div><div class="line">                    tickets.set(tickets.get() - 1);</div><div class="line">                &#125; else &#123;</div><div class="line">                    break;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            try &#123;</div><div class="line">                //延迟 1000</div><div class="line">                Thread.sleep(1000);</div><div class="line">            &#125; catch (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        Log.e(Thread.currentThread().getName(), &quot;没票了&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>学习资料</p>
+</blockquote>
+<ul>
+<li><a href="http://ifeve.com/java-concurrency-thread-directory/" target="_blank" rel="external">http://ifeve.com/java-concurrency-thread-directory/</a></li>
+<li><a href="http://ifeve.com/synchronized-blocks/" target="_blank" rel="external">http://ifeve.com/synchronized-blocks/</a></li>
+<li><a href="http://student-lp.iteye.com/blog/2083170" target="_blank" rel="external">http://student-lp.iteye.com/blog/2083170</a></li>
+<li><a href="http://www.cnblogs.com/dennisit/archive/2013/02/24/2925288.html" target="_blank" rel="external">http://www.cnblogs.com/dennisit/archive/2013/02/24/2925288.html</a></li>
+<li><a href="http://lanvis.blog.163.com/blog/static/26982162009798422547/" target="_blank" rel="external">http://lanvis.blog.163.com/blog/static/26982162009798422547/</a></li>
+</ul>
+<h2 id="线程状态"><a href="#线程状态" class="headerlink" title="线程状态"></a>线程状态</h2><blockquote>
+<ol>
+<li>新生状态（new）</li>
+</ol>
+</blockquote>
+<p>当一个线程的实例被创建即使用<code>new</code>关键字后台Thread类或者其子类创建一个线程对象后，此时该线程就处于新生状态，处于新生状态的线程有自己的内存空间，但该线程并没有运行，此时线程还不是活着的（not alive）</p>
+<blockquote>
+<ol>
+<li>就绪状态（Runnable）</li>
+</ol>
+</blockquote>
+<p>通过调用线程实例的<code>start()</code>方法来启动线程使线程进入就绪状态(runnable);处于就绪状态的线程已经具备了运行条件，但还没被分配到CPU就是不一定会被立即执行，此时处于线程就绪队列，等待线程为期分配CPU，等待状态不是执行状态；此时线程是活着的（alive）；</p>
+<blockquote>
+<ol>
+<li>运行状态（Running）</li>
+</ol>
+</blockquote>
+<p>一旦获取CPU（被JVM选中），线程就进入运行（running）状态，线程<code>run()</code>方法才开始被执行；在运行状态的线程执行自己的run()方法中的操作，知道调用其他的方法而终止、或者等待某种资源而阻塞、或者完成任务而死亡；如果在给定的时间片内没有执行结束，就会被系统给换下来回到线程的就绪状态；此时线程是活着的（alive）；</p>
+<blockquote>
+<ol>
+<li>阻塞状态（Blocked）</li>
+</ol>
+</blockquote>
+<p>通过调用<code>join()</code>,<code>sleep()</code>,<code>wait()</code>或者资源被占用使线程处于阻塞(blocked)状态；处于Blocked状态的线程仍然是活着的（alive）；</p>
+<blockquote>
+<ol>
+<li>死亡状态（Dead）</li>
+</ol>
+</blockquote>
+<p>当一个线程的<code>run()</code>方法运行完毕或被中断或被异常退出，该线程到达死亡(dead)状态。此时可能仍然存在一个该Thread的实例对象，但该Thread已经不可能在被作为一个可被独立执行的线程对待了，线程的独立的call stack已经被dissolved。一旦某一线程进入Dead状态，他就再也不能进入一个独立线程的生命周期了。对于一个处于Dead状态的线程调用start()方法，会出现一个运行期(runtime exception)的异常；处于Dead状态的线程不是活着的（not alive）。</p>
+<blockquote>
+<p>学习资料</p>
+</blockquote>
+<ul>
+<li><a href="http://www.cnblogs.com/DreamSea/archive/2012/01/11/JavaThread.html" target="_blank" rel="external">http://www.cnblogs.com/DreamSea/archive/2012/01/11/JavaThread.html</a></li>
+<li><a href="http://www.cnblogs.com/whoislcj/p/5603277.html" target="_blank" rel="external">http://www.cnblogs.com/whoislcj/p/5603277.html</a></li>
+<li><a href="http://student-lp.iteye.com/blog/2083170" target="_blank" rel="external">http://student-lp.iteye.com/blog/2083170</a></li>
+</ul>
+<h2 id="线程通信"><a href="#线程通信" class="headerlink" title="线程通信"></a>线程通信</h2><blockquote>
+<p>Java中常规的通信方式这里我就不说了，看一下Android的消息机制</p>
+</blockquote>
+<p>Java常规的通信方式传送门-&gt;<a href="http://ifeve.com/thread-signaling" target="_blank" rel="external">http://ifeve.com/thread-signaling</a></p>
+<p><em>Android中的消息机制可以用于线程间通信也可用于在各个组件间通信,这里只总结一下怎么在线程间使用</em></p>
+<p>消息机制中重要的API</p>
+<ul>
+<li>Message 线程间通信就是在传递消息，Message就是消息的载体。常用的有四个字段：arg1，arg2，what，obj。obj可以携带Object对象，其余三个可以携带整形数据</li>
+<li>MessageQueue 消息队列，它主要用于存放所有通过Handler发送的消息（也就是一个个Message），这部分的消息会一直存在于消息队列中，等待被处理。每个线程中只会有一个MessageQueue对象。</li>
+<li>Looper 每个线程通过Handler发送的消息都保存在，MessageQueue中，Looper通过调用loop()的方法，就会进入到一个无限循环当中，然后每当发现MessageQueue中存在一条消息，就会将它取出，并传递到Handler的handleMessage()方法中。</li>
+<li>Handler 发送消息，处理消息</li>
+<li>Thread 线程 每个线程中只会有一个Looper对象。</li>
+</ul>
+<blockquote>
+<p>运行机制</p>
+</blockquote>
+<p>在哪个Thread中创建Handler，默认情况下Handler就会获取哪个线程中的Looper（前提是Looper创建好了）；handler发送消息就是将消息发送到了自己持有的这个Looper对象里；<br>Looper内有一个MessageQueue，消息就存放在队列里，一旦Looper的<code>loop()</code>方法被调用就会开启无限循环模式，一直循环遍历这个队列，从中取Handler发送的消息，没有消息就阻塞；一旦有消息就唤醒线程取出来；<br>从MessageQueue中取出的消息，会调用本身target持有的handler实例来处理这个消息;</p>
+<p><strong>综上所述，线程间通信handler就可以实现；</strong></p>
+<blockquote>
+<p>主线程给工作线程发消息</p>
+</blockquote>
+<p>想要在主线程给工作线程发消息，我们就得持有在工作线程中创建的handler；<br>而创建handler之前必须先初始化一下Looper对象；<br>handler创建完之后就开启Looper的无限循环来等待消息</p>
+<p><strong>创建一个线程并创建一个handler</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">Handler handlerA = null;</div><div class="line"></div><div class="line">   class ThreadA extends Thread implements Handler.Callback &#123;</div><div class="line"></div><div class="line">       public ThreadA() &#123;</div><div class="line">           super(&quot;ThreadA&quot;);</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       @Override</div><div class="line">       public void run() &#123;</div><div class="line">           //创建此线程的Looper对象 ，一个线程只能有一个，所以此方法只能调用一次</div><div class="line">           Looper.prepare();</div><div class="line">           handlerA = new Handler(this);</div><div class="line">           //开始循环遍历</div><div class="line">           Looper.loop();</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       @Override</div><div class="line">       public boolean handleMessage(Message msg) &#123;</div><div class="line">           switch (msg.what) &#123;</div><div class="line">               case 100:</div><div class="line">                   Log.e(&quot;handleMessage&quot;, Thread.currentThread().getName() + &quot;;src-&gt;&quot; + msg.obj);</div><div class="line">                   break;</div><div class="line">           &#125;</div><div class="line">           return false;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p><strong>使用handlerA发送消息</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//创建一个消息</div><div class="line">Message msg = new Message();</div><div class="line">msg.what = 100; //标识你这消息想要干啥</div><div class="line">msg.obj = Thread.currentThread().getName();</div><div class="line"></div><div class="line">/**</div><div class="line"> * 因为handler 里持有所在线程的Looper，所有handler发送的消息会在所在线程中执行</div><div class="line"> */</div><div class="line">//发送给A线程</div><div class="line">handlerA.sendMessage(msg);</div></pre></td></tr></table></figure>
+<p><strong>看一个log</strong> 处理线程是ThreadA，消息来源是Main线程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">08-23 16:26:02.609 E/handleMessage: ThreadA;src-&gt;main</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>工作线程发给主线程</p>
+</blockquote>
+<p>与上面的同理，想要给主线程发送消息，拿到主线程的handler就可以了；</p>
+<p>因为点击事件是在UI线程中响应的，所以想让工作线程给主线程发送一个消息就麻烦一点，我这里为了测试做了个中转，先给B线程发送一个信号，B接到这个信号就给主线程发消息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">class ThreadB extends Thread implements Handler.Callback &#123;</div><div class="line"></div><div class="line">    public ThreadB() &#123;</div><div class="line">        super(&quot;ThreadB&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        Looper.prepare();</div><div class="line">        handlerB = new Handler(this);</div><div class="line">        Looper.loop();</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public boolean handleMessage(Message msg) &#123;</div><div class="line">        switch (msg.what) &#123;</div><div class="line">            case 100:</div><div class="line">                Log.e(&quot;handleMessage&quot;, Thread.currentThread().getName() + &quot;;src-&gt;&quot; + msg.obj);</div><div class="line">                break;</div><div class="line">            case 101:   //给main发送一个消息</div><div class="line">                Message message = new Message();</div><div class="line">                message.what = 100;</div><div class="line">                message.obj = Thread.currentThread().getName();</div><div class="line">                handler.sendMessage(message);</div><div class="line">                break;</div><div class="line">        &#125;</div><div class="line">        return false;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>在主线程创建的handler </strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Main 的handler</div><div class="line"> * 程序启动的时候就为Main线程创建了Looper</div><div class="line"> */</div><div class="line">Handler handler = new Handler(new Handler.Callback() &#123;</div><div class="line">    @Override</div><div class="line">    public boolean handleMessage(Message msg) &#123;</div><div class="line">        Log.e(&quot;handleMessage&quot;, Thread.currentThread().getName() + &quot;;src-&gt;&quot; + msg.obj);</div><div class="line">        return false;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><em>主线程的handler创建时没有提前创建Looper也没有调用Looper的<code>loop()</code>方法，是因为程序在启动的时候已经为主线程创建好了Looper，并且调用了<code>loop()</code>,一直在等待消息</em></p>
+<blockquote>
+<p>工作线程给工作线程发消息</p>
+</blockquote>
+<p>跟上面两个一样，想给哪个线程发消息就要先拿到哪个线程的handler；我这里就不贴代码了；</p>
+<blockquote>
+<p>学习资料</p>
+</blockquote>
+<ul>
+<li><a href="http://www.jianshu.com/p/02962454adf7" target="_blank" rel="external">http://www.jianshu.com/p/02962454adf7</a></li>
+<li><a href="http://www.jianshu.com/p/7657f541c461" target="_blank" rel="external">http://www.jianshu.com/p/7657f541c461</a></li>
+<li><a href="http://www.cnblogs.com/younghao/p/5116819.html" target="_blank" rel="external">http://www.cnblogs.com/younghao/p/5116819.html</a></li>
+<li><a href="http://www.voidcn.com/article/p-pmejydob-bbs.html" target="_blank" rel="external">http://www.voidcn.com/article/p-pmejydob-bbs.html</a></li>
+</ul>
+<h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><blockquote>
+<p>为啥使用线程池</p>
+</blockquote>
+<ul>
+<li>减少频繁创建销毁线程带来的开销</li>
+<li>复用创建好的线程</li>
+<li>对线程进行简单的管理</li>
+</ul>
+<p><strong><code>ExecutorService</code>是一个接口，定义了线程池的方法。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">public interface ExecutorService extends Executor &#123;</div><div class="line"></div><div class="line">    void shutdown();//关闭线程池，不再接受新任务，当所有任务都执行完毕后，关闭线程池</div><div class="line"></div><div class="line">    List&lt;Runnable&gt; shutdownNow(); //关闭线程池，阻止等待任务启动并试图停止当前正在执行的任务，停止接收新的任务，返回处于等待的任务列表</div><div class="line"></div><div class="line">    boolean isShutdown(); //是否关闭</div><div class="line"></div><div class="line">    boolean isTerminated();//如果关闭后所有任务都已完成，则返回 true。注意，除非首先调用 shutdown 或 shutdownNow，否则 isTerminated 永不为 true。</div><div class="line"></div><div class="line">    boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException;//等待（阻塞）直到关闭或最长等待时间或发生中断,timeout - 最长等待时间 ,unit - timeout 参数的时间单位  如果此执行程序终止，则返回 true；如果终止前超时期满，则返回 false </div><div class="line"></div><div class="line">    &lt;T&gt; Future&lt;T&gt; submit(Callable&lt;T&gt; var1); //提交一个返回值的任务用于执行，返回一个表示任务的未决结果的 Future。该 Future 的 get 方法在成功完成时将会返回该任务的结果。</div><div class="line"></div><div class="line">    &lt;T&gt; Future&lt;T&gt; submit(Runnable var1, T var2); // 提交一个 Runnable 任务用于执行，并返回一个表示该任务的 Future。该 Future 的 get 方法在成功完成时将会返回给定的结果</div><div class="line"></div><div class="line">    Future&lt;?&gt; submit(Runnable var1);///提交一个 Runnable 任务用于执行，并返回一个表示该任务的 Future。该 Future 的 get 方法在成功 完成时将会返回 null</div><div class="line"></div><div class="line">    &lt;T&gt; List&lt;Future&lt;T&gt;&gt; invokeAll(Collection&lt;? extends Callable&lt;T&gt;&gt; var1) throws InterruptedException; //执行给定的任务，当所有任务完成时，返回保持任务状态和结果的 Future 列表。返回列表的所有元素的 Future.isDone() 为 true。</div><div class="line"></div><div class="line">    &lt;T&gt; List&lt;Future&lt;T&gt;&gt; invokeAll(Collection&lt;? extends Callable&lt;T&gt;&gt; var1, long var2, TimeUnit var4) throws InterruptedException; //执行给定的任务，当所有任务完成时，返回保持任务状态和结果的 Future 列表。返回列表的所有元素的 Future.isDone() 为 true。</div><div class="line"></div><div class="line">    &lt;T&gt; T invokeAny(Collection&lt;? extends Callable&lt;T&gt;&gt; var1) throws InterruptedException, ExecutionException; //执行给定的任务，如果在给定的超时期满前某个任务已成功完成（也就是未抛出异常），则返回其结果。一旦正常或异常返回后，则取消尚未完成的任务。</div><div class="line"></div><div class="line">    &lt;T&gt; T invokeAny(Collection&lt;? extends Callable&lt;T&gt;&gt; var1, long var2, TimeUnit var4) throws InterruptedException, ExecutionException, TimeoutException;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p><code>ThreadPoolExecutor</code>具体实现了<code>ExecutorService</code>接口，提供了一系列的参数来配置线程池，熟悉<code>ThreadPoolExecutor</code>可自定义线程池。 </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public ThreadPoolExecutor(int corePoolSize,</div><div class="line">                          int maximumPoolSize,</div><div class="line">                          long keepAliveTime,</div><div class="line">                          TimeUnit unit,</div><div class="line">                          BlockingQueue&lt;Runnable&gt; workQueue,</div><div class="line">                          ThreadFactory threadFactory,</div><div class="line">                          RejectedExecutionHandler handler) &#123;</div></pre></td></tr></table></figure>
+<ul>
+<li>corePoolSize 核心线程池数量</li>
+<li>maximumPoolSize 最大线程数量</li>
+<li>keepAliveTime  非核心线程闲置的超时时长，超过这个时长，非核心线程就会被回收,当allowCoreThreadTimeOut为true时，keepAliveTime同样作用于核心线程。</li>
+<li>unit 时间单位，常用的为 TimeUnit.MILLISECONDS(毫秒)、TimeUnit.SECONDS（秒）、TimeUnit.MINUTES(分钟)，详情-》<a href="https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/TimeUnit.html" target="_blank" rel="external">https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/TimeUnit.html</a></li>
+<li>workQueue 线程池中的任务队列，通过execute方法提交的Runnable对象会存储在这个参数中</li>
+<li>threadFactory  线程工厂，为线程池提供创建线程的功能，是个接口，提供Thread newThread(Runnable r)方法；通常用默认的<code>Executors.defaultThreadFactory()</code>即可</li>
+<li>handler 拒绝策略，当线程池无法执行新任务时，可能由于线程队列已满或无法成功执行任务，这时候 ThreadPoolExecutor会调用handler的 rejectedExecution的方法，默认会抛出RejectedExecutionException</li>
+</ul>
+<p>Android通过<code>Executors</code>为我们提供了几种线程池</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">方法</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Executors.newCachedThreadPool()</td>
+<td style="text-align:left">缓存线程池，线程数量不定，最大线程数为Integer.MAX_VALUE(相当于任意大),有新任务时会检查是否有空闲线程，没有则会创建线程，空闲线程超过60s会被回收，任何任务都会被立即执行，适合大量的耗时较少任务</td>
+</tr>
+<tr>
+<td style="text-align:left">Executors.newFixedThreadPool(int nThreads)</td>
+<td style="text-align:left">固定型线程池，线程数量固定，只有核心线程并且无超时机制，当所有线程都执行任务时，新任务进入队列等待。能够快速响应请求</td>
+</tr>
+<tr>
+<td style="text-align:left">Executors.newScheduledThreadPool(int corePoolSize)</td>
+<td style="text-align:left">调度型线程池，核心数量固定，非核心数量无限制，非核心线程一旦空闲立马回收。会根据Scheduled(任务列表)进行延迟执行，或者是进行周期性的执行.适用于一些周期性的工作</td>
+</tr>
+<tr>
+<td style="text-align:left">EExecutors.newSingleThreadExecutor()</td>
+<td style="text-align:left">单例线程池，只有一个核心线程，所有任务都在这个线程中串行执行，不需要处理线程同步问题，在任意的时间段内，线程池中只有一个线程在工作…</td>
+</tr>
+</tbody>
+</table>
+<p>在<code>ExecutorService</code>的方法中可以看到线程池除了可执行<code>Runnable</code>接口还可以执行<code>Callable&lt;V&gt;</code> 接口,并且可以通过<code>Future&lt;V&gt;</code>来感知线程状态和结果。</p>
+<p>因为<code>Runnable</code>的返回值为<code>void</code> 无法获取执行完毕后的结果 ，所以才有了<code>Callable&lt;V&gt;</code>，可以返回一个结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public interface Callable&lt;V&gt; &#123;</div><div class="line">    /**</div><div class="line">     * Computes a result, or throws an exception if unable to do so.</div><div class="line">     *</div><div class="line">     * @return computed result</div><div class="line">     * @throws Exception if unable to compute a result</div><div class="line">     */</div><div class="line">    V call() throws Exception;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>Future&lt;V&gt;</code> 定义了几种方法来感知线程状态和获取结果 ，可以理解为管理线程的。Future提供了三种功能：</p>
+<ol>
+<li>判断任务是否完成；</li>
+<li>能够中断任务；</li>
+<li>能够获取任务执行结果。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line">public interface Future&lt;V&gt; &#123;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 尝试取消执行此任务。 如果任务已经完成，已经被取消或由于某种其他原因而无法取消，则此尝试将失败。返回false。</div><div class="line">     * 当此方法调用时此任务尚未开始，则此任务不会被运行。返回true。</div><div class="line">     * 如果任务已经开始，则&#123;mayInterruptIfRunning&#125;参数确定执行此任务的线程是否应该中断，以试图停止该任务。</div><div class="line">     * 此方法返回后，对&#123;@link #isDone&#125;的后续调用将始终返回&#123;@code true&#125;。 </div><div class="line">     * 如果此方法返回&#123;@code true&#125;，则后续调用&#123;@link #isCancelled&#125;将始终返回&#123;@code true&#125;。</div><div class="line">     * @param mayInterruptIfRunning 线程在运行是否中断; 如果值为true表示中断正在进行的任务返回则返回true，值为false表示不中断返回false，如果任务无法取消，通常是因为它已经正常完成;</div><div class="line">     * &#123;@code true&#125; otherwise</div><div class="line">     */</div><div class="line">    boolean cancel(boolean mayInterruptIfRunning);</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 如果在完成之前被取消 则返回 true，否则返回false</div><div class="line">     *</div><div class="line">     * @return &#123;@code true&#125; if this task was cancelled before it completed</div><div class="line">     */</div><div class="line">    boolean isCancelled();</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 任务已经完成 返回 true。</div><div class="line">     * 任务被取消，异常，或者正常完成都会返回 true。此方法返回结果表示任务是否允许完毕</div><div class="line">     * @return &#123;@code true&#125; if this task completed</div><div class="line">     */</div><div class="line">    boolean isDone();</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 获取任务完成的结果，如果任务没有执行完毕，则阻塞线程，直到拿到结果</div><div class="line">     * @return the computed result</div><div class="line">     * @throws CancellationException if the computation was cancelled</div><div class="line">     * @throws ExecutionException if the computation threw an</div><div class="line">     * exception</div><div class="line">     * @throws InterruptedException if the current thread was interrupted</div><div class="line">     * while waiting</div><div class="line">     */</div><div class="line">    V get() throws InterruptedException, ExecutionException;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 用来获取执行结果，如果在指定时间内，还没获取到结果，就直接返回null</div><div class="line">     * @param timeout 指定等待时间</div><div class="line">     * @param unit 等待时间单位</div><div class="line">     * @return the 执行结果</div><div class="line">     * @throws CancellationException if the computation was cancelled</div><div class="line">     * @throws ExecutionException if the computation threw an</div><div class="line">     * exception</div><div class="line">     * @throws InterruptedException if the current thread was interrupted</div><div class="line">     * while waiting</div><div class="line">     * @throws TimeoutException if the wait timed out</div><div class="line">     */</div><div class="line">    V get(long timeout, TimeUnit unit)</div><div class="line">        throws InterruptedException, ExecutionException, TimeoutException;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>因为<code>Future</code>只是一个接口，所以是无法直接用来创建对象使用的，因此就有了下面的<code>FutureTask</code>。</p>
+<p>可以看出RunnableFuture继承了Runnable接口和Future接口，而FutureTask实现了RunnableFuture接口。<br>所以它既可以作为Runnable被线程执行，又可以作为Future得到Callable的返回值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public class FutureTask&lt;V&gt; implements RunnableFuture&lt;V&gt; &#123;&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public interface RunnableFuture&lt;V&gt; extends Runnable, Future&lt;V&gt; &#123;</div><div class="line"></div><div class="line">    void run();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>ScheduledExecutorService</code> 调度线程池 ，扩展了<code>ExecutorService</code>,增加了几个方法用来执行周期性或者定时的任务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div></pre></td><td class="code"><pre><div class="line">public interface ScheduledExecutorService extends ExecutorService &#123;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 在给定延迟时间后执行一个单次的操作</div><div class="line">     * @param command 要执行的操作</div><div class="line">     * @param delay 延迟时间</div><div class="line">     * @param unit 延迟时间单位</div><div class="line">     * @return a ScheduledFuture 代表一个未完成的任务，可以通过get()获取null，还可以通过getDelay()获取剩余延迟时间</div><div class="line">     * @throws RejectedExecutionException if the task cannot be</div><div class="line">     *         scheduled for execution</div><div class="line">     * @throws NullPointerException if command is null</div><div class="line">     */</div><div class="line">    public ScheduledFuture&lt;?&gt; schedule(Runnable command,</div><div class="line">                                       long delay, TimeUnit unit);</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 在给定延迟时间后执行一个单次的 操作</div><div class="line">     * @param callable 单次操作</div><div class="line">     * @param delay 延迟时间</div><div class="line">     * @param unit 延迟时间单位</div><div class="line">     * @param &lt;V&gt; 返回结果类型</div><div class="line">     * @return a ScheduledFuture 可以通过get() 拿到结果，可以通过getDelay() 获取剩余延迟时间；</div><div class="line">     * @throws RejectedExecutionException if the task cannot be</div><div class="line">     *         scheduled for execution</div><div class="line">     * @throws NullPointerException if callable is null</div><div class="line">     */</div><div class="line">    public &lt;V&gt; ScheduledFuture&lt;V&gt; schedule(Callable&lt;V&gt; callable,</div><div class="line">                                           long delay, TimeUnit unit);</div><div class="line"></div><div class="line">    /**</div><div class="line">     *  创建并执行一个在给定初始延迟后首次启用的定期操作，后续操作具有给定的周期；</div><div class="line">     *  也就是将在 initialDelay 后开始执行，然后在initialDelay+period 后执行，</div><div class="line">     *  接着在 initialDelay + 2 * period 后执行，依此类推。</div><div class="line">     * @param command 要执行的操作</div><div class="line">     * @param initialDelay 首次执行延迟时间</div><div class="line">     * @param period 执行周期时间</div><div class="line">     * @param unit 时间单位</div><div class="line">     * @return a ScheduledFuture representing pending completion of</div><div class="line">     *         the series of repeated tasks.  The future&apos;s &#123;@link</div><div class="line">     *         Future#get() get()&#125; method will never return normally,</div><div class="line">     *         and will throw an exception upon task cancellation or</div><div class="line">     *         abnormal termination of a task execution.</div><div class="line">     * @throws RejectedExecutionException if the task cannot be</div><div class="line">     *         scheduled for execution</div><div class="line">     * @throws NullPointerException if command is null</div><div class="line">     * @throws IllegalArgumentException if period less than or equal to zero</div><div class="line">     */</div><div class="line">    public ScheduledFuture&lt;?&gt; scheduleAtFixedRate(Runnable command,</div><div class="line">                                                  long initialDelay,</div><div class="line">                                                  long period,</div><div class="line">                                                  TimeUnit unit);</div><div class="line"></div><div class="line">    /**</div><div class="line">     *  创建并执行一个在给定初始延迟后首次启用的定期操作，随后，在每一次执行终止和下一次执行开始之间都存在给定的延迟。</div><div class="line">     * @param command  要执行的定期任务</div><div class="line">     * @param initialDelay 首次执行的延迟时间</div><div class="line">     * @param delay 再上一次任务执行完毕后下次要执行的延迟时间</div><div class="line">     * @param unit 时间单位</div><div class="line">     * @return a ScheduledFuture representing pending completion of</div><div class="line">     *         the series of repeated tasks.  The future&apos;s &#123;@link</div><div class="line">     *         Future#get() get()&#125; method will never return normally,</div><div class="line">     *         and will throw an exception upon task cancellation or</div><div class="line">     *         abnormal termination of a task execution.</div><div class="line">     * @throws RejectedExecutionException if the task cannot be</div><div class="line">     *         scheduled for execution</div><div class="line">     * @throws NullPointerException if command is null</div><div class="line">     * @throws IllegalArgumentException if delay less than or equal to zero</div><div class="line">     */</div><div class="line">    public ScheduledFuture&lt;?&gt; scheduleWithFixedDelay(Runnable command,</div><div class="line">                                                     long initialDelay,</div><div class="line">                                                     long delay,</div><div class="line">                                                     TimeUnit unit);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><em>关于几种线程池的使用，代码都放在我的GitHub了。</em></p>
+<blockquote>
+<p>学习资料</p>
+</blockquote>
+<ul>
+<li><a href="https://developer.android.com/reference/java/util/concurrent/ScheduledExecutorService.html" target="_blank" rel="external">https://developer.android.com/reference/java/util/concurrent/ScheduledExecutorService.html</a></li>
+<li><a href="https://tom510230.gitbooks.io/android_ka_fa_yi_shu_tan_suo/content/chapter11.html" target="_blank" rel="external">https://tom510230.gitbooks.io/android_ka_fa_yi_shu_tan_suo/content/chapter11.html</a></li>
+<li><a href="http://www.cnblogs.com/whoislcj/p/5607734.html" target="_blank" rel="external">http://www.cnblogs.com/whoislcj/p/5607734.html</a></li>
+<li><a href="http://blog.csdn.net/u010687392/article/details/49850803" target="_blank" rel="external">http://blog.csdn.net/u010687392/article/details/49850803</a></li>
+<li><a href="http://www.cnblogs.com/RGogoing/p/4766971.html" target="_blank" rel="external">http://www.cnblogs.com/RGogoing/p/4766971.html</a></li>
+<li><a href="http://www.cnblogs.com/dolphin0520/p/3949310.html" target="_blank" rel="external">http://www.cnblogs.com/dolphin0520/p/3949310.html</a></li>
+</ul>
+<blockquote>
+<p>关于本次的Demo <a href="https://github.com/sky-mxc/AndroidDemo/tree/master/thread" target="_blank" rel="external">https://github.com/sky-mxc/AndroidDemo/tree/master/thread</a></p>
+</blockquote>
+<p><strong>没有涉及到的地方，欢迎补充。错误的地方，感谢指正</strong></p>
+
       
     </div>
 
@@ -470,6 +761,13 @@
           
   <div class="comments" id="comments">
     
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
   </div>
 
 
@@ -491,8 +789,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/user.jpg"
@@ -570,6 +877,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#工作线程"><span class="nav-number">1.1.</span> <span class="nav-text">工作线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程相关API"><span class="nav-number">1.2.</span> <span class="nav-text">线程相关API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建线程"><span class="nav-number">2.</span> <span class="nav-text">创建线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动线程"><span class="nav-number">2.1.</span> <span class="nav-text">启动线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Runnable和Thread两种方式的区别和联系"><span class="nav-number">2.2.</span> <span class="nav-text">Runnable和Thread两种方式的区别和联系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#资源共享及同步问题"><span class="nav-number">3.</span> <span class="nav-text">资源共享及同步问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#资源共享"><span class="nav-number">3.1.</span> <span class="nav-text">资源共享</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源同步"><span class="nav-number">3.2.</span> <span class="nav-text">资源同步</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程状态"><span class="nav-number">4.</span> <span class="nav-text">线程状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程通信"><span class="nav-number">5.</span> <span class="nav-text">线程通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程池"><span class="nav-number">6.</span> <span class="nav-text">线程池</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
     </div>
@@ -686,10 +1009,35 @@
 
   
 
+    <script type="text/javascript">
+      var disqus_shortname = 'skymxc';
+      var disqus_identifier = '2017/08/27/thread-in-Android/';
+
+      var disqus_title = "Android中的线程";
 
 
+      function run_disqus_script(disqus_script) {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
 
-	
+      run_disqus_script('count.js');
+
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+
+    </script>
+  
+
 
 
 
