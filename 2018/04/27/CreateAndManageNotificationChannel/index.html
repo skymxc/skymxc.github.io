@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="创建和管理通知渠道" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="管理通知渠道">
+<meta property="og:type" content="article">
+<meta property="og:title" content="创建管理通知渠道">
+<meta property="og:url" content="http://blog.skymxc.com/2018/04/27/CreateAndManageNotificationChannel/index.html">
+<meta property="og:site_name" content="孟祥超">
+<meta property="og:description" content="管理通知渠道">
+<meta property="og:image" content="https://developer.android.google.cn/images/ui/notifications/channel-settings_2x.png">
+<meta property="og:image" content="https://developer.android.google.cn/images/ui/notifications/channel-groups_2x.png">
+<meta property="og:updated_time" content="2018-04-27T14:48:50.097Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="创建管理通知渠道">
+<meta name="twitter:description" content="管理通知渠道">
+<meta name="twitter:image" content="https://developer.android.google.cn/images/ui/notifications/channel-settings_2x.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'sky-mxc'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.skymxc.com/2018/04/27/CreateAndManageNotificationChannel/"/>
+
+
+
+
+
+  <title>创建管理通知渠道 | 孟祥超</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db8042d9d7c31f7cbbc5ecedd326a573";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">孟祥超</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">孟祥超的blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.skymxc.com/2018/04/27/CreateAndManageNotificationChannel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="skymxc">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="孟祥超">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">创建管理通知渠道</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-27T22:42:56+08:00">
+                2018-04-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/通知/" itemprop="url" rel="index">
+                    <span itemprop="name">通知</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/通知/通知渠道/" itemprop="url" rel="index">
+                    <span itemprop="name">通知渠道</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/27/CreateAndManageNotificationChannel/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/04/27/CreateAndManageNotificationChannel/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  管理通知渠道
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="创建-和管理-通知渠道"><a href="#创建-和管理-通知渠道" class="headerlink" title="创建 和管理 通知渠道"></a>创建 和管理 通知渠道</h1><p>从Android8.0（API26）开始，所有的通知必须分配一个渠道。每一个渠道，你都可以设置渠道中所有通知的视觉和听觉行为。然后，用户能够随意修改这些设置来决定通知的行为。</p>
+<p>视频说明<br><a href="https://youtu.be/zGIw4MIJn5o" target="_blank" rel="external">https://youtu.be/zGIw4MIJn5o</a></p>
+<p>用户能够设置每个App的通知渠道行为</p>
+<p><img src="https://developer.android.google.cn/images/ui/notifications/channel-settings_2x.png" alt="更改渠道行为"></p>
+<p><em>在用户界面渠道显示为 “类别”</em></p>
+<p>渠道创建后就不能更改通知行为了，用户能够完全控制通知的行为，但我们还是可以更改说明和渠道名称</p>
+<p>我们可以为每个不同类型的通知创建一个渠道；</p>
+<p>如果 target&gt;=26 就必须使用渠道。如果target是在26以下，但是运行在了26及以上了，不要怕，还是会和往常一样，不会抛出异常。</p>
+<p><strong>如果 target&gt;=26； 在26及以上运行的时候没有指定一个渠道，通知是不会发出的，系统会记录此错误。可以在logcat看到</strong></p>
+<p><em>Android O 有一个新的开发者设置，当发送了没有指定渠道的通知时显示一个toast。 Settings &gt; Developer options and enable Show notification channel warnings</em></p>
+<h2 id="创建-通知渠道"><a href="#创建-通知渠道" class="headerlink" title="创建 通知渠道"></a>创建 通知渠道</h2><p>创建渠道有三个步骤</p>
+<ol>
+<li>使用一个<strong>唯一ID</strong>，一个用户可见的<strong>渠道名称</strong>和一个渠道<strong>重要性</strong> 三个参数构造一个<code>NotificationChannel</code>实例</li>
+<li>（可选）设置渠道描述 通过 setDescription();</li>
+<li>通过<code>NotificationManager</code> 的 <code>createNotificationChannel()</code>创建渠道</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> <em>确保创建代码运行在Android O及以上，因为渠道的API没有在support library中</em></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.O) &#123;</div><div class="line">    // Create the NotificationChannel</div><div class="line">    CharSequence name = getString(R.string.channel_name);</div><div class="line">    String description = getString(R.string.channel_description);</div><div class="line">    int importance = NotificationManager.IMPORTANCE_DEFAULT;</div><div class="line">    NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);</div><div class="line">    mChannel.setDescription(description);</div><div class="line">    // Register the channel with the system; you can&apos;t change the importance</div><div class="line">    // or other notification behaviors after this</div><div class="line">    NotificationManager notificationManager = (NotificationManager) getSystemService(</div><div class="line">            NOTIFICATION_SERVICE);</div><div class="line">    notificationManager.createNotificationChannel(mChannel);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><em>如果创建的渠道已经存在当程序运行的时候不会出现异常</em></p>
+<p>通知的行为默认是通过设置的重要性(构建Channel实例的第三个参数)来决定的。这些参数来自于<code>NotificationManagerCompat</code>中的几个常量。</p>
+<p>如果想更进一步的自定行为可以参考以下方法 ；行为在渠道创建后是不能修改的，用户能够完全控制这些设置。</p>
+<ul>
+<li>指示灯是否开启 <code>enableLights()</code></li>
+<li>指示灯的颜色 <code>setLightColor()</code></li>
+<li>设置震动模式 <code>setVibrationPattern()</code></li>
+</ul>
+<p>可以通过 <code>createNotificationChannel()</code> 创建多个渠道；</p>
+<p><em>除了给通知添加渠道，还可以考虑为通知添加系统类型。参考：<a href="https://developer.android.google.cn/training/notify-user/build-notification.html#system-category" target="_blank" rel="external">https://developer.android.google.cn/training/notify-user/build-notification.html#system-category</a></em></p>
+<h2 id="设置重要性级别"><a href="#设置重要性级别" class="headerlink" title="设置重要性级别"></a>设置重要性级别</h2><p>渠道重要性决定了渠道中所有的通知打断级别，必须在渠道构造方法中设置重要性级别。有五个重要性级别 从IMPORTANCE_NONE(0) 到 IMPORTANCE_HIGH(4)，我们可以将他们指定给渠道中的所有通知。</p>
+<p>为了兼容Android O 以下的版本 必须为通知设置优先级<code>setPriority()</code> 。参数是 <code>NotificationCompat</code>中的几个常量</p>
+<p>重要性级别和优先级常量映射到的用户可见的重要性选项如下</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">用户可见的重要性级别</th>
+<th style="text-align:left">重要性级别（Android O及以上）</th>
+<th style="text-align:left">优先级（Android O 以下）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">紧急。发出声音并显示为单条通知</td>
+<td style="text-align:left">IMPORTANCE_HIGH</td>
+<td style="text-align:left">PRIORITY_HIGH or PRIORITY_MAX</td>
+</tr>
+<tr>
+<td style="text-align:left">高。发出声音</td>
+<td style="text-align:left">IMPORTANCE_DEFAULT</td>
+<td style="text-align:left">PRIORITY_DEFAULT</td>
+</tr>
+<tr>
+<td style="text-align:left">中。没有声音</td>
+<td style="text-align:left">IMPORTANCE_LOW</td>
+<td style="text-align:left">PRIORITY_LOW</td>
+</tr>
+<tr>
+<td style="text-align:left">低。没有声音也不会出现在状态栏中</td>
+<td style="text-align:left">IMPORTANCE_MIN</td>
+<td style="text-align:left">PRIORITY_MIN</td>
+</tr>
+</tbody>
+</table>
+<p>所有的通知，不管重要性如何，都会出现在不影响用户的系统界面上。例如通知栏，启动图标的通知点（可以改变样式或是否显示）</p>
+<p>一但将渠道提交到<code>NotificationManager</code> 就不能再修改重要性级别了，但是用户可随意随时修改。</p>
+<p>有关选择适当优先级的信息 ，查看 通知设计指南中的 <a href="https://material.io/guidelines/patterns/notifications.html#notifications-settings" target="_blank" rel="external">正确设置和管理优先级</a></p>
+<h2 id="读取通知渠道设置"><a href="#读取通知渠道设置" class="headerlink" title="读取通知渠道设置"></a>读取通知渠道设置</h2><p>用户可以在设置界面设置渠道的行为（震动，声音等）可以通过以下步骤获取到用户对我们渠道的行为设置。</p>
+<ol>
+<li>通过 <code>getNotificationChannel()</code> or <code>getNotificationChannels()</code> 获取<code>NotificationChannel</code> 实例</li>
+<li>查询指定的设置 例如 <code>getSound()</code>,<code>getImportance()</code>,<code>getVibrationPattern()</code></li>
+</ol>
+<p>如果检测到用户设置会影响程序的行为。我们可以给用户一个操作让其改变设置。</p>
+<h2 id="打开通知渠道设置"><a href="#打开通知渠道设置" class="headerlink" title="打开通知渠道设置"></a>打开通知渠道设置</h2><p>渠道在创建了之后就不能通过代码的方式改变其行为了，只能用户在系统设置修改。为了方便用户修改我们可以通过代码打开系统设置，让用户更方便的修改。</p>
+<p>通过Intent使用action:<code>ACTION_CHANNEL_NOTIFICATION_SETTINGS</code> 打开系统设置。<br>需要两个参数 一个是包名 一个是渠道id。</p>
+<p>下面就是打开系统设置渠道的代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);</div><div class="line">intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());</div><div class="line">intent.putExtra(Settings.EXTRA_CHANNEL_ID, myNotificationChannel.getId());</div><div class="line">startActivity(intent);</div></pre></td></tr></table></figure>
+<h2 id="删除通知渠道"><a href="#删除通知渠道" class="headerlink" title="删除通知渠道"></a>删除通知渠道</h2><p>可以通过以下代码删除渠道<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">NotificationManager mNotificationManager =</div><div class="line">        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);</div><div class="line">// The id of the channel.</div><div class="line">String id = &quot;my_channel_01&quot;;</div><div class="line">mNotificationManager.deleteNotificationChannel(id);</div></pre></td></tr></table></figure></p>
+<p><em>系统设置会显示已经删除的渠道数量，作为垃圾邮件防范机制。可以通过重装程序或者清楚数据来清除测试渠道</em></p>
+<h2 id="创建渠道分组"><a href="#创建渠道分组" class="headerlink" title="创建渠道分组"></a>创建渠道分组</h2><p>如果想要更好的在系统设置UI中显示渠道外观，可以创建渠道分组。当你的APP支持多用户的时候可以为每个账户创建一个渠道分组。这样，用户可以轻易的识别和控制具有相同名字的渠道。<br><img src="https://developer.android.google.cn/images/ui/notifications/channel-groups_2x.png" alt="个人和工作账户的通知渠道分组"></p>
+<p>例如，一个网络社交APP可能包含支持个人和工作账户，这种情况下，每个账户可能需要多个相同功能和名称的多个渠道，如下所示：</p>
+<ul>
+<li>个人账户的两个渠道<ul>
+<li>新评论</li>
+<li>发布推荐</li>
+</ul>
+</li>
+<li>工作账号的两个渠道<ul>
+<li>新评论</li>
+<li>发布推荐<br>将每个账户的渠道分组确保用户能够轻易的区分它们。</li>
+</ul>
+</li>
+</ul>
+<p>每一个渠道分组都需要一个包内唯一的ID和一个用户可见的名称，下面代码演示怎么创建一个分组<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// The id of the group.</div><div class="line">String groupId = &quot;my_group_01&quot;;</div><div class="line">// The user-visible name of the group.</div><div class="line">CharSequence groupName = getString(R.string.group_name);</div><div class="line">NotificationManager mNotificationManager =</div><div class="line">        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);</div><div class="line">mNotificationManager.createNotificationChannelGroup(new NotificationChannelGroup(group_id, group_name));</div></pre></td></tr></table></figure></p>
+<p>创建分组后可以通过渠道的<code>setGroup()</code>来关联分组；<br>将渠道提交到通知管理后就无法改变关联关系了。</p>
+<blockquote>
+<p>end</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/通知/" rel="tag"># 通知</a>
+          
+            <a href="/tags/通知渠道/" rel="tag"># 通知渠道</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/15/Room/" rel="next" title="Android Room 持久化库">
+                <i class="fa fa-chevron-left"></i> Android Room 持久化库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微薄</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/user.jpg"
+               alt="skymxc" />
+          <p class="site-author-name" itemprop="name">skymxc</p>
+           
+              <p class="site-description motion-element" itemprop="description">记录coding路上的点滴</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives">
+            
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">博文</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/skymxc" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#创建-和管理-通知渠道"><span class="nav-number">1.</span> <span class="nav-text">创建 和管理 通知渠道</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建-通知渠道"><span class="nav-number">1.1.</span> <span class="nav-text">创建 通知渠道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置重要性级别"><span class="nav-number">1.2.</span> <span class="nav-text">设置重要性级别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读取通知渠道设置"><span class="nav-number">1.3.</span> <span class="nav-text">读取通知渠道设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打开通知渠道设置"><span class="nav-number">1.4.</span> <span class="nav-text">打开通知渠道设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除通知渠道"><span class="nav-number">1.5.</span> <span class="nav-text">删除通知渠道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建渠道分组"><span class="nav-number">1.6.</span> <span class="nav-text">创建渠道分组</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 &mdash; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">skymxc</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skymxc.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://blog.skymxc.com/2018/04/27/CreateAndManageNotificationChannel/';
+          this.page.identifier = '2018/04/27/CreateAndManageNotificationChannel/';
+          this.page.title = '创建管理通知渠道';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skymxc.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

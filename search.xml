@@ -4,6 +4,110 @@
   
     
     <entry>
+      <title><![CDATA[创建管理通知渠道]]></title>
+      <url>http://blog.skymxc.com/2018/04/27/CreateAndManageNotificationChannel/</url>
+      <content type="html"><![CDATA[<h1 id="创建-和管理-通知渠道"><a href="#创建-和管理-通知渠道" class="headerlink" title="创建 和管理 通知渠道"></a>创建 和管理 通知渠道</h1><p>从Android8.0（API26）开始，所有的通知必须分配一个渠道。每一个渠道，你都可以设置渠道中所有通知的视觉和听觉行为。然后，用户能够随意修改这些设置来决定通知的行为。</p>
+<p>视频说明<br><a href="https://youtu.be/zGIw4MIJn5o" target="_blank" rel="external">https://youtu.be/zGIw4MIJn5o</a></p>
+<p>用户能够设置每个App的通知渠道行为</p>
+<p><img src="https://developer.android.google.cn/images/ui/notifications/channel-settings_2x.png" alt="更改渠道行为"></p>
+<p><em>在用户界面渠道显示为 “类别”</em></p>
+<p>渠道创建后就不能更改通知行为了，用户能够完全控制通知的行为，但我们还是可以更改说明和渠道名称</p>
+<p>我们可以为每个不同类型的通知创建一个渠道；</p>
+<p>如果 target&gt;=26 就必须使用渠道。如果target是在26以下，但是运行在了26及以上了，不要怕，还是会和往常一样，不会抛出异常。</p>
+<p><strong>如果 target&gt;=26； 在26及以上运行的时候没有指定一个渠道，通知是不会发出的，系统会记录此错误。可以在logcat看到</strong></p>
+<p><em>Android O 有一个新的开发者设置，当发送了没有指定渠道的通知时显示一个toast。 Settings &gt; Developer options and enable Show notification channel warnings</em></p>
+<h2 id="创建-通知渠道"><a href="#创建-通知渠道" class="headerlink" title="创建 通知渠道"></a>创建 通知渠道</h2><p>创建渠道有三个步骤</p>
+<ol>
+<li>使用一个<strong>唯一ID</strong>，一个用户可见的<strong>渠道名称</strong>和一个渠道<strong>重要性</strong> 三个参数构造一个<code>NotificationChannel</code>实例</li>
+<li>（可选）设置渠道描述 通过 setDescription();</li>
+<li>通过<code>NotificationManager</code> 的 <code>createNotificationChannel()</code>创建渠道</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> <em>确保创建代码运行在Android O及以上，因为渠道的API没有在support library中</em></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.O) &#123;</div><div class="line">    // Create the NotificationChannel</div><div class="line">    CharSequence name = getString(R.string.channel_name);</div><div class="line">    String description = getString(R.string.channel_description);</div><div class="line">    int importance = NotificationManager.IMPORTANCE_DEFAULT;</div><div class="line">    NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);</div><div class="line">    mChannel.setDescription(description);</div><div class="line">    // Register the channel with the system; you can&apos;t change the importance</div><div class="line">    // or other notification behaviors after this</div><div class="line">    NotificationManager notificationManager = (NotificationManager) getSystemService(</div><div class="line">            NOTIFICATION_SERVICE);</div><div class="line">    notificationManager.createNotificationChannel(mChannel);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><em>如果创建的渠道已经存在当程序运行的时候不会出现异常</em></p>
+<p>通知的行为默认是通过设置的重要性(构建Channel实例的第三个参数)来决定的。这些参数来自于<code>NotificationManagerCompat</code>中的几个常量。</p>
+<p>如果想更进一步的自定行为可以参考以下方法 ；行为在渠道创建后是不能修改的，用户能够完全控制这些设置。</p>
+<ul>
+<li>指示灯是否开启 <code>enableLights()</code></li>
+<li>指示灯的颜色 <code>setLightColor()</code></li>
+<li>设置震动模式 <code>setVibrationPattern()</code></li>
+</ul>
+<p>可以通过 <code>createNotificationChannel()</code> 创建多个渠道；</p>
+<p><em>除了给通知添加渠道，还可以考虑为通知添加系统类型。参考：<a href="https://developer.android.google.cn/training/notify-user/build-notification.html#system-category" target="_blank" rel="external">https://developer.android.google.cn/training/notify-user/build-notification.html#system-category</a></em></p>
+<h2 id="设置重要性级别"><a href="#设置重要性级别" class="headerlink" title="设置重要性级别"></a>设置重要性级别</h2><p>渠道重要性决定了渠道中所有的通知打断级别，必须在渠道构造方法中设置重要性级别。有五个重要性级别 从IMPORTANCE_NONE(0) 到 IMPORTANCE_HIGH(4)，我们可以将他们指定给渠道中的所有通知。</p>
+<p>为了兼容Android O 以下的版本 必须为通知设置优先级<code>setPriority()</code> 。参数是 <code>NotificationCompat</code>中的几个常量</p>
+<p>重要性级别和优先级常量映射到的用户可见的重要性选项如下</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">用户可见的重要性级别</th>
+<th style="text-align:left">重要性级别（Android O及以上）</th>
+<th style="text-align:left">优先级（Android O 以下）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">紧急。发出声音并显示为单条通知</td>
+<td style="text-align:left">IMPORTANCE_HIGH</td>
+<td style="text-align:left">PRIORITY_HIGH or PRIORITY_MAX</td>
+</tr>
+<tr>
+<td style="text-align:left">高。发出声音</td>
+<td style="text-align:left">IMPORTANCE_DEFAULT</td>
+<td style="text-align:left">PRIORITY_DEFAULT</td>
+</tr>
+<tr>
+<td style="text-align:left">中。没有声音</td>
+<td style="text-align:left">IMPORTANCE_LOW</td>
+<td style="text-align:left">PRIORITY_LOW</td>
+</tr>
+<tr>
+<td style="text-align:left">低。没有声音也不会出现在状态栏中</td>
+<td style="text-align:left">IMPORTANCE_MIN</td>
+<td style="text-align:left">PRIORITY_MIN</td>
+</tr>
+</tbody>
+</table>
+<p>所有的通知，不管重要性如何，都会出现在不影响用户的系统界面上。例如通知栏，启动图标的通知点（可以改变样式或是否显示）</p>
+<p>一但将渠道提交到<code>NotificationManager</code> 就不能再修改重要性级别了，但是用户可随意随时修改。</p>
+<p>有关选择适当优先级的信息 ，查看 通知设计指南中的 <a href="https://material.io/guidelines/patterns/notifications.html#notifications-settings" target="_blank" rel="external">正确设置和管理优先级</a></p>
+<h2 id="读取通知渠道设置"><a href="#读取通知渠道设置" class="headerlink" title="读取通知渠道设置"></a>读取通知渠道设置</h2><p>用户可以在设置界面设置渠道的行为（震动，声音等）可以通过以下步骤获取到用户对我们渠道的行为设置。</p>
+<ol>
+<li>通过 <code>getNotificationChannel()</code> or <code>getNotificationChannels()</code> 获取<code>NotificationChannel</code> 实例</li>
+<li>查询指定的设置 例如 <code>getSound()</code>,<code>getImportance()</code>,<code>getVibrationPattern()</code></li>
+</ol>
+<p>如果检测到用户设置会影响程序的行为。我们可以给用户一个操作让其改变设置。</p>
+<h2 id="打开通知渠道设置"><a href="#打开通知渠道设置" class="headerlink" title="打开通知渠道设置"></a>打开通知渠道设置</h2><p>渠道在创建了之后就不能通过代码的方式改变其行为了，只能用户在系统设置修改。为了方便用户修改我们可以通过代码打开系统设置，让用户更方便的修改。</p>
+<p>通过Intent使用action:<code>ACTION_CHANNEL_NOTIFICATION_SETTINGS</code> 打开系统设置。<br>需要两个参数 一个是包名 一个是渠道id。</p>
+<p>下面就是打开系统设置渠道的代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);</div><div class="line">intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());</div><div class="line">intent.putExtra(Settings.EXTRA_CHANNEL_ID, myNotificationChannel.getId());</div><div class="line">startActivity(intent);</div></pre></td></tr></table></figure>
+<h2 id="删除通知渠道"><a href="#删除通知渠道" class="headerlink" title="删除通知渠道"></a>删除通知渠道</h2><p>可以通过以下代码删除渠道<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">NotificationManager mNotificationManager =</div><div class="line">        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);</div><div class="line">// The id of the channel.</div><div class="line">String id = &quot;my_channel_01&quot;;</div><div class="line">mNotificationManager.deleteNotificationChannel(id);</div></pre></td></tr></table></figure></p>
+<p><em>系统设置会显示已经删除的渠道数量，作为垃圾邮件防范机制。可以通过重装程序或者清楚数据来清除测试渠道</em></p>
+<h2 id="创建渠道分组"><a href="#创建渠道分组" class="headerlink" title="创建渠道分组"></a>创建渠道分组</h2><p>如果想要更好的在系统设置UI中显示渠道外观，可以创建渠道分组。当你的APP支持多用户的时候可以为每个账户创建一个渠道分组。这样，用户可以轻易的识别和控制具有相同名字的渠道。<br><img src="https://developer.android.google.cn/images/ui/notifications/channel-groups_2x.png" alt="个人和工作账户的通知渠道分组"></p>
+<p>例如，一个网络社交APP可能包含支持个人和工作账户，这种情况下，每个账户可能需要多个相同功能和名称的多个渠道，如下所示：</p>
+<ul>
+<li>个人账户的两个渠道<ul>
+<li>新评论</li>
+<li>发布推荐</li>
+</ul>
+</li>
+<li>工作账号的两个渠道<ul>
+<li>新评论</li>
+<li>发布推荐<br>将每个账户的渠道分组确保用户能够轻易的区分它们。</li>
+</ul>
+</li>
+</ul>
+<p>每一个渠道分组都需要一个包内唯一的ID和一个用户可见的名称，下面代码演示怎么创建一个分组<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// The id of the group.</div><div class="line">String groupId = &quot;my_group_01&quot;;</div><div class="line">// The user-visible name of the group.</div><div class="line">CharSequence groupName = getString(R.string.group_name);</div><div class="line">NotificationManager mNotificationManager =</div><div class="line">        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);</div><div class="line">mNotificationManager.createNotificationChannelGroup(new NotificationChannelGroup(group_id, group_name));</div></pre></td></tr></table></figure></p>
+<p>创建分组后可以通过渠道的<code>setGroup()</code>来关联分组；<br>将渠道提交到通知管理后就无法改变关联关系了。</p>
+<blockquote>
+<p>end</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Android Room 持久化库]]></title>
       <url>http://blog.skymxc.com/2018/04/15/Room/</url>
       <content type="html"><![CDATA[<blockquote>
