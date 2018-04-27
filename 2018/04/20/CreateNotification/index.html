@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="创建通知 适配 Android O" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="创建通知适配 Android O">
+<meta property="og:type" content="article">
+<meta property="og:title" content="创建通知">
+<meta property="og:url" content="http://blog.skymxc.com/2018/04/20/CreateNotification/index.html">
+<meta property="og:site_name" content="孟祥超">
+<meta property="og:description" content="创建通知适配 Android O">
+<meta property="og:image" content="https://developer.android.com/images/ui/notifications/notification-basic_2x.png?hl=zh-cn">
+<meta property="og:image" content="https://developer.android.com/images/ui/notifications/notification-basic-action_2x.png">
+<meta property="og:image" content="https://developer.android.com/images/ui/notifications/reply-button_2x.png">
+<meta property="og:image" content="https://developer.android.com/images/ui/notifications/notification-progressbar_2x.png">
+<meta property="og:updated_time" content="2018-04-27T15:04:08.810Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="创建通知">
+<meta name="twitter:description" content="创建通知适配 Android O">
+<meta name="twitter:image" content="https://developer.android.com/images/ui/notifications/notification-basic_2x.png?hl=zh-cn">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'sky-mxc'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.skymxc.com/2018/04/20/CreateNotification/"/>
+
+
+
+
+
+  <title>创建通知 | 孟祥超</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db8042d9d7c31f7cbbc5ecedd326a573";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">孟祥超</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">孟祥超的blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.skymxc.com/2018/04/20/CreateNotification/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="skymxc">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="孟祥超">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">创建通知</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-20T22:56:26+08:00">
+                2018-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/通知/" itemprop="url" rel="index">
+                    <span itemprop="name">通知</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/20/CreateNotification/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/04/20/CreateNotification/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  创建通知适配 Android O
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>原文地址：<a href="https://developer.android.com/training/notify-user/build-notification.html" target="_blank" rel="external">https://developer.android.com/training/notify-user/build-notification.html</a></p>
+</blockquote>
+<h2 id="创建一个通知"><a href="#创建一个通知" class="headerlink" title="创建一个通知"></a>创建一个通知</h2><p>通知提供了有关应用程序未使用时的事件的简短而及时的信息。这篇文章教你怎么通过Android4.0及以上版本的各种功能去创建一个通知。有关通知怎么在Android上显示，<a href="https://developer.android.com/guide/topics/ui/notifiers/notifications.html?hl=zh-cn" target="_blank" rel="external">Android 通知</a></p>
+<p>此页面上的代码使用Android支持库中的<code>NotificationCompat</code> APIs。这些 APIs 允许你添加新版本有的功能，可以兼容到 Android 4.0（API level 14），然而，一个新的特征，例如回复操作会在旧版本中无法运行。</p>
+<h2 id="添加支持库"><a href="#添加支持库" class="headerlink" title="添加支持库"></a>添加支持库</h2><p>尽管大部分使用 Android Studio 创建的项目都包含了使用 <code>NotificationCompat</code> 的必要依赖，但还是要检验一下项目的 <code>build.gradle</code> 文件中是否包含下面的依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    implementation &quot;com.android.support:support-compat:27.1.0&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>[^ <code>com.android.support</code> 中的其他库也包含了 <code>support-compat</code> 传递性依赖,如果引用了其他库也是可以使用 <code>NotificationCompat</code> 的，就不必显示添加上面的依赖 ]</p>
+<h2 id="创建一个基础通知"><a href="#创建一个基础通知" class="headerlink" title="创建一个基础通知"></a>创建一个基础通知</h2><p>最基本的通知会显示一个 icon ，一个标题，一段简要的内容。这节你将会学习怎么创建一个点击启动APP的通知。</p>
+<p><img src="https://developer.android.com/images/ui/notifications/notification-basic_2x.png?hl=zh-cn" alt="含有通知和文本的通知"></p>
+<p>关于通知的每个部分的更多细节 请阅读 <a href="https://developer.android.com/guide/topics/ui/notifiers/notifications.html?hl=zh-cn#Templates" target="_blank" rel="external">通知概览</a></p>
+<h3 id="设置通知内容"><a href="#设置通知内容" class="headerlink" title="设置通知内容"></a>设置通知内容</h3><p>首先，通过 <code>NotificationCompat.Builder</code> 设置通知的内容和渠道。下面的示例演示了如果通过以下命令创建通知。</p>
+<ul>
+<li>小图标 通过 <code>setSmallIcon()</code> ;这是唯一一个必须设置的用户可见内容</li>
+<li>标题 通过 <code>setContentTitle()</code> 设置</li>
+<li>内容 通过 <code>setContentText()</code> 设置</li>
+<li>通知优先权 通过 <code>setPriority()</code> 设置。这个优先权决定了通知在 <code>Android 7.1</code>及以下系统上的行为（<code>Android 8.0</code> 及以上系统通过渠道的 <code>importance</code> 属性统一设置）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)</div><div class="line">        .setSmallIcon(R.drawable.notification_icon)</div><div class="line">        .setContentTitle(textTitle)</div><div class="line">        .setContentText(textContent)</div><div class="line">        .setPriority(NotificationCompat.PRIORITY_DEFAULT);</div></pre></td></tr></table></figure>
+<p><em>注意这个 <code>NotificationCompat.Builder</code> 构造方式需要一个渠道 ID　。　这是为了兼容　<code>Android 8.0</code> 及以上版本所必须的，旧版本忽略就好</em></p>
+<p>默认通知内容会被自适应为一行，如果你想显示更多，可以通过 <code>setStyle()</code> 设置一个样式模板来启用扩展通知。例如，以下代码会创建一个更大的文本区域:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)</div><div class="line">        .setSmallIcon(R.drawable.notification_icon)</div><div class="line">        .setContentTitle(&quot;My notification&quot;)</div><div class="line">        .setContentText(&quot;Much longer text that cannot fit one line...&quot;)</div><div class="line">        .setStyle(new NotificationCompat.BigTextStyle()</div><div class="line">                .bigText(&quot;Much longer text that cannot fit one line...&quot;))</div><div class="line">        .setPriority(NotificationCompat.PRIORITY_DEFAULT);</div></pre></td></tr></table></figure>
+<p>关于其他大的通知样式，包括怎么去增加图片，控制媒体播放等，<a href="https://developer.android.com/training/notify-user/expanded.html" target="_blank" rel="external">创建扩展通知</a></p>
+<h2 id="创建渠道和设置重要性"><a href="#创建渠道和设置重要性" class="headerlink" title="创建渠道和设置重要性"></a>创建渠道和设置重要性</h2><p>在 <code>Android 8.0</code> 及以上版本必须创建<code>Notificationchannel</code> 实例，并通过 <code>createNotificationchannel()</code> 注册通知渠道。下面代码必须保证 <code>SDK_VERSION</code> 在8.0及以上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.O) &#123;</div><div class="line">    // Create the NotificationChannel, but only on API 26+ because</div><div class="line">    // the NotificationChannel class is new and not in the support library</div><div class="line">    CharSequence name = getString(R.string.channel_name);</div><div class="line">    String description = getString(R.string.channel_description);</div><div class="line">    int importance = NotificationManagerCompat.IMPORTANCE_DEFAULT;</div><div class="line">    NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);</div><div class="line">    channel.setDescription(description);</div><div class="line">    // Register the channel with the system</div><div class="line">    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);</div><div class="line">    notificationManager.createNotificationChannel(channel);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意这个 <code>NotificationChannel</code> 构造方法需要一个 <code>importance</code> 参数，这个参数是类 <code>NotificationManagerCompat</code> 中的常量；这个参数决定了渠道内通知的行为–但是也必须通过 <code>setPriority()</code> 设置优先权来兼容 <code>Android 7.1</code> 及更低的版本。</p>
+<p>尽管必须设置通知的重要性和优先级，但是系统并不保证通知的行为，系统可能会因为别的因素改变重要性等级。用户可以随时更改重要性等级。</p>
+<h3 id="设置通知点按操作"><a href="#设置通知点按操作" class="headerlink" title="设置通知点按操作"></a>设置通知点按操作</h3><p>每个通知都应该响应点按操作，通常是去打开一个通知对应的 <code>Activity</code> 。这样就必须指定一个 <code>PedingIntent</code> 定义的 <code>Intent</code> 并使用 <code>setContentIntent()</code> 设置给通知。</p>
+<p>下面的代码演示了怎样去创建一个当用户点按打开 <code>Activity</code> 的基本通知<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">// Create an explicit intent for an Activity in your app</div><div class="line">Intent intent = new Intent(this, AlertDetails.class);</div><div class="line">intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);</div><div class="line">PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);</div><div class="line"></div><div class="line">NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)</div><div class="line">        .setSmallIcon(R.drawable.notification_icon)</div><div class="line">        .setContentTitle(&quot;My notification&quot;)</div><div class="line">        .setContentText(&quot;Hello World!&quot;)</div><div class="line">        .setPriority(NotificationCompat.PRIORITY_DEFAULT)</div><div class="line">        // Set the intent that will fire when the user taps the notification</div><div class="line">        .setContentIntent(pendingIntent)</div><div class="line">        .setAutoCancel(true);</div></pre></td></tr></table></figure></p>
+<p>注意：这个通知调用了<code>setAutoCancel(true)</code> 当用户点按后会自动移除通知。</p>
+<p>上面所示的 <code>setFlags()</code> 方法有助于在通过通知打开应用程序后保留用户的预期导航体验。但是，是否要用这个功能取决于你打开的 <code>Activity</code> 类型，可能是以下一种情况：</p>
+<ul>
+<li>专用于响应通知的 <code>Activity</code>。用户在正常情况下不会打开这个 <code>Activity</code>，所以该 <code>Activity</code> 启动一个新的任务栈而没有必要添加到程序的返回栈中。这就是上面所示的内容意图类型</li>
+<li>应用程序中的常规 <code>Activity</code> . 这种情况，启动的 <code>Activity</code> 应该创建一个返回栈以便保留用户的导航体验。</li>
+</ul>
+<p>更多关于配置通知意图的方法，移步阅读<a href="https://developer.android.com/training/notify-user/navigation.html" target="_blank" rel="external">从通知启动一个Activity</a></p>
+<h3 id="显示通知"><a href="#显示通知" class="headerlink" title="显示通知"></a>显示通知</h3><p>显示通知需要调用 <code>NotificationManagerCompat.notify()</code> 方法，参数是一个唯一ID和一个 <code>NotificationCompat.Builder.build()</code> 构建的结果。例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);</div><div class="line"></div><div class="line">// notificationId is a unique int for each notification that you must define</div><div class="line">notificationManager.notify(notificationId, mBuilder.build());</div></pre></td></tr></table></figure></p>
+<p>记得保存 <code>NotificationManagerCompat.notify()</code> 使用的唯一ID之后要更新或者移除通知都要用到。</p>
+<p>注意：从 <code>Android 8.0</code> 开始，程序每秒钟不能发出两次通知声音，如果你每秒钟发出多个通知，只有第一个通知有声音提示。</p>
+<h2 id="增加操作按钮"><a href="#增加操作按钮" class="headerlink" title="增加操作按钮"></a>增加操作按钮</h2><p>一个通知能够添加三个操作按钮去允许用户快速响应。例如停止提醒或者快速回复文本消息。但是这些操作按钮最好不要跟通知点按响应重复。</p>
+<p><img src="https://developer.android.com/images/ui/notifications/notification-basic-action_2x.png" alt="有一个按钮的通知"></p>
+<p>通知按钮是用 <code>PendingIntent</code> 的 <code>addAction()</code> 方法添加的。就像设置通知默认的点按操作一样，可以不启动 <code>Activity</code> 去做其他的任何事情例如启动一个在后台作业的 <code>BroadcastReceiver</code> 这样就可以不打断用户当前操作。</p>
+<p>例如，下面的代码演示了怎么个一个指定的广播接收者发送广播<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Intent snoozeIntent = new Intent(this, MyBroadcastReceiver.class);</div><div class="line">snoozeIntent.setAction(ACTION_SNOOZE);</div><div class="line">snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);</div><div class="line">PendingIntent snoozePendingIntent =</div><div class="line">        PendingIntent.getBroadcast(this, 0, snoozeIntent, 0);</div><div class="line"></div><div class="line">NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)</div><div class="line">        .setSmallIcon(R.drawable.notification_icon)</div><div class="line">        .setContentTitle(&quot;My notification&quot;)</div><div class="line">        .setContentText(&quot;Hello World!&quot;)</div><div class="line">        .setPriority(NotificationCompat.PRIORITY_DEFAULT)</div><div class="line">        .setContentIntent(pendingIntent)</div><div class="line">        .addAction(R.drawable.ic_snooze, getString(R.string.snooze),</div><div class="line">                snoozePendingIntent);</div></pre></td></tr></table></figure></p>
+<p>关于构建一个后台运行的 <code>BroadcastReceiver</code> 的更多信息，可以查看<a href="https://developer.android.com/guide/components/broadcasts.html" target="_blank" rel="external">广播指南</a></p>
+<p>如果要构造一个媒体控制（暂停，跳过等）通知，可以查看<a href="https://developer.android.com/training/notify-user/expanded.html#media-style" target="_blank" rel="external">创建媒体控制通知</a></p>
+<h2 id="添加直接回复操作"><a href="#添加直接回复操作" class="headerlink" title="添加直接回复操作"></a>添加直接回复操作</h2><p><code>Android 7.0</code> 引入的直接回复操作，允许用户不打开 <code>Activity</code> 的情况下在通知内直接输入文本给你程序。例如，你可以在通知内回复文本消息或者更新任务列表。</p>
+<p><img src="https://developer.android.com/images/ui/notifications/reply-button_2x.png" alt="点击回复按钮直接输入文本"></p>
+<p>这个直接回复操作在通知上是一个附加操作按钮打开的文本输入框。当用户完成输入，系统会将含有响应文本的意图发送给你的程序。</p>
+<h3 id="添加回复按钮"><a href="#添加回复按钮" class="headerlink" title="添加回复按钮"></a>添加回复按钮</h3><p>创建一个支持直接回复的通知</p>
+<ol>
+<li><p>创建一个 <code>RemoteInput.Builder</code> 实例添加到你的通知操作。这个类的构造方法接受一个系统为存储输入文本使用的KEY。之后可以在程序中通过这个KEY检索输入文本。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// Key for the string that&apos;s delivered in the action&apos;s intent.</div><div class="line">private static final String KEY_TEXT_REPLY = &quot;key_text_reply&quot;;</div><div class="line"></div><div class="line">String replyLabel = getResources().getString(R.string.reply_label);</div><div class="line">RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)</div><div class="line">        .setLabel(replyLabel)</div><div class="line">        .build();</div></pre></td></tr></table></figure>
+</li>
+<li><p>为回复操作创建 <code>PendingIntent</code></p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// Build a PendingIntent for the reply action to trigger.</div><div class="line">PendingIntent replyPendingIntent =</div><div class="line">        PendingIntent.getBroadcast(getApplicationContext(),</div><div class="line">                conversation.getConversationId(),</div><div class="line">                getMessageReplyIntent(conversation.getConversationId()),</div><div class="line">                PendingIntent.FLAG_UPDATE_CURRENT);</div></pre></td></tr></table></figure>
+<p>警告：如果您重新使用PendingIntent，用户可能会回复与他们认为不同的对话。你必须为每一个会话提供一个不同的请求码或者提供一个在任何其他对话的回复意图中调用equals（）时不会返回true的意图，对话ID经常作为intent的额外套件的一部分传递，但在您调用equals（）时会被忽略。</p>
+<ol>
+<li>使用 <code>addRemoteInput()</code> 方法将 <code>RemoteInput</code> 对象附给一个操作。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// Create the reply action and add the remote input.</div><div class="line">NotificationCompat.Action action =</div><div class="line">        new NotificationCompat.Action.Builder(R.drawable.ic_reply_icon,</div><div class="line">                getString(R.string.label), replyPendingIntent)</div><div class="line">                .addRemoteInput(remoteInput)</div><div class="line">                .build();</div></pre></td></tr></table></figure>
+<ol>
+<li>添加操作到通知并发送通知</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// Build the notification and add the action.</div><div class="line">Notification newMessageNotification = new Notification.Builder(mContext, CHANNEL_ID)</div><div class="line">        .setSmallIcon(R.drawable.ic_message)</div><div class="line">        .setContentTitle(getString(R.string.title))</div><div class="line">        .setContentText(getString(R.string.content))</div><div class="line">        .addAction(action)</div><div class="line">        .build();</div><div class="line"></div><div class="line">// Issue the notification.</div><div class="line">NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);</div><div class="line">notificationManager.notify(notificationId, newMessageNotification);</div></pre></td></tr></table></figure>
+<p>用户出发回复操作按钮时系统会提示用户输入消息。如上图所示。</p>
+<h3 id="从回复中检索用户输入"><a href="#从回复中检索用户输入" class="headerlink" title="从回复中检索用户输入"></a>从回复中检索用户输入</h3><p>要从通知的答复用户界面接收用户输入，请调用 <code>RemoteInput.getResultsFromIntent()</code> ，并将接受到的 <code>Intent</code> 传递给他：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">private CharSequence getMessageText(Intent intent) &#123;</div><div class="line">    Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);</div><div class="line">    if (remoteInput != null) &#123;</div><div class="line">        return remoteInput.getCharSequence(KEY_TEXT_REPLY);</div><div class="line">    &#125;</div><div class="line">    return null;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>处理完文本后，你必须调用 <code>NotificationManagerCompat.notify()</code> 传入ID和TAG（如果有）来更新通知。以便隐藏直接回复界面并向用户确认他们的回复已经被正确接受并处理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// Build a new notification, which informs the user that the system</div><div class="line">// handled their interaction with the previous notification.</div><div class="line">Notification repliedNotification = new Notification.Builder(context, CHANNEL_ID)</div><div class="line">        .setSmallIcon(R.drawable.ic_message)</div><div class="line">        .setContentText(getString(R.string.replied))</div><div class="line">        .build();</div><div class="line"></div><div class="line">// Issue the new notification.</div><div class="line">NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);</div><div class="line">notificationManager.notify(notificationId, repliedNotification);</div></pre></td></tr></table></figure>
+<p>在处理这个新通知时，使用传递给接收者的 <code>onReceive()</code> 上下文。</p>
+<p>还应该通过调用 <code>setREmoteInputHistory()</code> 将该答复追加到底部。但是，如果您正在构建消息传递应用程序，则应该创建消息传递式通知并将新消息追加到对话中。</p>
+<h2 id="添加一个进度条"><a href="#添加一个进度条" class="headerlink" title="添加一个进度条"></a>添加一个进度条</h2><p>通知能包含一个动画进度指示器，向用户展示正在进行的操作状态。</p>
+<p><img src="https://developer.android.com/images/ui/notifications/notification-progressbar_2x.png" alt="操作过程中和之后的进度条"></p>
+<p>如果能知道操作在什么时候完成。通过调用 <code>setProgress(max,progress,false)</code> 使用指示器的“确定”模式。第一个参数是“完成”时的值（例如100），第二个参数是当前的完成值，最后一个表示这是一个“确定”进度条。</p>
+<p>随着操作的进行，持续的调用 <code>setProgress(max,progress,false)</code> 更新进度值并且重复发送通知。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);</div><div class="line">NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID);</div><div class="line">mBuilder.setContentTitle(&quot;Picture Download&quot;)</div><div class="line">        .setContentText(&quot;Download in progress&quot;)</div><div class="line">        .setSmallIcon(R.drawable.ic_notification)</div><div class="line">        .setPriority(NotificationCompat.PRIORITY_LOW);</div><div class="line"></div><div class="line">// Issue the initial notification with zero progress</div><div class="line">int PROGRESS_MAX = 100;</div><div class="line">int PROGRESS_CURRENT = 0;</div><div class="line">mBuilder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);</div><div class="line">notificationManager.notify(notificationId, mBuilder.build());</div><div class="line"></div><div class="line">// Do the job here that tracks the progress.</div><div class="line">// Usually, this should be in a worker thread</div><div class="line">// To show progress, update PROGRESS_CURRENT and update the notification with:</div><div class="line">// mBuilder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);</div><div class="line">// notificationManager.notify(notificationId, mBuilder.build());</div><div class="line"></div><div class="line">// When done, update the notification one more time to remove the progress bar</div><div class="line">mBuilder.setContentText(&quot;Download complete&quot;)</div><div class="line">        .setProgress(0,0,false);</div><div class="line">notificationManager.notify(notificationId, mBuilder.build());</div></pre></td></tr></table></figure>
+<p>操作结束时，<code>progress</code>（完成进度）应该等于 <code>max</code> （最大值）。你可以让通知显示完成时间或者移除它。不管哪种情况，都应该更新通知显示操作已经完成。调用 <code>setProgress(0,0,false)</code> 可以移除通知进度条。</p>
+<p>注意：因为进度条需要你不停的更新进度，所以这些代码通常运行在后台服务中。</p>
+<p>显示一个指示器进度条（不确定模式，不显示完成百分比），可以调用 <code>setProgress(0,0,true)</code>。 样式是一个跟上边一样的进度条，除了进度条是一个不表示进度的连续动画。这个进度条动画会一直进行着直到你调用 <code>setProgress(0,0,false)</code> 然后更新通知删除进度指示器。</p>
+<p>记得在操作完成后更新通知文本去通知用户</p>
+<p>注意：如果确实需要下载文件，应该考虑使用 <code>DownloadManager</code> 他提供自己的进度通知来跟踪下载进度。</p>
+<h2 id="设置一个系统范围的类别"><a href="#设置一个系统范围的类别" class="headerlink" title="设置一个系统范围的类别"></a>设置一个系统范围的类别</h2><p><code>Android</code> 通过一些预定义的系统范围类型去确定在用户开启不打扰模式的情况下怎么用通知打扰用户。</p>
+<p>如果你的通知是 <code>NotificationCompat</code> 中预定义的通知类别中的一个–例如 <code>CATEGORY_ALARM</code>,<code>CATEGORY_REMINDER</code>,<code>CATEGORY_EVENT</code> or <code>CATEGORY_CALL</code> ,你应该通过 <code>setCatergory()</code> 定义一个类别。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)</div><div class="line">        .setSmallIcon(R.drawable.notification_icon)</div><div class="line">        .setContentTitle(&quot;My notification&quot;)</div><div class="line">        .setContentText(&quot;Hello World!&quot;)</div><div class="line">        .setPriority(NotificationCompat.PRIORITY_DEFAULT)</div><div class="line">        .setCategory(NotificationCompat.CATEGORY_MESSAGE);</div></pre></td></tr></table></figure></p>
+<p>当设备进入忽扰模式系统将根据设置的通知类别决定通知的行为。</p>
+<p>此外，通知类别不是必须的，只有你的通知输入系统预定义中一种才需要设置。</p>
+<h2 id="设置锁屏可见性"><a href="#设置锁屏可见性" class="headerlink" title="设置锁屏可见性"></a>设置锁屏可见性</h2><p>要在锁定屏幕中控制通知可见的详细程度，调用 <code>setVisiblity()</code> 并设置下面中的一个值：</p>
+<ul>
+<li>VISIBILITY_PUBLIC 显示通知的完整内容</li>
+<li>VISIBILITY_SECRET 不显示任何内容</li>
+<li>VISIBILITY_PRIVATE 显示基础内容，例如通知的icon，标题，但是隐藏了内容；</li>
+</ul>
+<p>当设置为 <code>VISIBILITY_PRIVATE</code> 时可以提供一个隐藏部分内容的备用版本。例如，一个 SMS app 可能会显示 “你有三条文本消息”,但是隐藏了消息内容和发送人。提供这个备用通知，首先通过 <code>NotificationCompat.Builder</code> 创建一个备用通知。然后调用 <code>setPublicVersion()</code> 附加进普通通知。</p>
+<p>然而，用户对这些有最终控制权，甚至可以从通知渠道控制。</p>
+<h2 id="更新通知"><a href="#更新通知" class="headerlink" title="更新通知"></a>更新通知</h2><p>在发布后更新通知，可以再次调用 <code>NotificationManagerCompat.notify()</code> 使用原来的通知ID。如果通知已经消失会发出一个新的通知。</p>
+<p>可以选择性调用　<code>setOnlyAlertOnce()</code> 让通知只在第一次显示时才会中断用户（包括声音，震动，视觉），而不是以后的更新都中断用户。</p>
+<p>注意：Android系统在更新通知时应用了比例限制。如果你的更新过于频繁（一秒内多个），系统可能会放弃一些更新（通常一秒内只更新一次）。</p>
+<h2 id="移除通知"><a href="#移除通知" class="headerlink" title="移除通知"></a>移除通知</h2><p>通知会在以下几种情况被移除：</p>
+<ul>
+<li>用户清除</li>
+<li>创建通知时调用了 <code>setAutoCancel()</code>，用户点击通知后会自动消失。</li>
+<li>调用 <code>cancel()</code> 方法，传入指定ID，这个方法会删除指定通知。</li>
+<li>调用 <code>cancelAll()</code> 移出所有你发出的通知</li>
+<li>如果创建的时候调用 <code>setTimeoutAfter()</code> 设置了超市时间，系统会在指定时间后清除此通知，如果需要，你可以在系统清除之前清除掉。</li>
+</ul>
+<h2 id="消息应用最佳实践"><a href="#消息应用最佳实践" class="headerlink" title="消息应用最佳实践"></a>消息应用最佳实践</h2><p>使用此处列出的最佳做法作为创建消息传递和聊天应用通知时要记住的内容的快速参考</p>
+<h3 id="使用-MessagingStyle"><a href="#使用-MessagingStyle" class="headerlink" title="使用 MessagingStyle"></a>使用 MessagingStyle</h3><p>从 Android  7.0 开始，Android 为消息类型通知子提供了样式模板。 使用 <code>NotificationCompat.MessagingStyle</code> 类，你可以更改多个显示在通知的标签，包括会话标题，其他的消息和通知的内容视图。</p>
+<p>下面的代码片段演示了怎么用 <code>Messagingstyle</code> 类自定一个通知样式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Notification notification = new Notification.Builder(this, CHANNEL_ID)</div><div class="line">        .setStyle(new NotificationCompat.MessagingStyle(&quot;Me&quot;)</div><div class="line">        .setConversationTitle(&quot;Team lunch&quot;)</div><div class="line">        .addMessage(&quot;Hi&quot;, timestamp1, null) // Pass in null for user.</div><div class="line">        .addMessage(&quot;What&apos;s up?&quot;, timestamp2, &quot;Coworker&quot;)</div><div class="line">        .addMessage(&quot;Not much&quot;, timestamp3, null)</div><div class="line">        .addMessage(&quot;How about lunch?&quot;, timestamp4, &quot;Coworker&quot;))</div><div class="line">        .build();</div></pre></td></tr></table></figure>
+<p>从Android 8.0（API级别26）开始，使用NotificationCompat.MessagingStyle类的通知将以折叠形式显示更多内容。您还可以使用addHistoricMessage（）方法通过向与消息传递相关的通知添加历史消息来为对话提供上下文。</p>
+<p>使用 <code>NotificationCompat.MessagingStyle</code> 的情况：</p>
+<ul>
+<li>调用MessagingStyle.setConversationTitle（）为两个以上的人设置群组聊天的标题。一个好的对话标题可能是群组聊天的名称，或者如果它没有特定的名称，则可能是对话中的参与者列表。如果没有这个，该消息可能被误认为属于与对话中最近消息的发送者的一对一对话。</li>
+<li>使用MessagingStyle.setData（）方法包含媒体消息，如图像。目前支持模式图像/ *的MIME类型</li>
+</ul>
+<h3 id="使用直接回复"><a href="#使用直接回复" class="headerlink" title="使用直接回复"></a>使用直接回复</h3><p>直接回复允许用户回复内部消息</p>
+<ul>
+<li>在用户使用内联回复操作回复后，使用MessagingStyle.addMessage（）更新MessagingStyle通知，并且不收回或取消通知。不取消通知允许用户从通知中发送多个回复。</li>
+<li>要使内联回复操作与Android Wear兼容，请调用Action.WearableExtender.setHintDisplayInlineAction（true）。</li>
+<li>使用addHistoricMessage（）方法通过向通知添加历史消息来为直接回复对话提供上下文</li>
+</ul>
+<h3 id="启用智能回复"><a href="#启用智能回复" class="headerlink" title="启用智能回复"></a>启用智能回复</h3><p>要启用智能回复，请在回复操作上调用setAllowGeneratedResponses（true）。这会使通知桥接到Android Wear设备时，用户可以使用智能回复响应。智能答复响应由完全在机器学习模型生成，使用NotificationCompat.MessagingStyle通知提供的上下文，并且没有数据上传到互联网以生成响应</p>
+<h3 id="添加通知元数据"><a href="#添加通知元数据" class="headerlink" title="添加通知元数据"></a>添加通知元数据</h3><p>当设备处于免打扰模式时，分配通知元数据以告知系统如何处理您的应用通知。例如，使用addPerson（）或setCategory（Notification.CATEGORY_MESSAGE）方法覆盖免打扰模式。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/通知/" rel="tag"># 通知</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/15/Room/" rel="next" title="Android Room 持久化库">
+                <i class="fa fa-chevron-left"></i> Android Room 持久化库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/27/CreateAndManageNotificationChannel/" rel="prev" title="创建管理通知渠道">
+                创建管理通知渠道 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微薄</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/user.jpg"
+               alt="skymxc" />
+          <p class="site-author-name" itemprop="name">skymxc</p>
+           
+              <p class="site-description motion-element" itemprop="description">记录coding路上的点滴</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives">
+            
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">博文</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/skymxc" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个通知"><span class="nav-number">1.</span> <span class="nav-text">创建一个通知</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加支持库"><span class="nav-number">2.</span> <span class="nav-text">添加支持库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个基础通知"><span class="nav-number">3.</span> <span class="nav-text">创建一个基础通知</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置通知内容"><span class="nav-number">3.1.</span> <span class="nav-text">设置通知内容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建渠道和设置重要性"><span class="nav-number">4.</span> <span class="nav-text">创建渠道和设置重要性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置通知点按操作"><span class="nav-number">4.1.</span> <span class="nav-text">设置通知点按操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示通知"><span class="nav-number">4.2.</span> <span class="nav-text">显示通知</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增加操作按钮"><span class="nav-number">5.</span> <span class="nav-text">增加操作按钮</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加直接回复操作"><span class="nav-number">6.</span> <span class="nav-text">添加直接回复操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加回复按钮"><span class="nav-number">6.1.</span> <span class="nav-text">添加回复按钮</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从回复中检索用户输入"><span class="nav-number">6.2.</span> <span class="nav-text">从回复中检索用户输入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加一个进度条"><span class="nav-number">7.</span> <span class="nav-text">添加一个进度条</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置一个系统范围的类别"><span class="nav-number">8.</span> <span class="nav-text">设置一个系统范围的类别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置锁屏可见性"><span class="nav-number">9.</span> <span class="nav-text">设置锁屏可见性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新通知"><span class="nav-number">10.</span> <span class="nav-text">更新通知</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移除通知"><span class="nav-number">11.</span> <span class="nav-text">移除通知</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息应用最佳实践"><span class="nav-number">12.</span> <span class="nav-text">消息应用最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-MessagingStyle"><span class="nav-number">12.1.</span> <span class="nav-text">使用 MessagingStyle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用直接回复"><span class="nav-number">12.2.</span> <span class="nav-text">使用直接回复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启用智能回复"><span class="nav-number">12.3.</span> <span class="nav-text">启用智能回复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加通知元数据"><span class="nav-number">12.4.</span> <span class="nav-text">添加通知元数据</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 &mdash; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">skymxc</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skymxc.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://blog.skymxc.com/2018/04/20/CreateNotification/';
+          this.page.identifier = '2018/04/20/CreateNotification/';
+          this.page.title = '创建通知';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skymxc.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
