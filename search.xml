@@ -4,9 +4,18 @@
   
     
     <entry>
-      <title><![CDATA[Proguard]]></title>
+      <title></title>
       <url>http://blog.skymxc.com/2018/06/03/Proguard/</url>
-      <content type="html"><![CDATA[<p>为了决定哪些代码要被保留哪些代码要出丢弃和混淆，必须指定入口点。这些入口点通常是 main方法，activity，service等。</p>
+      <content type="html"><![CDATA[<hr>
+<p>title: Proguard 常用规则<br>date: 2018-06-03 14:32:47<br>tags:</p>
+<ul>
+<li>Proguard<br>categories:</li>
+<li>Proguard<br>description: Proguard 常用规则<br>keywords:</li>
+<li>Proguard</li>
+<li>Proguard 常用规则</li>
+</ul>
+<hr>
+<p>为了决定哪些代码要被保留哪些代码要出丢弃和混淆，必须指定入口点。这些入口点通常是 main方法，activity，service等。</p>
 <ul>
 <li>在压缩阶段，Proguard从这些入口点开始递归确定哪些类或类成员要被使用，其余的都会被丢弃。</li>
 <li>在优化阶段，ProGuard进一步优化代码。在其他优化中，可以将不是入口点的类和方法设为私有，静态或最终，可以删除未使用的参数，并且可以内联一些方法。</li>
@@ -49,61 +58,169 @@
 </blockquote>
 <p>例如，为了保留一个程序，你要指定Main方法和类。为了保留一个库，你应该指定所有被公开访问的元素。</p>
 <ul>
-<li>保留 main 类和 main 方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">-keep public class com.example.MyMain &#123; </div><div class="line">      public static void main(java.lang.String[]); </div><div class="line">&#125;</div><div class="line">``` </div><div class="line"></div><div class="line">- 保留所有被公开访问的元素</div><div class="line"></div><div class="line">```proguard</div><div class="line">-keep public class * &#123; </div><div class="line">      public protected *; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<li><p>保留 main 类和 main 方法</p>
+<pre><code class="proguard">-keep public class com.example.MyMain { 
+    public static void main(java.lang.String[]); 
+}
+</code></pre>
+</li>
+<li><p>保留所有被公开访问的元素</p>
 </li>
 </ul>
+<pre><code class="proguard">-keep public class * { 
+      public protected *; 
+}
+</code></pre>
 <p><strong>Note:如果你只保留了类，没有保留类成员，那么你的类成员将不会被保留</strong></p>
 <p>例如 有一个实体类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Product</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> A = <span class="number">1</span>;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> B = <span class="number">2</span>;</div><div class="line">    <span class="keyword">private</span> String name;</div><div class="line">    <span class="keyword">private</span> String url;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUrl</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> url;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUrl</span><span class="params">(String url)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.url = url;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Product</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>{
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> A = <span class="number">1</span>;
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> B = <span class="number">2</span>;
+    <span class="keyword">private</span> String name;
+    <span class="keyword">private</span> String url;
+
+    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> name;
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>{
+        <span class="keyword">this</span>.name = name;
+    }
+
+    <span class="function"><span class="keyword">public</span> String <span class="title">getUrl</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> url;
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUrl</span><span class="params">(String url)</span> </span>{
+        <span class="keyword">this</span>.url = url;
+    }
+}
+</code></pre>
 <p>规则配置如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 保留 Product类</div><div class="line">-keep class cn.sintoon.camera.Product</div></pre></td></tr></table></figure>
-<p> usage.txt文件中有以下内容 ，可以看到 类中的成员全部被移除了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">cn.sintoon.camera.Product:</div><div class="line">    public static final int A</div><div class="line">    public static final int B</div><div class="line">    private java.lang.String name</div><div class="line">    private java.lang.String url</div><div class="line">    16:16:public java.lang.String getName()</div><div class="line">    20:21:public void setName(java.lang.String)</div><div class="line">    24:24:public java.lang.String getUrl()</div><div class="line">    28:29:public void setUrl(java.lang.String)</div></pre></td></tr></table></figure></p>
+<pre><code class="proguard"># 保留 Product类
+-keep class cn.sintoon.camera.Product
+</code></pre>
+<p> usage.txt文件中有以下内容 ，可以看到 类中的成员全部被移除了</p>
+<pre><code class="text">cn.sintoon.camera.Product:
+    public static final int A
+    public static final int B
+    private java.lang.String name
+    private java.lang.String url
+    16:16:public java.lang.String getName()
+    20:21:public void setName(java.lang.String)
+    24:24:public java.lang.String getUrl()
+    28:29:public void setUrl(java.lang.String)
+</code></pre>
 <h3 id="keepclassmembers-modifier-…-class-specification"><a href="#keepclassmembers-modifier-…-class-specification" class="headerlink" title="-keepclassmembers [,modifier,…] class specification"></a>-keepclassmembers [,modifier,…] class specification</h3><blockquote>
 <p>指定要保留的类成员，<strong>前提是它们的类也被保留了</strong>。</p>
 </blockquote>
 <p>例如，你想保留实现了 Serializable 接口的类中的所有 serializable 方法和字段。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">-keepclassmembers class * implements java.io.Serializable &#123; </div><div class="line">     private static final java.io.ObjectStreamField[] serialPersistentFields; </div><div class="line">     private void writeObject(java.io.ObjectOutputStream); </div><div class="line">     private void readObject(java.io.ObjectInputStream); </div><div class="line">     java.lang.Object writeReplace(); </div><div class="line">     java.lang.Object readResolve(); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<pre><code class="proguard">-keepclassmembers class * implements java.io.Serializable { 
+     private static final java.io.ObjectStreamField[] serialPersistentFields; 
+     private void writeObject(java.io.ObjectOutputStream); 
+     private void readObject(java.io.ObjectInputStream); 
+     java.lang.Object writeReplace(); 
+     java.lang.Object readResolve(); 
+}
+</code></pre>
 <p><strong>Note: 注意字段类型带上包名; String 类型为 java.lang.String;另外，如果只保留了类成员没有保留类跟没有保留一样</strong></p>
 <p>还是拿上面那个例子，改一下规则</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">-keepclassmembers class * implements java.io.Serializable&#123;</div><div class="line">    private String name;</div><div class="line">     public String getName();</div><div class="line">     public static final int A;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>再看 usage.txt 类都被移除了，保留字段没毛线用。<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cn.sintoon.camera.Product</div></pre></td></tr></table></figure></p>
+<pre><code class="proguard">-keepclassmembers class * implements java.io.Serializable{
+    private String name;
+     public String getName();
+     public static final int A;
+}
+</code></pre>
+<p>再看 usage.txt 类都被移除了，保留字段没毛线用。</p>
+<pre><code class="text">cn.sintoon.camera.Product
+</code></pre>
 <h3 id="keepclasseswithmembers-modifier-…-class-specification"><a href="#keepclasseswithmembers-modifier-…-class-specification" class="headerlink" title="-keepclasseswithmembers [,modifier,…] class specification"></a>-keepclasseswithmembers [,modifier,…] class specification</h3><blockquote>
 <p>指定要保留的类和类成员，条件是所有指定的类成员都在。</p>
 </blockquote>
 <p>例如，你要保留程序中所有的主程序，不用显示的列出。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-keepclasseswithmembers public class * &#123; </div><div class="line">    public static void main(java.lang.String[]); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<pre><code class="proguard">-keepclasseswithmembers public class * { 
+    public static void main(java.lang.String[]); 
+}
+</code></pre>
 <p>还是用上面那个例子，保留住类和所有的类成员</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">-keepclasseswithmembers class cn.sintoon.camera.Product&#123;</div><div class="line"> public static final int A;</div><div class="line">    public static final int B;</div><div class="line">    private java.lang.String name;</div><div class="line">    private java.lang.String url;</div><div class="line">    public java.lang.String getName();</div><div class="line">    public void setName(java.lang.String);</div><div class="line">    public java.lang.String getUrl();</div><div class="line">    public void setUrl(java.lang.String);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<pre><code class="proguard">-keepclasseswithmembers class cn.sintoon.camera.Product{
+ public static final int A;
+    public static final int B;
+    private java.lang.String name;
+    private java.lang.String url;
+    public java.lang.String getName();
+    public void setName(java.lang.String);
+    public java.lang.String getUrl();
+    public void setUrl(java.lang.String);
+}
+</code></pre>
 <p>看 seeds.text 中就会出现这个类和类成员</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">cn.sintoon.camera.Product</div><div class="line">cn.sintoon.camera.Product: int A</div><div class="line">cn.sintoon.camera.Product: int B</div><div class="line">cn.sintoon.camera.Product: java.lang.String name</div><div class="line">cn.sintoon.camera.Product: java.lang.String url</div><div class="line">cn.sintoon.camera.Product: java.lang.String getName()</div><div class="line">cn.sintoon.camera.Product: void setName(java.lang.String)</div><div class="line">cn.sintoon.camera.Product: java.lang.String getUrl()</div><div class="line">cn.sintoon.camera.Product: void setUrl(java.lang.String)</div></pre></td></tr></table></figure>
+<pre><code class="text">cn.sintoon.camera.Product
+cn.sintoon.camera.Product: int A
+cn.sintoon.camera.Product: int B
+cn.sintoon.camera.Product: java.lang.String name
+cn.sintoon.camera.Product: java.lang.String url
+cn.sintoon.camera.Product: java.lang.String getName()
+cn.sintoon.camera.Product: void setName(java.lang.String)
+cn.sintoon.camera.Product: java.lang.String getUrl()
+cn.sintoon.camera.Product: void setUrl(java.lang.String)
+</code></pre>
 <p><strong>Note:一定要注意指定的类成员必须存在，如果不存在的话，这个规则相当于没有配，一点作用没有</strong></p>
 <h3 id="if-class-specification"><a href="#if-class-specification" class="headerlink" title="-if class specification"></a>-if class specification</h3><blockquote>
 <p>指定必须存在的类和类成员来激活后续 keep 规则（-keep，-keepclassmembers，…）。条件和随后的 keep 规则可以共享通配符和对通配符的引用。</p>
 </blockquote>
 <p> 例如，你可以保留类，条件是你的项目中存在具有相关名称的类，就像使用 Dagger 和 Butterknife 等。</p>
-<p> 如果你的Android应用程序包含用于依赖注入的Dagger，则需要几行配置，因为Dagger严重依赖反射在运行时将代码绑定在一起。需要保留注释的类成员，生成的类和实用程序类<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">-keepclassmembers,allowobfuscation class * &#123; </div><div class="line">    @dagger.** *; </div><div class="line">&#125; </div><div class="line"></div><div class="line">-keep class **$$ModuleAdapter </div><div class="line">-keep class **$$InjectAdapter </div><div class="line">-keep class **$$StaticInjection</div><div class="line"></div><div class="line">-if   class **$$ModuleAdapter</div><div class="line">-keep class &lt;1&gt;</div><div class="line"></div><div class="line">-if   class **$$InjectAdapter</div><div class="line">-keep class &lt;1&gt;</div><div class="line"></div><div class="line">-if   class **$$StaticInjection</div><div class="line">-keep class &lt;1&gt; </div><div class="line"></div><div class="line">-keepnames class dagger.Lazy</div></pre></td></tr></table></figure></p>
+<p> 如果你的Android应用程序包含用于依赖注入的Dagger，则需要几行配置，因为Dagger严重依赖反射在运行时将代码绑定在一起。需要保留注释的类成员，生成的类和实用程序类</p>
+<pre><code class="proguard">-keepclassmembers,allowobfuscation class * { 
+    @dagger.** *; 
+} 
+
+-keep class **$$ModuleAdapter 
+-keep class **$$InjectAdapter 
+-keep class **$$StaticInjection
+
+-if   class **$$ModuleAdapter
+-keep class &lt;1&gt;
+
+-if   class **$$InjectAdapter
+-keep class &lt;1&gt;
+
+-if   class **$$StaticInjection
+-keep class &lt;1&gt; 
+
+-keepnames class dagger.Lazy
+</code></pre>
 <p>这个 规则 我在 studio 中测试 没有被识别</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java.io.IOException: proguard.ParseException: Unknown option &apos;-if&apos;</div></pre></td></tr></table></figure>
+<pre><code class="text">java.io.IOException: proguard.ParseException: Unknown option &apos;-if&apos;
+</code></pre>
 <h3 id="keepnames-class-specification"><a href="#keepnames-class-specification" class="headerlink" title="-keepnames class specification"></a>-keepnames class specification</h3><p> -keep,allowshrinking class specification的简写</p>
 <blockquote>
 <p>指定要保留名称的类成员和类成员（如果它们在压缩阶段未被删除）。</p>
 </blockquote>
 <p>例如，你可能希望保留实现 Serializable 接口的类的所有类名，以便处理后的代码与任何原始序列化的类保持兼容。<br>完全不用的类仍然可以删除。只有在混淆时才适用。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-keepnames class * implements java.io.Serializable</div></pre></td></tr></table></figure>
+<pre><code class="proguard">-keepnames class * implements java.io.Serializable
+</code></pre>
 <p><strong>Note: 前提是在压缩阶段没有被删除掉，这里相当于使用了修饰符 allowshrinking</strong></p>
 <h3 id="keepclassmembernames-class-specification"><a href="#keepclassmembernames-class-specification" class="headerlink" title="-keepclassmembernames class specification"></a>-keepclassmembernames class specification</h3><p>-keepclassmembers,allowshrinking class specification 的简写</p>
 <blockquote>
 <p>指定要保留名称的类成员（如果它们在压缩阶段未被删除）。</p>
 </blockquote>
 <p>例如，在处理由JDK 1.2或更早版本编译的库时，您可能希望保留合成类$方法的名称。<br>所以当处理使用处理过的库的应用程序时，混淆器可以再次检测到它（尽管ProGuard本身不需要这个）。<br>只有在混淆时才适用。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-keepclassmembernames class * &#123; </div><div class="line">    java.lang.Class class$(java.lang.String); </div><div class="line">    java.lang.Class class$(java.lang.String, boolean); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<pre><code class="proguard">-keepclassmembernames class * { 
+    java.lang.Class class$(java.lang.String); 
+    java.lang.Class class$(java.lang.String, boolean); 
+}
+</code></pre>
 <p><strong>Note: 前提是在压缩阶段没有被删除掉，这里相当于使用了修饰符 allowshrinking</strong></p>
 <h3 id="keepclasseswithmembernames-class-specification"><a href="#keepclasseswithmembernames-class-specification" class="headerlink" title="-keepclasseswithmembernames class specification"></a>-keepclasseswithmembernames class specification</h3><p>-keepclasseswithmembers,allowshrinking class specification 的简写</p>
 <blockquote>
 <p>指定要保留名称的类和类成员，条件是所有指定的类成员都存在于收缩阶段之后。</p>
 </blockquote>
 <p>例如，可能希望保留所有本机方法名称和类别的名称，以便处理的代码仍可以与本机库代码链接。完全没有使用的本地方法仍然可以被删除。<br>如果使用了一个类文件，但它的本地方法都不是，它的名字仍然会被混淆。只有在混淆时才适用。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-keepclasseswithmembernames,includedescriptorclasses class * &#123; </div><div class="line">    native &lt;methods&gt;; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<pre><code class="proguard">-keepclasseswithmembernames,includedescriptorclasses class * { 
+    native &lt;methods&gt;; 
+}
+</code></pre>
 <p><strong>Note: 前提是在压缩阶段没有被删除掉，这里相当于使用了修饰符 allowshrinking</strong></p>
 <h3 id="printseeds-filename"><a href="#printseeds-filename" class="headerlink" title="-printseeds [filename]"></a>-printseeds [filename]</h3><blockquote>
 <p>指定详尽列出由各种-keep选项匹配的类和类成员。列表打印到标准输出或给定文件。该列表可用于验证是否真的找到了预期的类成员，尤其是在使用通配符的情况下。</p>
@@ -170,7 +287,15 @@
 <p>可选过滤器是Java虚拟机和ProGuard支持的属性名称的逗号分隔列表。<br>属性名称可以包含？，*和**通配符，并且可以在之前加上！否定器。</p>
 <p>例如，在处理库时，您至少应保留Exceptions，InnerClasses和Signature属性。<br>您还应该保留SourceFile和LineNumberTable属性以生成有用的混淆堆栈跟踪。<br>最后，如果你的代码依赖于它们，你可能需要保留注释。</p>
 <p>只有在混淆时才适用。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 保留Annotation不混淆</div><div class="line">-keepattributes *Annotation*,InnerClasses</div><div class="line"></div><div class="line"># 避免混淆泛型</div><div class="line">-keepattributes Signature</div><div class="line"></div><div class="line"># 抛出异常时保留代码行号</div><div class="line">-keepattributes SourceFile,LineNumberTable</div></pre></td></tr></table></figure>
+<pre><code class="proguard"># 保留Annotation不混淆
+-keepattributes *Annotation*,InnerClasses
+
+# 避免混淆泛型
+-keepattributes Signature
+
+# 抛出异常时保留代码行号
+-keepattributes SourceFile,LineNumberTable
+</code></pre>
 <h3 id="keepparameternames"><a href="#keepparameternames" class="headerlink" title="-keepparameternames"></a>-keepparameternames</h3><blockquote>
 <p>指定保留所保存方法的参数名称和类型。</p>
 </blockquote>
@@ -277,7 +402,19 @@
 <p>类规范是类和类成员（字段和方法）的模板。它用于各种-keep选项和-assumenosideeffects选项中。相应的选项仅适用于与模板匹配的类和类成员。</p>
 </blockquote>
 <p>模板的设计看起来非常类似于Java，并为通配符进行了一些扩展。为了理解语法，你应该看看这些<a href="https://www.guardsquare.com/proguard/manual/examples" target="_blank" rel="external">例子</a>，但这是对一个完整的正式定义的尝试：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[@annotationtype] [[!]public|final|abstract|@ ...] [!]interface|class|enum classname</div><div class="line">    [extends|implements [@annotationtype] classname]</div><div class="line">[&#123;</div><div class="line">    [@annotationtype] [[!]public|private|protected|static|volatile|transient ...] &lt;fields&gt; |</div><div class="line">                                                                      (fieldtype fieldname);</div><div class="line">    [@annotationtype] [[!]public|private|protected|static|synchronized|native|abstract|strictfp ...] &lt;methods&gt; |</div><div class="line">                                                                                           &lt;init&gt;(argumenttype,...) |</div><div class="line">                                                                                           classname(argumenttype,...) |</div><div class="line">                                                                                           (returntype methodname(argumenttype,...));</div><div class="line">    [@annotationtype] [[!]public|private|protected|static ... ] *;</div><div class="line">    ...</div><div class="line">&#125;]</div></pre></td></tr></table></figure>
+<pre><code class="text">[@annotationtype] [[!]public|final|abstract|@ ...] [!]interface|class|enum classname
+    [extends|implements [@annotationtype] classname]
+[{
+    [@annotationtype] [[!]public|private|protected|static|volatile|transient ...] &lt;fields&gt; |
+                                                                      (fieldtype fieldname);
+    [@annotationtype] [[!]public|private|protected|static|synchronized|native|abstract|strictfp ...] &lt;methods&gt; |
+                                                                                           &lt;init&gt;(argumenttype,...) |
+                                                                                           classname(argumenttype,...) |
+                                                                                           (returntype methodname(argumenttype,...));
+    [@annotationtype] [[!]public|private|protected|static ... ] *;
+    ...
+}]
+</code></pre>
 <p>方括号 “[]” 表示其内容是可选的。<br>省略号点“…”表示可以指定任意数量的前述项目。<br>垂直条“|”划定了两种选择。<br>非粗体括号“（）”只是将属于规范的部分组合在一起。<br>缩进尝试澄清预期的含义，但在实际配置文件中，空白是不相关的。</p>
 <blockquote>
 <p>class关键字指的是任何接口或类。interface 关键字限制匹配接口类。 enum关键字限制匹配枚举类。在 interface 或 enum 关键字前加上！将匹配限制为不是接口或枚举的类。</p>
