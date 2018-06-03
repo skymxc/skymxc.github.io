@@ -4,6 +4,402 @@
   
     
     <entry>
+      <title><![CDATA[Proguard]]></title>
+      <url>http://blog.skymxc.com/2018/06/03/Proguard/</url>
+      <content type="html"><![CDATA[<p>为了决定哪些代码要被保留哪些代码要出丢弃和混淆，必须指定入口点。这些入口点通常是 main方法，activity，service等。</p>
+<ul>
+<li>在压缩阶段，Proguard从这些入口点开始递归确定哪些类或类成员要被使用，其余的都会被丢弃。</li>
+<li>在优化阶段，ProGuard进一步优化代码。在其他优化中，可以将不是入口点的类和方法设为私有，静态或最终，可以删除未使用的参数，并且可以内联一些方法。</li>
+<li>在混淆阶段，ProGuard会重新命名不属于入口点的类和类成员。在整个过程中，保持入口点确保它们仍然可以通过其原始名称访问。</li>
+</ul>
+<h2 id="检查-Proguard结果"><a href="#检查-Proguard结果" class="headerlink" title="检查 Proguard结果"></a>检查 Proguard结果</h2><p>为了避免引入 bug 我们有必要对 结果进行检查。<br>在Android中，开启了混淆构建会在 <module-name>/build/outputs/mapping/ 目录下会输出以下文件：</module-name></p>
+<ul>
+<li>dump.txt 描述APK文件中所有类的内部结构</li>
+<li>mapping.txt 提供混淆前后类、方法、类成员等的对照表</li>
+<li>seeds.txt 列出没有被混淆的类和成员</li>
+<li>usage.txt 列出被移除的代码</li>
+</ul>
+<p>我们可以根据 seeds.txt 文件检查未被混淆的类和成员中是否已包含所有期望保留的，再根据 usage.txt 文件查看是否有被误移除的代码。</p>
+<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><blockquote>
+<p>ProGuard为配置的许多不同方面提供了过滤器选项：文件名称，目录，类别，软件包，属性，优化等。</p>
+</blockquote>
+<p>过滤器是可以包含通配符的逗号分隔名称列表。只有与列表中的项目匹配的名称才会通过过滤器。受支持的通配符取决于使用过滤器的名称类型，但以下通配符是通用的：</p>
+<ul>
+<li>?  匹配名称中的任何单个字符。</li>
+<li>*  匹配不包含包分隔符或目录分隔符的名称的任何部分</li>
+<li>** 匹配名称的任何部分，可能包含任意数量的包分隔符或目录分隔符。</li>
+</ul>
+<p>此外，名称前可以加上否定感叹号’！’排除名称与进一步尝试匹配后续名称。<br>因此，如果名称与过滤器中的某个项目相匹配，则会立即接受或拒绝该项目，具体取决于项目是否具有否定符。<br>如果名称与项目不匹配，则会针对下一个项目进行测试，依此类推。<br>它如果与任何项目不匹配，则根据最后一项是否具有否定符而被接受或拒绝。</p>
+<p>如，”!foobar，*.bar” 匹配除了foobar之外的所有以bar结尾的名称。</p>
+<p>下面以过滤文件具体举例。</p>
+<h3 id="文件过滤器"><a href="#文件过滤器" class="headerlink" title="文件过滤器"></a>文件过滤器</h3><blockquote>
+<p>像通用过滤器一样，文件过滤器是逗号分隔的文件名列表，可以包含通配符。只有具有匹配文件名的文件被读取（在输入的情况下），或者被写入（在输出的情况下）。支持以下通配符：</p>
+</blockquote>
+<ul>
+<li>? 匹配文件名字中的任何单个字符</li>
+<li>* 匹配不包含目录分隔符的文件名的任何部分。</li>
+<li>** 匹配文件名的任何部分，可以包含任意数目的目录分隔符。</li>
+</ul>
+<p>例如 “java/**.class ,javax/**.class” 可以匹配 java和javax目录下所有的 class 文件。</p>
+<p>此外，文件名前面可能带有感叹号’！’将文件名排除在与后续文件名匹配上。</p>
+<p>例如  “!**.gif,images/**“ 匹配images目录下所有除了 gif 的文件</p>
+<p>关于更详细的用法 可以查看官方文档 <a href="https://www.guardsquare.com/en/proguard/manual/examples#filtering" target="_blank" rel="external">https://www.guardsquare.com/en/proguard/manual/examples#filtering</a></p>
+<h2 id="keep"><a href="#keep" class="headerlink" title="keep"></a>keep</h2><h3 id="keep-modifier-…-class-specification"><a href="#keep-modifier-…-class-specification" class="headerlink" title="-keep [,modifier,…] class specification"></a>-keep [,modifier,…] class specification</h3><blockquote>
+<p>指定类和类成员（字段，方法）作为入口点被保留。</p>
+</blockquote>
+<p>例如，为了保留一个程序，你要指定Main方法和类。为了保留一个库，你应该指定所有被公开访问的元素。</p>
+<ul>
+<li>保留 main 类和 main 方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">-keep public class com.example.MyMain &#123; </div><div class="line">      public static void main(java.lang.String[]); </div><div class="line">&#125;</div><div class="line">``` </div><div class="line"></div><div class="line">- 保留所有被公开访问的元素</div><div class="line"></div><div class="line">```proguard</div><div class="line">-keep public class * &#123; </div><div class="line">      public protected *; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>Note:如果你只保留了类，没有保留类成员，那么你的类成员将不会被保留</strong></p>
+<p>例如 有一个实体类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Product</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> A = <span class="number">1</span>;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> B = <span class="number">2</span>;</div><div class="line">    <span class="keyword">private</span> String name;</div><div class="line">    <span class="keyword">private</span> String url;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUrl</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> url;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUrl</span><span class="params">(String url)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.url = url;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>规则配置如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 保留 Product类</div><div class="line">-keep class cn.sintoon.camera.Product</div></pre></td></tr></table></figure>
+<p> usage.txt文件中有以下内容 ，可以看到 类中的成员全部被移除了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">cn.sintoon.camera.Product:</div><div class="line">    public static final int A</div><div class="line">    public static final int B</div><div class="line">    private java.lang.String name</div><div class="line">    private java.lang.String url</div><div class="line">    16:16:public java.lang.String getName()</div><div class="line">    20:21:public void setName(java.lang.String)</div><div class="line">    24:24:public java.lang.String getUrl()</div><div class="line">    28:29:public void setUrl(java.lang.String)</div></pre></td></tr></table></figure></p>
+<h3 id="keepclassmembers-modifier-…-class-specification"><a href="#keepclassmembers-modifier-…-class-specification" class="headerlink" title="-keepclassmembers [,modifier,…] class specification"></a>-keepclassmembers [,modifier,…] class specification</h3><blockquote>
+<p>指定要保留的类成员，<strong>前提是它们的类也被保留了</strong>。</p>
+</blockquote>
+<p>例如，你想保留实现了 Serializable 接口的类中的所有 serializable 方法和字段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">-keepclassmembers class * implements java.io.Serializable &#123; </div><div class="line">     private static final java.io.ObjectStreamField[] serialPersistentFields; </div><div class="line">     private void writeObject(java.io.ObjectOutputStream); </div><div class="line">     private void readObject(java.io.ObjectInputStream); </div><div class="line">     java.lang.Object writeReplace(); </div><div class="line">     java.lang.Object readResolve(); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>Note: 注意字段类型带上包名; String 类型为 java.lang.String;另外，如果只保留了类成员没有保留类跟没有保留一样</strong></p>
+<p>还是拿上面那个例子，改一下规则</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">-keepclassmembers class * implements java.io.Serializable&#123;</div><div class="line">    private String name;</div><div class="line">     public String getName();</div><div class="line">     public static final int A;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>再看 usage.txt 类都被移除了，保留字段没毛线用。<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cn.sintoon.camera.Product</div></pre></td></tr></table></figure></p>
+<h3 id="keepclasseswithmembers-modifier-…-class-specification"><a href="#keepclasseswithmembers-modifier-…-class-specification" class="headerlink" title="-keepclasseswithmembers [,modifier,…] class specification"></a>-keepclasseswithmembers [,modifier,…] class specification</h3><blockquote>
+<p>指定要保留的类和类成员，条件是所有指定的类成员都在。</p>
+</blockquote>
+<p>例如，你要保留程序中所有的主程序，不用显示的列出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-keepclasseswithmembers public class * &#123; </div><div class="line">    public static void main(java.lang.String[]); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>还是用上面那个例子，保留住类和所有的类成员</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">-keepclasseswithmembers class cn.sintoon.camera.Product&#123;</div><div class="line"> public static final int A;</div><div class="line">    public static final int B;</div><div class="line">    private java.lang.String name;</div><div class="line">    private java.lang.String url;</div><div class="line">    public java.lang.String getName();</div><div class="line">    public void setName(java.lang.String);</div><div class="line">    public java.lang.String getUrl();</div><div class="line">    public void setUrl(java.lang.String);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>看 seeds.text 中就会出现这个类和类成员</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">cn.sintoon.camera.Product</div><div class="line">cn.sintoon.camera.Product: int A</div><div class="line">cn.sintoon.camera.Product: int B</div><div class="line">cn.sintoon.camera.Product: java.lang.String name</div><div class="line">cn.sintoon.camera.Product: java.lang.String url</div><div class="line">cn.sintoon.camera.Product: java.lang.String getName()</div><div class="line">cn.sintoon.camera.Product: void setName(java.lang.String)</div><div class="line">cn.sintoon.camera.Product: java.lang.String getUrl()</div><div class="line">cn.sintoon.camera.Product: void setUrl(java.lang.String)</div></pre></td></tr></table></figure>
+<p><strong>Note:一定要注意指定的类成员必须存在，如果不存在的话，这个规则相当于没有配，一点作用没有</strong></p>
+<h3 id="if-class-specification"><a href="#if-class-specification" class="headerlink" title="-if class specification"></a>-if class specification</h3><blockquote>
+<p>指定必须存在的类和类成员来激活后续 keep 规则（-keep，-keepclassmembers，…）。条件和随后的 keep 规则可以共享通配符和对通配符的引用。</p>
+</blockquote>
+<p> 例如，你可以保留类，条件是你的项目中存在具有相关名称的类，就像使用 Dagger 和 Butterknife 等。</p>
+<p> 如果你的Android应用程序包含用于依赖注入的Dagger，则需要几行配置，因为Dagger严重依赖反射在运行时将代码绑定在一起。需要保留注释的类成员，生成的类和实用程序类<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">-keepclassmembers,allowobfuscation class * &#123; </div><div class="line">    @dagger.** *; </div><div class="line">&#125; </div><div class="line"></div><div class="line">-keep class **$$ModuleAdapter </div><div class="line">-keep class **$$InjectAdapter </div><div class="line">-keep class **$$StaticInjection</div><div class="line"></div><div class="line">-if   class **$$ModuleAdapter</div><div class="line">-keep class &lt;1&gt;</div><div class="line"></div><div class="line">-if   class **$$InjectAdapter</div><div class="line">-keep class &lt;1&gt;</div><div class="line"></div><div class="line">-if   class **$$StaticInjection</div><div class="line">-keep class &lt;1&gt; </div><div class="line"></div><div class="line">-keepnames class dagger.Lazy</div></pre></td></tr></table></figure></p>
+<p>这个 规则 我在 studio 中测试 没有被识别</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java.io.IOException: proguard.ParseException: Unknown option &apos;-if&apos;</div></pre></td></tr></table></figure>
+<h3 id="keepnames-class-specification"><a href="#keepnames-class-specification" class="headerlink" title="-keepnames class specification"></a>-keepnames class specification</h3><p> -keep,allowshrinking class specification的简写</p>
+<blockquote>
+<p>指定要保留名称的类成员和类成员（如果它们在压缩阶段未被删除）。</p>
+</blockquote>
+<p>例如，你可能希望保留实现 Serializable 接口的类的所有类名，以便处理后的代码与任何原始序列化的类保持兼容。<br>完全不用的类仍然可以删除。只有在混淆时才适用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-keepnames class * implements java.io.Serializable</div></pre></td></tr></table></figure>
+<p><strong>Note: 前提是在压缩阶段没有被删除掉，这里相当于使用了修饰符 allowshrinking</strong></p>
+<h3 id="keepclassmembernames-class-specification"><a href="#keepclassmembernames-class-specification" class="headerlink" title="-keepclassmembernames class specification"></a>-keepclassmembernames class specification</h3><p>-keepclassmembers,allowshrinking class specification 的简写</p>
+<blockquote>
+<p>指定要保留名称的类成员（如果它们在压缩阶段未被删除）。</p>
+</blockquote>
+<p>例如，在处理由JDK 1.2或更早版本编译的库时，您可能希望保留合成类$方法的名称。<br>所以当处理使用处理过的库的应用程序时，混淆器可以再次检测到它（尽管ProGuard本身不需要这个）。<br>只有在混淆时才适用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-keepclassmembernames class * &#123; </div><div class="line">    java.lang.Class class$(java.lang.String); </div><div class="line">    java.lang.Class class$(java.lang.String, boolean); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>Note: 前提是在压缩阶段没有被删除掉，这里相当于使用了修饰符 allowshrinking</strong></p>
+<h3 id="keepclasseswithmembernames-class-specification"><a href="#keepclasseswithmembernames-class-specification" class="headerlink" title="-keepclasseswithmembernames class specification"></a>-keepclasseswithmembernames class specification</h3><p>-keepclasseswithmembers,allowshrinking class specification 的简写</p>
+<blockquote>
+<p>指定要保留名称的类和类成员，条件是所有指定的类成员都存在于收缩阶段之后。</p>
+</blockquote>
+<p>例如，可能希望保留所有本机方法名称和类别的名称，以便处理的代码仍可以与本机库代码链接。完全没有使用的本地方法仍然可以被删除。<br>如果使用了一个类文件，但它的本地方法都不是，它的名字仍然会被混淆。只有在混淆时才适用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-keepclasseswithmembernames,includedescriptorclasses class * &#123; </div><div class="line">    native &lt;methods&gt;; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>Note: 前提是在压缩阶段没有被删除掉，这里相当于使用了修饰符 allowshrinking</strong></p>
+<h3 id="printseeds-filename"><a href="#printseeds-filename" class="headerlink" title="-printseeds [filename]"></a>-printseeds [filename]</h3><blockquote>
+<p>指定详尽列出由各种-keep选项匹配的类和类成员。列表打印到标准输出或给定文件。该列表可用于验证是否真的找到了预期的类成员，尤其是在使用通配符的情况下。</p>
+</blockquote>
+<p>例如，您可能想要列出您保存的所有应用程序或所有小程序。</p>
+<p>参考上面说的 seeds.txt</p>
+<h3 id="whyareyoukeeping-class-specification"><a href="#whyareyoukeeping-class-specification" class="headerlink" title="-whyareyoukeeping class specification"></a>-whyareyoukeeping class specification</h3><blockquote>
+<p>指定打印详细信息，说明为什么给定的类和类成员正在压缩步骤中。</p>
+</blockquote>
+<p>如果想知道为什么某些给定元素出现在输出中，这会很有用。<br>一般来说，可能有很多不同的原因。<br>此选项为每个指定的类和类成员打印最短的方法链到指定的种子或入口点。<br>在当前的实施中，打印出的最短链有时可能包含循环扣除 - 这些并不反映实际收缩过程。<br>如果指定了 -verbose 选项，则跟踪包括完整的字段和方法签名。只适用于压缩。</p>
+<h2 id="压缩规则"><a href="#压缩规则" class="headerlink" title="压缩规则"></a>压缩规则</h2><h3 id="dontshrink"><a href="#dontshrink" class="headerlink" title="-dontshrink"></a>-dontshrink</h3><blockquote>
+<p>指定不被压缩的类文件。</p>
+</blockquote>
+<p>默认情况下压缩是开启的，除了用各种用 <code>keep</code> 选项直接或间接用到的类或类成员，其他的都会被移除。<br>压缩步骤通常在优化之后，因为某些优化可能会打开已经删除的类或类成员。 </p>
+<h3 id="printusage-filename"><a href="#printusage-filename" class="headerlink" title="-printusage [filename]"></a>-printusage [filename]</h3><blockquote>
+<p>指定列出移除的死代码。该列表打印到标准输出或给定文件。</p>
+</blockquote>
+<p>参考上面说的 usage.txt</p>
+<p>例如，您可以列出应用程序的未使用代码。只适用于压缩。</p>
+<h2 id="优化规则"><a href="#优化规则" class="headerlink" title="优化规则"></a>优化规则</h2><h3 id="dontoptimize"><a href="#dontoptimize" class="headerlink" title="-dontoptimize"></a>-dontoptimize</h3><blockquote>
+<p>指定不优化输入类文件。默认情况下，优化已启用;所有方法都在字节码级别进行了优化</p>
+</blockquote>
+<h3 id="optimizationpasses-n"><a href="#optimizationpasses-n" class="headerlink" title="-optimizationpasses n"></a>-optimizationpasses n</h3><blockquote>
+<p>指定要执行的优化传递的数量。</p>
+</blockquote>
+<p>默认情况下，执行一次传递。多次通行可能会导致进一步的改进。如果在优化后没有找到改进，则优化结束。只适用于优化。</p>
+<h2 id="混淆规则"><a href="#混淆规则" class="headerlink" title="混淆规则"></a>混淆规则</h2><h3 id="dontobfuscate"><a href="#dontobfuscate" class="headerlink" title="-dontobfuscate"></a>-dontobfuscate</h3><blockquote>
+<p>指定不混淆输入的类文件。</p>
+</blockquote>
+<p>默认情况下，混淆是开启的，类和类成员会被改成新的短随机名称，除了各种-keep选项列出的名称外。<br>内部属性对于调试很有用，例如源文件名，变量名和行号被删除。</p>
+<h3 id="printmapping-filename"><a href="#printmapping-filename" class="headerlink" title="-printmapping [filename]"></a>-printmapping [filename]</h3><blockquote>
+<p>指定将旧名称映射到已重命名的类和类成员的新名称的映射。映射打印到标准输出或给定文件。</p>
+</blockquote>
+<p>例如，它是后续增量混淆所必需的，或者如果想再次理解混淆的堆栈跟踪。只有在混淆时才适用。</p>
+<p>参考 上面说的 mapping.txt。</p>
+<h3 id="useuniqueclassmembernames"><a href="#useuniqueclassmembernames" class="headerlink" title="-useuniqueclassmembernames"></a>-useuniqueclassmembernames</h3><blockquote>
+<p>指定将相同的混淆名称分配给具有相同名称的类成员，并将不同混淆名称分配给名称不同的类成员（对于每个给定的类成员签名）。</p>
+</blockquote>
+<p>没有这个选项，更多的类成员可以被映射到相同的短名称，比如’a’，’b’等等。<br>这个选项因此稍微增加了结果代码的大小，但是它确保了保存的混淆名称映射总是可以在随后的增量混淆步骤中受到尊重。<br>例如，考虑两个不同的接口，它们包含具有相同名称和签名的方法。如果没有此选项，这些方法可能会在第一个混淆步骤中获取不同的混淆名称。<br>如果添加了包含实现两个接口的类的补丁程序，则ProGuard必须在增量混淆步骤中为这两种方法强制执行相同的方法名称。<br>原始模糊代码已更改，以保持结果代码的一致性。在最初的混淆步骤中使用此选项，这种重命名将永远不是必需的。</p>
+<p>该选项仅适用于混淆。<br>实际上，如果计划执行增量混淆，则可能希望完全避免压缩和优化，因为这些步骤可能会删除或修改部分代码，这些代码对于以后的添加至关重要。</p>
+<h3 id="dontusemixedcaseclassnames"><a href="#dontusemixedcaseclassnames" class="headerlink" title="-dontusemixedcaseclassnames"></a>-dontusemixedcaseclassnames</h3><blockquote>
+<p>指定在混淆时不生成混合大小写的类名。</p>
+</blockquote>
+<p>默认情况下，混淆的类名可以包含大写字符和小写字符的混合。<br>创建的这个完全可接受和可用的jars 只有在不区分大小写的文件系统（比如Windows）的平台上解压缩jar时，解压缩工具可能会让类似命名的类文件相互覆盖。<br>解压缩后自毁的代码！真正想在Windows上解压他们的jar的开发人员可以使用这个选项来关闭这种行为。<br>混淆的jars会因此变得稍大。</p>
+<p>只有在混淆时才适用。</p>
+<h3 id="keeppackagenames-package-filter"><a href="#keeppackagenames-package-filter" class="headerlink" title="-keeppackagenames [package_filter]"></a>-keeppackagenames [package_filter]</h3><blockquote>
+<p>指定不混淆给定的软件包名称。</p>
+</blockquote>
+<p>可选过滤器是包名称的逗号分隔列表。包名可以包含？，<em>和*</em>通配符，并且它们可以在！否定器。只有在混淆时才适用。</p>
+<h3 id="flattenpackagehierarchy-package-name"><a href="#flattenpackagehierarchy-package-name" class="headerlink" title="-flattenpackagehierarchy [package_name]"></a>-flattenpackagehierarchy [package_name]</h3><blockquote>
+<p>指定将所有重命名的软件包重新打包，方法是将它们移动到单个给定的父软件包中。如果没有参数或空字符串（’’），程序包将移动到根程序包中。</p>
+</blockquote>
+<p>该选项是进一步混淆软件包名称的一个示例。它可以使处理后的代码更小，更难理解。</p>
+<p>只有在混淆时才适用。</p>
+<h3 id="repackageclasses-package-name"><a href="#repackageclasses-package-name" class="headerlink" title="-repackageclasses [package_name]"></a>-repackageclasses [package_name]</h3><blockquote>
+<p>指定将所有重命名的类文件重新打包，方法是将它们移动到单个给定的包中。没有参数或者使用空字符串（’’），该软件包将被完全删除。</p>
+</blockquote>
+<p>该选项将覆盖 -flattenpackagehierarchy 选项。<br>这是进一步模糊软件包名称的另一个例子。<br>它可以使处理后的代码更小，更难理解。<br>其不推荐使用的名称是-defaultpackage。</p>
+<p>只有在混淆时才适用。 </p>
+<p><strong>警告：如果在别处移动它们，则在其包目录中查找资源文件的类将不再正常工作。如有疑问，请不要使用此选项，以免触及包装。</strong></p>
+<h3 id="keepattributes-attribute-filter"><a href="#keepattributes-attribute-filter" class="headerlink" title="-keepattributes [attribute_filter]"></a>-keepattributes [attribute_filter]</h3><blockquote>
+<p>指定要保留的任何可选属性。这些属性可以用一个或多个-keepattributes指令来指定。</p>
+</blockquote>
+<p>可选过滤器是Java虚拟机和ProGuard支持的属性名称的逗号分隔列表。<br>属性名称可以包含？，*和**通配符，并且可以在之前加上！否定器。</p>
+<p>例如，在处理库时，您至少应保留Exceptions，InnerClasses和Signature属性。<br>您还应该保留SourceFile和LineNumberTable属性以生成有用的混淆堆栈跟踪。<br>最后，如果你的代码依赖于它们，你可能需要保留注释。</p>
+<p>只有在混淆时才适用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 保留Annotation不混淆</div><div class="line">-keepattributes *Annotation*,InnerClasses</div><div class="line"></div><div class="line"># 避免混淆泛型</div><div class="line">-keepattributes Signature</div><div class="line"></div><div class="line"># 抛出异常时保留代码行号</div><div class="line">-keepattributes SourceFile,LineNumberTable</div></pre></td></tr></table></figure>
+<h3 id="keepparameternames"><a href="#keepparameternames" class="headerlink" title="-keepparameternames"></a>-keepparameternames</h3><blockquote>
+<p>指定保留所保存方法的参数名称和类型。</p>
+</blockquote>
+<p>该选项实际上保留了调试属性LocalVariableTable和LocalVariableTypeTable的修剪版本。<br>处理库时它可能很有用。<br>一些IDE可以使用这些信息来帮助使用该库的开发人员，<br>例如工具提示或自动完成。</p>
+<p>只有在混淆时才适用。</p>
+<h3 id="renamesourcefileattribute-string"><a href="#renamesourcefileattribute-string" class="headerlink" title="-renamesourcefileattribute [string]"></a>-renamesourcefileattribute [string]</h3><blockquote>
+<p>指定要放入类文件的SourceFile属性（和SourceDir属性）中的常量字符串。请注意，该属性必须首先出现，所以它也必须使用-keepattributes指令明确保留。</p>
+</blockquote>
+<p>例如，您可能希望让处理过的库和应用程序生成有用的混淆堆栈跟踪。<br>只有在混淆时才适用</p>
+<h2 id="预校验-规则"><a href="#预校验-规则" class="headerlink" title="预校验 规则"></a>预校验 规则</h2><h3 id="dontpreverify"><a href="#dontpreverify" class="headerlink" title="-dontpreverify"></a>-dontpreverify</h3><blockquote>
+<p>指定不预先验证已处理的类文件。</p>
+</blockquote>
+<p>默认情况下，如果类文件针对Java Micro Edition或Java 6或更高版本，则会对其进行预验证。<br>对于Java Micro Edition，需要进行预验证，因此如果指定此选项，则需要在处理的代码上运行外部预验证程序。<br>对于Java 6，预验证是可选的，但从Java 7开始，它是必需的。</p>
+<p>只有在最终对Android时，它才不是必需的，因此您可以将其关闭以缩短处理时间。</p>
+<h3 id="android"><a href="#android" class="headerlink" title="-android"></a>-android</h3><blockquote>
+<p>指定已处理的类文件针对Android平台。然后ProGuard确保一些功能与Android兼容。</p>
+</blockquote>
+<p>例如，如果您正在处理Android应用程序，则应该指定此选项。</p>
+<h2 id="一般规则"><a href="#一般规则" class="headerlink" title="一般规则"></a>一般规则</h2><h3 id="verbose"><a href="#verbose" class="headerlink" title="-verbose"></a>-verbose</h3><blockquote>
+<p>指定在处理期间写出更多信息。如果程序以异常终止，则此选项将打印出整个堆栈跟踪，而不仅仅是异常消息。</p>
+</blockquote>
+<h3 id="dontnote-class-filter"><a href="#dontnote-class-filter" class="headerlink" title="-dontnote [class_filter]"></a>-dontnote [class_filter]</h3><blockquote>
+<p>指定不打印有关配置中可能的错误或遗漏的注释，</p>
+</blockquote>
+<p>例如类名中的拼写错误或缺少可能有用的选项。<br>可选的过滤器是一个正则表达式;<br>ProGuard不打印有关匹配名称的类的注释。</p>
+<h3 id="dontwarn-class-filter"><a href="#dontwarn-class-filter" class="headerlink" title="-dontwarn [class_filter]"></a>-dontwarn [class_filter]</h3><blockquote>
+<p>指定不警告有关未解决的引用和其他重要问题。</p>
+</blockquote>
+<p>可选的过滤器是一个正则表达式; ProGuard不打印关于具有匹配名称的类的警告。忽略警告可能是危险的。</p>
+<p>例如，如果处理确实需要未解决的类或类成员，则处理后的代码将无法正常工作。</p>
+<p><strong>只有在你知道自己在做什么的情况下才使用此选项！</strong></p>
+<h3 id="ignorewarnings"><a href="#ignorewarnings" class="headerlink" title="-ignorewarnings"></a>-ignorewarnings</h3><blockquote>
+<p>指定打印任何关于未解决的引用和其他重要问题的警告，但在任何情况下都继续处理，忽略警告。</p>
+</blockquote>
+<p>忽略警告可能是危险的。<br>例如，如果处理确实需要未解决的类或类成员，则处理后的代码将无法正常工作。</p>
+<p><strong>只有在知道自己在做什么的情况下才使用此选项！</strong></p>
+<h3 id="printconfiguration-filename"><a href="#printconfiguration-filename" class="headerlink" title="-printconfiguration [filename]"></a>-printconfiguration [filename]</h3><blockquote>
+<p>指定使用包含的文件和替换的变量写出已解析的整个配置。结构打印到标准输出或给定文件。</p>
+</blockquote>
+<p>这对于调试配置或将XML配置转换为更易读的格式有时会很有用。</p>
+<h3 id="dump-filename"><a href="#dump-filename" class="headerlink" title="-dump [filename]"></a>-dump [filename]</h3><blockquote>
+<p>指定在任何处理后写出类文件的内部结构。结构打印到标准输出或给定文件。</p>
+</blockquote>
+<p>例如，可能希望写出给定jar文件的内容，而不进行处理。</p>
+<p>参考上面说的 dump.txt。</p>
+<h3 id="addconfigurationdebugging"><a href="#addconfigurationdebugging" class="headerlink" title="-addconfigurationdebugging"></a>-addconfigurationdebugging</h3><blockquote>
+<p>指定用调试语句来处理已处理的代码，这些语句显示缺少ProGuard配置的建议。</p>
+</blockquote>
+<p>如果处理后的代码崩溃，那么在运行时获得实用提示可能非常有用，因为它仍然缺少一些反射配置。</p>
+<p>例如，代码可能是使用GSON库序列化类，可能需要一些配置。通常可以将控制台的建议复制/粘贴到配置文件中。 </p>
+<p><strong>警告：不要在发行版本中使用此选项，因为它将混淆信息添加到已处理的代码中。</strong></p>
+<h2 id="keep-规则修饰符"><a href="#keep-规则修饰符" class="headerlink" title="keep 规则修饰符"></a>keep 规则修饰符</h2><h3 id="includedescriptorclasses"><a href="#includedescriptorclasses" class="headerlink" title="includedescriptorclasses"></a>includedescriptorclasses</h3><blockquote>
+<p>指定-keep选项所保存的方法和字段的类型描述符中的任何类也应保存。</p>
+</blockquote>
+<p>在保留方法名称时，这通常很有用，以确保方法的参数类型不会重命名。他们的签名保持完全不变，并与本地库兼容。</p>
+<h3 id="includecode"><a href="#includecode" class="headerlink" title="includecode"></a>includecode</h3><blockquote>
+<p>指定保持-keep选项所保存的字段的方法的代码属性也应该保留，即可能未被优化或模糊处理。这对于已优化或混淆的类通常很有用，以确保在优化期间未修改其代码。</p>
+</blockquote>
+<h3 id="allowshrinking"><a href="#allowshrinking" class="headerlink" title="allowshrinking"></a>allowshrinking</h3><blockquote>
+<p>指定-keep选项中指定的入口点可能会压缩，即使必须另外保留它们。</p>
+</blockquote>
+<p>也就是说，可以在压缩步骤中删除入口点，但如果它们是必需的，则它们可能未被优化或混淆。</p>
+<h3 id="allowoptimization"><a href="#allowoptimization" class="headerlink" title="allowoptimization"></a>allowoptimization</h3><blockquote>
+<p>指定-keep选项中指定的入口点可能会被优化，即使它们必须另外保存。</p>
+</blockquote>
+<p>也就是说，入口点可能会在优化步骤中被更改，但它们可能不会被删除或混淆。</p>
+<p><strong>此修饰符仅用于实现不寻常的要求。</strong></p>
+<h3 id="allowobfuscation"><a href="#allowobfuscation" class="headerlink" title="allowobfuscation"></a>allowobfuscation</h3><blockquote>
+<p>指定在-keep选项中指定的入口点可能会被混淆，即使它们必须另外保存。</p>
+</blockquote>
+<p>也就是说，入口点可能在混淆步骤中被重命名，但它们可能不会被删除或优化。</p>
+<p><strong>此修饰符仅用于实现不寻常的要求。</strong></p>
+<h2 id="keep-规则总结"><a href="#keep-规则总结" class="headerlink" title="keep 规则总结"></a>keep 规则总结</h2><p>压缩和混淆的各种-keep选项起初看起来有点混乱，但实际上它们背后有一个模式。</p>
+<p>下表总结了它们之间的关系：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">保留</th>
+<th style="text-align:center">被删除或重命名</th>
+<th style="text-align:center">被重命名</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">类和类成员</td>
+<td style="text-align:center">-keep</td>
+<td style="text-align:center">-keepnames</td>
+</tr>
+<tr>
+<td style="text-align:center">只有类成员</td>
+<td style="text-align:center">-keepclassmembers</td>
+<td style="text-align:center">-keepclassmembernames</td>
+</tr>
+<tr>
+<td style="text-align:center">类和类成员，入股成员存在</td>
+<td style="text-align:center">-keepclasseswithmembers</td>
+<td style="text-align:center">-keepclasseswithmembernames</td>
+</tr>
+</tbody>
+</table>
+<p>如果指定了一个没有类成员的类，ProGuard只保留该类及其无参数的构造函数作为入口点。它可能仍会删除，优化或混淆其他班级成员。</p>
+<p>如果指定了一个方法，则ProGuard仅将该方法作为入口点进行保存。其代码可能仍会进行优化和调整。</p>
+<h2 id="类规范"><a href="#类规范" class="headerlink" title="类规范"></a>类规范</h2><blockquote>
+<p>类规范是类和类成员（字段和方法）的模板。它用于各种-keep选项和-assumenosideeffects选项中。相应的选项仅适用于与模板匹配的类和类成员。</p>
+</blockquote>
+<p>模板的设计看起来非常类似于Java，并为通配符进行了一些扩展。为了理解语法，你应该看看这些<a href="https://www.guardsquare.com/proguard/manual/examples" target="_blank" rel="external">例子</a>，但这是对一个完整的正式定义的尝试：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[@annotationtype] [[!]public|final|abstract|@ ...] [!]interface|class|enum classname</div><div class="line">    [extends|implements [@annotationtype] classname]</div><div class="line">[&#123;</div><div class="line">    [@annotationtype] [[!]public|private|protected|static|volatile|transient ...] &lt;fields&gt; |</div><div class="line">                                                                      (fieldtype fieldname);</div><div class="line">    [@annotationtype] [[!]public|private|protected|static|synchronized|native|abstract|strictfp ...] &lt;methods&gt; |</div><div class="line">                                                                                           &lt;init&gt;(argumenttype,...) |</div><div class="line">                                                                                           classname(argumenttype,...) |</div><div class="line">                                                                                           (returntype methodname(argumenttype,...));</div><div class="line">    [@annotationtype] [[!]public|private|protected|static ... ] *;</div><div class="line">    ...</div><div class="line">&#125;]</div></pre></td></tr></table></figure>
+<p>方括号 “[]” 表示其内容是可选的。<br>省略号点“…”表示可以指定任意数量的前述项目。<br>垂直条“|”划定了两种选择。<br>非粗体括号“（）”只是将属于规范的部分组合在一起。<br>缩进尝试澄清预期的含义，但在实际配置文件中，空白是不相关的。</p>
+<blockquote>
+<p>class关键字指的是任何接口或类。interface 关键字限制匹配接口类。 enum关键字限制匹配枚举类。在 interface 或 enum 关键字前加上！将匹配限制为不是接口或枚举的类。</p>
+<p>每一个类名字都必须是完全限定名，例如 java.lang.String 内部类用美元符号“$”分隔，例如java.lang.Thread$State。类名可以被指定为包含以下通配符的正则表达式：</p>
+</blockquote>
+<ul>
+<li>? 匹配类名称中的任何单个字符，但不匹配包分隔符。例如 “com.example.Test?” 可以匹配 “com.example.Test1” 和 “com.example.Test2” 但不能匹配 “com.example.Test12”</li>
+<li>* 匹配不包含包分隔符的类名的任何部分。例如 “com.example.*Test*“ 能够匹配 “com.example.MyTest” 和 “com.example.MyTestProduct” 但不能匹配 “com.example.mxc.MyTest” 或者 “com.example.*“ 能够匹配 “com.example” 但不能匹配 “com.example.mxc”</li>
+<li>** 匹配类名称的任何部分，可能包含任意数量的包分隔符。例如，”**.Testz” 匹配除根包以外的所有包中的所有Test类。或者，”com.example.**“ 匹配 “com.example” 中的所有类及其子包。</li>
+<li>&lt;n&gt; 在相同的选项中匹配第n个匹配的通配符。例如，”com.example.*Foo&lt;1&gt;” 匹配”com.example.BarFooBar”。</li>
+</ul>
+<p>为了获得更多的灵活性，类名实际上可以是逗号分隔的类名列表，可以加!。这个符号看起来不是很像java，所以应该适度使用。</p>
+<p>为了方便和向后兼容，类名*指任何类，而不考虑它的包。</p>
+<ul>
+<li><strong>extends</strong> 和 <strong>implements </strong> 通常用来限制使用通配符的类。目前他们是一样的。他们的意思是 只有继承或实现了给定类的类才有资格。给定的类本身不包含在这个集合中。如果需要，应该在单独的选项中指定。</li>
+<li>@ 可用于将类和类成员限制为使用指定的注释类型进行注释的类。annotationtype 就像类名一样被指定。</li>
+<li>除了方法参数列表不包含参数名称外，字段和方法在Java中的定义非常类似（就像在javadoc和javap等其他工具中一样）。这些规范还可以包含以下通配符通配符：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">通配符</th>
+<th style="text-align:center">意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">&lt;init&gt;</td>
+<td style="text-align:center">匹配任何构造方法</td>
+</tr>
+<tr>
+<td style="text-align:left">&lt;fields&gt;</td>
+<td style="text-align:center">匹配任何字段</td>
+</tr>
+<tr>
+<td style="text-align:left">&lt;methods&gt;</td>
+<td style="text-align:center">匹配任何方法</td>
+</tr>
+<tr>
+<td style="text-align:left">*</td>
+<td style="text-align:center">匹配任何方法和字段</td>
+</tr>
+</tbody>
+</table>
+<p>请注意，上述通配符没有返回类型。只有&lt;init&gt;通配符才有一个参数列表。</p>
+<p>字段和方法也可以使用正则表达式来指定。名称可以包含以下通配符：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">通配符</th>
+<th style="text-align:left">意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">?</td>
+<td style="text-align:left">匹配方法名的任何单个字符</td>
+</tr>
+<tr>
+<td style="text-align:left">*</td>
+<td style="text-align:left">匹配方法名的任何部分</td>
+</tr>
+<tr>
+<td style="text-align:left">&lt;n&gt;</td>
+<td style="text-align:left">在相同的选项中匹配第n个匹配的通配符</td>
+</tr>
+</tbody>
+</table>
+<p>类型可以包含以下通配符</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">通配符</th>
+<th style="text-align:left">意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">%</td>
+<td style="text-align:left">匹配任何原始类型（boolean,int 等，不包含 void）</td>
+</tr>
+<tr>
+<td style="text-align:left">?</td>
+<td style="text-align:left">匹配类名中的单个字符</td>
+</tr>
+<tr>
+<td style="text-align:left">*</td>
+<td style="text-align:left">匹配类名中的任何部分但不包含包分隔符</td>
+</tr>
+<tr>
+<td style="text-align:left">**</td>
+<td style="text-align:left">匹配类名中的任何部分，可以包含任意包分割符</td>
+</tr>
+<tr>
+<td style="text-align:left">***</td>
+<td style="text-align:left">匹配任何类型（原始类型或者非原始类型，数组或者非数组）</td>
+</tr>
+<tr>
+<td style="text-align:left">—</td>
+<td style="text-align:left">匹配任何类型的任意数量的参数</td>
+</tr>
+<tr>
+<td style="text-align:left">&lt;i&gt;</td>
+<td style="text-align:left">在相同的选项中匹配第n个匹配的通配符。</td>
+</tr>
+</tbody>
+</table>
+<p>请注意，？，*和**通配符永远不会匹配基本类型。而且，只有***通配符才能匹配任何维度的数组类型。例如，“** get *（）”匹配“java.lang.Object getObject（）”，但不匹配“float getFloat（）”和“java.lang.Object [] getObjects（）”。</p>
+<ul>
+<li>也可以使用短类名（无包）或使用完整的类名来指定构造函数。和Java语言一样，构造函数规范有一个参数列表，但没有返回类型。</li>
+<li>类访问修饰符和类成员访问修饰符通常用于限制通配类和类成员。它们指定必须为成员设置相应的访问标志以匹配。前面加 “!” 决定相应的访问标志应该被取消设置。</li>
+</ul>
+<p>允许组合多个标志（例如，public static）。这意味着必须设置两个访问标志（例如 public static ），除非它们有冲突，在这种情况下，至少必须设置其中一个（例如至少public或 protected）。</p>
+<p>ProGuard支持可能由编译器设置的其他修饰符synthetic，bridge和varargs。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://www.guardsquare.com/en/proguard/manual/introduction" target="_blank" rel="external">https://www.guardsquare.com/en/proguard/manual/introduction</a></li>
+<li><a href="https://www.diycode.cc/topics/380" target="_blank" rel="external">https://www.diycode.cc/topics/380</a></li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[创建管理通知渠道]]></title>
       <url>http://blog.skymxc.com/2018/04/27/CreateAndManageNotificationChannel/</url>
       <content type="html"><![CDATA[<h1 id="创建-和管理-通知渠道"><a href="#创建-和管理-通知渠道" class="headerlink" title="创建 和管理 通知渠道"></a>创建 和管理 通知渠道</h1><p>从Android8.0（API26）开始，所有的通知必须分配一个渠道。每一个渠道，你都可以设置渠道中所有通知的视觉和听觉行为。然后，用户能够随意修改这些设置来决定通知的行为。</p>
