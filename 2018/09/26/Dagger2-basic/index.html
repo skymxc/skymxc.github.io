@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Dagger2," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Dagger2 使用攻略-基础部分">
+<meta name="keywords" content="Dagger2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dagger2使用攻略-基础部分">
+<meta property="og:url" content="http://blog.skymxc.com/2018/09/26/Dagger2-basic/index.html">
+<meta property="og:site_name" content="孟祥超">
+<meta property="og:description" content="Dagger2 使用攻略-基础部分">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://devpicture.oss-cn-beijing.aliyuncs.com/18-9-26/50831786.jpg">
+<meta property="og:updated_time" content="2018-09-26T14:53:46.729Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dagger2使用攻略-基础部分">
+<meta name="twitter:description" content="Dagger2 使用攻略-基础部分">
+<meta name="twitter:image" content="http://devpicture.oss-cn-beijing.aliyuncs.com/18-9-26/50831786.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'sky-mxc'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.skymxc.com/2018/09/26/Dagger2-basic/"/>
+
+
+
+
+
+  <title>Dagger2使用攻略-基础部分 | 孟祥超</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db8042d9d7c31f7cbbc5ecedd326a573";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">孟祥超</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">孟祥超的学习开发笔记</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.skymxc.com/2018/09/26/Dagger2-basic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="skymxc">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="孟祥超">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Dagger2使用攻略-基础部分</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-26T22:09:28+08:00">
+                2018-09-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/Dagger2/" itemprop="url" rel="index">
+                    <span itemprop="name">Dagger2</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/26/Dagger2-basic/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/09/26/Dagger2-basic/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  Dagger2 使用攻略-基础部分
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在这篇文章中，我会介绍 什么是依赖注入，Dagger2是什么，解决什么问题以及基础注解的使用</p>
+<p><img src="http://devpicture.oss-cn-beijing.aliyuncs.com/18-9-26/50831786.jpg" alt="Dagger2"></p>
+<h2 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h2><h3 id="什么是-依赖。"><a href="#什么是-依赖。" class="headerlink" title="什么是 依赖。"></a>什么是 依赖。</h3><p>举个例子</p>
+<p>有一个 A 类 它里面定了一个 B 类型的 属性 b; 这里 A 就依赖了 B；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">A</span><span class="params">()</span></span>&#123;</span><br><span class="line">        b = <span class="keyword">new</span> B();</span><br><span class="line">        b.print();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> B b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这就意味着 A 离开 B 不能单独运行，也就是说 A 在哪里工作，B就会跟到哪里，A 无法离开 B 被复用。</p>
+<p>这种情况下 A 就是 依赖者，B就是依赖。依赖者依赖于它的依赖。</p>
+<p>两个相互使用的类称为耦合；耦合有强有弱。耦合总是有方向性的。可能 A 依赖 B，但 B 不一定依赖 A。</p>
+<h3 id="依赖类型"><a href="#依赖类型" class="headerlink" title="依赖类型"></a>依赖类型</h3><ul>
+<li>类 / 接口 依赖</li>
+<li>属性 / 方法 依赖</li>
+<li>间接 / 直接 依赖</li>
+</ul>
+<h3 id="硬编码依赖的不好"><a href="#硬编码依赖的不好" class="headerlink" title="硬编码依赖的不好"></a>硬编码依赖的不好</h3><p>在依赖者内部构建或者由依赖者寻找依赖这种就称为 硬编码依赖</p>
+<ul>
+<li>降低复用性</li>
+<li>不好测试</li>
+<li>强耦合</li>
+<li>增加维护成本</li>
+</ul>
+<p>关于 什么是依赖，更详细的硬编码依赖的缺点这部分，更详细的可以参考这篇文章，我就是从篇文章学习来的。</p>
+<p><a href="https://medium.com/@harivigneshjayapalan/dagger-2-for-android-beginners-introduction-be6580cb3edb" target="_blank" rel="noopener">https://medium.com/@harivigneshjayapalan/dagger-2-for-android-beginners-introduction-be6580cb3edb</a></p>
+<h4 id="什么是依赖注入"><a href="#什么是依赖注入" class="headerlink" title="什么是依赖注入"></a>什么是依赖注入</h4><p>依赖注入：一个对象提供另一个对象的依赖的技术；</p>
+<p>依赖是个能被使用的对象（一个服务）；注入是将依赖传递给要使用它的对象（客户端 / 依赖者）。</p>
+<p>服务作为客户端的一部分。将服务传递给客户端而不是客户端构建或者寻找服务，这是模式（依赖注入）的基本要求。</p>
+<p>换句话说：</p>
+<p>依赖作为依赖者的一部分。将依赖传递给依赖者而不是由依赖者构建或者寻找依赖，这是依赖注入的基本要求。</p>
+<p>也就是说 依赖从来原来的由依赖者构建，改为现在由外部注入，也可以称为 控制反转。</p>
+<p>这样的好处是很明显的，提高可测试性，解偶，降低维护成本等等。</p>
+<p>更详细的解释 可以看一下这篇文章，解释的超级棒，如果你看过权力的游戏，就更棒了。</p>
+<p><a href="https://medium.com/@harivigneshjayapalan/dagger-2-for-android-beginners-di-part-i-f5cc4e5ad878" target="_blank" rel="noopener">https://medium.com/@harivigneshjayapalan/dagger-2-for-android-beginners-di-part-i-f5cc4e5ad878</a></p>
+<p>Dagger2 就是 Android 平台的一个依赖注入框架，它现在由 Google 维护开发。</p>
+<p>Dagger2 是编译时框架，会在编译时根据你的注解配置生成需要的代码。</p>
+<hr>
+
+<p>下面是我对 Dagger2 中的常用注解的理解。理解了这些注解的意思和作用，基本就学会了 Dagger2 的基本用法了。</p>
+<h2 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h2><h3 id="Inject"><a href="#Inject" class="headerlink" title="@Inject"></a>@Inject</h3><p>这个注解有两个作用：</p>
+<ul>
+<li>修饰需要注入的属性，Dagger2 会自动注入</li>
+<li>修饰被注入的类的构造方法上；Dagger2 会在需要的时候通过这个注解找到构造函数自动构造对象注入</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    DBManager dbManager;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DBManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DBManager</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Component"><a href="#Component" class="headerlink" title="@Component"></a>@Component</h3><p>这个注解的作用 是连接提供依赖和注入依赖的。相当与一个注射器的角色，将依赖注入到需要的地方。</p>
+<p>刚刚通过上面的 <code>@Inject</code> 注解 了  提供依赖的构造方法 和 需要注入的属性，而这样还是不够的，需要使用 <code>@Comnponent</code> 连接起来。</p>
+<p>创建一个接口，并定义一个方法，定义要往哪里注入；在编译时期 Dagger2 就会自动生成这个接口的实现类 并以 Dagger 开头。</p>
+<p>还可以定义 向外提供实例的方法；Dagger2  都会在编译时期生成相应的代码。</p>
+<p>下面是 示例<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Component</span>()</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MainComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">inject</span><span class="params">(MainActivity mainActivity)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function">DBManager <span class="title">getDBManager</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在需要被注入的类中注入 例如：</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    DBManager dbManager;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        <span class="comment">// 注入</span></span><br><span class="line">        DaggerMainComponent.create().inject(<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>@Component</code> 有两个属性 <code>modules</code> and <code>dependencies</code> ；</p>
+<ul>
+<li><code>modules</code> 的作用是引用 <code>Module</code> 的，下面 <code>@Module</code> 会继续说</li>
+<li><code>dependencies</code> 的作用是 引用其他 <code>Component</code> 使用的，相当于 把其他的 <code>Component</code> 当作组件一样引用过来；</li>
+</ul>
+<h3 id="SubComponent"><a href="#SubComponent" class="headerlink" title="@SubComponent"></a>@SubComponent</h3><p>顾名思义 就是 Comnponent 的儿子，它也表示一个注射器的角色，不过它可以继承 Component的全部 属性。</p>
+<p>Dagger2 不会生成 Dagger开头的 DaggerSubComponent 这种类，所以，SubComponent 需要在 Component 注册和维护。这样的也好统一管理维护，Dagger2 会在生成 Component的时候自动实现生成在内定义的方法。</p>
+<p>举个例子 我的 ApplicationComponent 是个全局单例的，有 NetModule， APPModule,等等很多全局性依赖，如果我的 Activity 的注射器 使用 <code>@SubComnponent</code> ，那么就可以使用Application的全部依赖。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ActivityScoped</span></span><br><span class="line"><span class="meta">@Subcomponent</span>(modules = MainModule.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MainComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">inject</span><span class="params">(MainActivity mainActivity)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@APPScoped</span></span><br><span class="line"><span class="meta">@Component</span>(modules = &#123;APPModule.class, APIModule.class&#125; )</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">APPComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">MainComponent <span class="title">plus</span><span class="params">(MainModule <span class="keyword">module</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">SecondComponent <span class="title">plus</span><span class="params">(SecondModule <span class="keyword">module</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//注入</span></span><br><span class="line"></span><br><span class="line">     DaggerAPPComponent.builder()</span><br><span class="line">     .aPPModule(<span class="keyword">new</span> APPModule(getApplication()))</span><br><span class="line">     .build()</span><br><span class="line">     .plus(<span class="keyword">new</span> SecondModule())</span><br><span class="line">     .inject(<span class="keyword">this</span>);</span><br></pre></td></tr></table></figure>
+<p>当然还有另外一种方法不用 <code>@SubComponent</code>，使用 <code>Component</code> 并使用 <code>denpendencies</code> 引用上 <code>ApplicationComponent</code> 这样就相当于将 <code>ApplicationComponent</code> 组合进来。</p>
+<h3 id="Module-amp-amp-Provides"><a href="#Module-amp-amp-Provides" class="headerlink" title="@Module &amp;&amp; @Provides"></a>@Module &amp;&amp; @Provides</h3><p><code>@Module</code> 这个注解用来标注提供依赖的工厂。对的，工厂，我是这么理解的。</p>
+<p><code>@Provides</code> 这个注解用在提供定义提供依赖的方法上，表示向外提供依赖。方法的返回类型就是提供的依赖类型。</p>
+<p>前面提到的 <code>@Inject</code> 可以在注解在构造函数以用来提供依赖；而在 <code>@Inject</code> 不能满足需要的时候这个就派上用场了。</p>
+<p>例如 我注入一个 字符串，数字或一个 第三方依赖的对象 例如 Retrofit ,<code>@Inject</code> 已经满足不了啦。</p>
+<p>这个时候可以创建一个类 专门用来提供这些依赖，并使用 <code>@Module</code> 注解，然后在 <code>Component</code> 的属性 <code>modules</code> 引用上就可以使用了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 需要注入的 Activity</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThirdActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    OkHttpClient client;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_third);</span><br><span class="line"></span><br><span class="line">        DaggerThirdComponent.create().inject(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">        Log.e(ThirdActivity.class.getSimpleName(), <span class="string">"onCreate: name-"</span>+name+<span class="string">";age-"</span>+age+<span class="string">";client-"</span>+client);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 提供依赖的 工厂</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Module</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThirdModule</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Provides</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">provideName</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"skymxc"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Provides</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">provideAge</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">24</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Provides</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> OkHttpClient <span class="title">provideOkHttpClient</span><span class="params">()</span></span>&#123;</span><br><span class="line">        OkHttpClient client = <span class="keyword">new</span> OkHttpClient.Builder().build();</span><br><span class="line">        <span class="keyword">return</span> client;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 连接 依赖和注入方 ,在这里引用 依赖提供方。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(modules = ThirdModule.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ThirdComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">inject</span><span class="params">(ThirdActivity activity)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Named"><a href="#Named" class="headerlink" title="@Named"></a>@Named</h3><p>在依赖迷失时给出方向。</p>
+<p>解释一下 <em>依赖迷失</em>：</p>
+<p>依旧是上面那个例子，现在 都是根据返回值类型来注入的，现在都是不同的类型所以还没有出现迷失的情况；<br>现在我如果要加上 地址 属性；如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// activity内</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    OkHttpClient client;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span> String address;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// module 中</span></span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Provides</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">provideName</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"skymxc"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Provides</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">provideAge</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">24</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">provideAddress</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"北京"</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这个时候 在 module 中 有两个返回 String 类型的 方法，Dagger2 这个时候就不知道注入哪一个了，所以就会出现 <em>依赖迷失</em> 的情况；</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">错误: [Dagger/DuplicateBindings] java.lang.String is bound multiple times:</span><br><span class="line">@Provides String com.skymxc.example.dagger2.di.module.ThirdModule.provideAddress()</span><br><span class="line">@Provides String com.skymxc.example.dagger2.di.module.ThirdModule.provideName()</span><br></pre></td></tr></table></figure>
+<p>简单的解决方法就是在 属性和提供依赖上 加上 <code>@Named</code> 注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Named</span>(<span class="string">"name"</span>)</span><br><span class="line"><span class="meta">@Provides</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">provideName</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"skymxc"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Provides</span></span><br><span class="line"><span class="meta">@Named</span>(<span class="string">"address"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">provideAddress</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"北京"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 在 属性上也加上</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Named</span>(<span class="string">"name"</span>)</span><br><span class="line"><span class="meta">@Inject</span> String name;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Named</span>(<span class="string">"address"</span>)</span><br><span class="line"><span class="meta">@Inject</span> String address;</span><br></pre></td></tr></table></figure>
+<p>这样就可以解决了 依赖迷失。</p>
+<h3 id="Qualifier"><a href="#Qualifier" class="headerlink" title="@Qualifier"></a>@Qualifier</h3><p><code>@Named</code> 的元注解，解决依赖迷失的大 Boss；看一下 <code>@Named</code> 的源码,<code>@Named</code> 就是被 <code>@Qualifier</code> 注解的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Qualifier</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Retention</span>(RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Named &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** The name. */</span></span><br><span class="line">    <span class="function">String <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> ""</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果怕通过 <code>@Named</code> 写字符串的方式容易出错就可以通过 <code>@Qualifier</code> 自定义注解来实现。</p>
+<p>下面举个例子，再加一个 身高属性。定义两个注解来区分 <code>@Age</code> and <code>@Height</code>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Qualifier</span></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Height &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Qualifier</span></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Age &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在 module 和 属性上使用</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Age</span></span><br><span class="line">    <span class="meta">@Provides</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">provideAge</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">24</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Provides</span></span><br><span class="line">    <span class="meta">@Height</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">provideHeight</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">175</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">     <span class="meta">@Age</span></span><br><span class="line">    <span class="meta">@Inject</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Height</span></span><br><span class="line">    <span class="meta">@Inject</span> <span class="keyword">int</span> height;</span><br></pre></td></tr></table></figure>
+<h3 id="Singleton"><a href="#Singleton" class="headerlink" title="@Singleton"></a>@Singleton</h3><p> 配合 <code>@Component</code> 实现 <strong>范围内单例</strong> </p>
+<p> <code>@Singleton</code> 必须和 <code>@Component</code> 配合才能实现单例，而且只能保证在 <code>@Component</code> 范围内单例，如果要实现全局单例，就必须要保证   <code>@Component</code> 的实例在全局范围内只有一个，类似 Application 。</p>
+<p> 举个例子，我要 <code>DBManager</code> 在全局单例，需要以下几个步骤</p>
+<ol>
+<li>在 DBManger 上使用 <code>@Singleton</code> 或者 在 @Provides 修饰的方法上加。</li>
+<li>然后在 AppComponent 也加上（）</li>
+<li>在 Application 中 获取 AppComponent 实例，让其全局唯一。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.DBManager 标注 @Singleton</span></span><br><span class="line"><span class="meta">@Singleton</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DBManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DBManager</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.</span></span><br><span class="line"><span class="meta">@Singleton</span></span><br><span class="line"><span class="meta">@Component</span>(modules = &#123;APPModule.class, APIModule.class&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">APPComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">     <span class="function">MainComponent <span class="title">plus</span><span class="params">(MainModule <span class="keyword">module</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">SecondComponent <span class="title">plus</span><span class="params">(SecondModule <span class="keyword">module</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//可有可无 为了测试</span></span><br><span class="line"> <span class="function">DBManager <span class="title">getDBManager</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//3. 在 Application 中获取 实例，并保证唯一实例</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MApplication</span> <span class="keyword">extends</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> APPComponent appComponent;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate();</span><br><span class="line"></span><br><span class="line">        appComponent = DaggerAPPComponent.builder()</span><br><span class="line">                .aPPModule(<span class="keyword">new</span> APPModule(<span class="keyword">this</span>))</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> APPComponent <span class="title">getAppComponent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> appComponent;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试，在 MainActivity 注入两个。</span></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"> <span class="meta">@Inject</span></span><br><span class="line">    DBManager dbManager;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span> DBManager dbManager1;</span><br><span class="line">    </span><br><span class="line">       <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//使用 Application 获取 AppComponent </span></span><br><span class="line">         ((MApplication)getApplication()).getAppComponent()</span><br><span class="line">                .plus(<span class="keyword">new</span> MainModule())</span><br><span class="line">                .inject(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">        Log.e(MainActivity.class.getSimpleName(), <span class="string">"onCreate: appdb--&gt;"</span>+((MApplication)getApplication()).getAppComponent().getDBManager().hashCode());</span><br><span class="line">        <span class="comment">//是否是全局范围内单例</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (dbManager==dbManager1) &#123;</span><br><span class="line">            Log.e(MainActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager-sintleton-&gt;"</span>+dbManager.hashCode());</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            Log.e(MainActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager:"</span>+dbManager.hashCode());</span><br><span class="line">            Log.e(MainActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager1:"</span>+dbManager1.hashCode());</span><br><span class="line">        &#125;</span><br><span class="line">      </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在 SecondActivity 注入两个看看是否和 Main 中的是一个实例</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecondActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    DBManager dbManager;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    DBManager dbManager1;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_second);</span><br><span class="line">        </span><br><span class="line">        ((MApplication)getApplication()).getAppComponent()</span><br><span class="line">                .plus(<span class="keyword">new</span> SecondModule())</span><br><span class="line">                .inject(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (dbManager==dbManager1) &#123;</span><br><span class="line">            Log.e(SecondActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager-singleton-&gt;"</span>+dbManager.hashCode());</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            Log.e(SecondActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager:"</span>+dbManager.hashCode());</span><br><span class="line">            Log.e(SecondActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager1:"</span>+dbManager1.hashCode());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试结果必须是全局唯一单例，看一下 log</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">E/MainActivity: onCreate: appdb--&gt;192114699</span><br><span class="line">    onCreate: dbmanager-sintleton-&gt;192114699</span><br><span class="line">    </span><br><span class="line">E/SecondActivity: onCreate: dbmanager-singleton-&gt;192114699</span><br></pre></td></tr></table></figure>
+<p><code>@Singleton</code> 的作用域 始终是跟随所在的 <code>Component</code> 的实例的，如果超出它的范围就无法保证单例。</p>
+<p>就拿上个例子举例，如果每次 在 Activity 注入的时候 不从 Application 获取实例而是每次都是使用 DaggerAppComponent 创建一个新的 实例 ，那么就无法保证两个 Activity 内的 DBManager 都是一个实例了，因为每个 Activity 都是获取新的 AppComponent 的实例，它的作用范围只能在单个实例内。</p>
+<p>下面我实现一个 只在 Activity 范围实现单例的 例子，就是把上面的代码改改，在Activity注入的时候 创建新的 Component 实例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecondActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    DBManager dbManager;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    DBManager dbManager1;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_second);</span><br><span class="line">        </span><br><span class="line">  <span class="comment">//      ((MApplication)getApplication()).getAppComponent()</span></span><br><span class="line">  <span class="comment">//              .plus(new SecondModule())</span></span><br><span class="line">   <span class="comment">//             .inject(this);</span></span><br><span class="line"></span><br><span class="line">     <span class="comment">// 获取新实例</span></span><br><span class="line">        DaggerAPPComponent.builder().aPPModule(<span class="keyword">new</span> APPModule(getApplication())).build().plus(<span class="keyword">new</span> MainModule()).inject(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (dbManager==dbManager1) &#123;</span><br><span class="line">            Log.e(SecondActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager-singleton-&gt;"</span>+dbManager.hashCode());</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            Log.e(SecondActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager:"</span>+dbManager.hashCode());</span><br><span class="line">            Log.e(SecondActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager1:"</span>+dbManager1.hashCode());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"> <span class="meta">@Inject</span></span><br><span class="line">    DBManager dbManager;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span> DBManager dbManager1;</span><br><span class="line">    </span><br><span class="line">       <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">      <span class="comment">// 获取新实例</span></span><br><span class="line">        DaggerAPPComponent.builder().aPPModule(<span class="keyword">new</span> APPModule(getApplication())).build().plus(<span class="keyword">new</span> MainModule()).inject(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (dbManager==dbManager1) &#123;</span><br><span class="line">            Log.e(MainActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager-sintleton-&gt;"</span>+dbManager.hashCode());</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            Log.e(MainActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager:"</span>+dbManager.hashCode());</span><br><span class="line">            Log.e(MainActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager1:"</span>+dbManager1.hashCode());</span><br><span class="line">        &#125;</span><br><span class="line">      </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// log </span></span><br><span class="line"></span><br><span class="line"><span class="number">09</span>-<span class="number">23</span> <span class="number">00</span>:<span class="number">02</span>:<span class="number">52.937</span> E/DBHelper: DBHelper: </span><br><span class="line"><span class="number">09</span>-<span class="number">23</span> <span class="number">00</span>:<span class="number">02</span>:<span class="number">52.937</span> E/MainActivity: onCreate: dbmanager-sintleton-&gt;<span class="number">115289709</span></span><br><span class="line"><span class="number">09</span>-<span class="number">23</span> <span class="number">00</span>:<span class="number">02</span>:<span class="number">57.097</span> E/DBHelper: DBHelper: </span><br><span class="line"><span class="number">09</span>-<span class="number">23</span> <span class="number">00</span>:<span class="number">02</span>:<span class="number">57.097</span> E/SecondActivity: onCreate: dbmanager-singleton-&gt;<span class="number">64826129</span></span><br></pre></td></tr></table></figure>
+<p>总结 ： Dagger2 实现单例要 <code>@Singleton</code> 和 <code>@Component</code> || <code>@SubComponent</code> 配合使用，只能实现范围内(实例内)单例，所以范围要控制好。只要范围控制好，随意 Activity 或者 Application 范围。</p>
+<h3 id="Scope"><a href="#Scope" class="headerlink" title="@Scope"></a>@Scope</h3><p>作用域 上面说到的 <code>@Singleton</code> 就是它的默认实现，也是唯一一个默认实现。</p>
+<p>看一下 <code>@Singleton</code> 的源码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Identifies a type that the injector only instantiates once. Not inherited.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> javax.inject.Scope <span class="doctag">@Scope</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Scope</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Retention</span>(RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Singleton &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p><code>@Singleton</code> 能够实现范围内单例 主要是 <code>@Scope</code> 在起作用。默认实现叫 <code>Singleton</code> 也是为了更好的理解。</p>
+<p>我们可以根据自己的情况，自定义我们自己的依赖作用域，就像我们上面说的 跟随 Application 生命周期的，跟随 Activity 生命周期的，或者 User 生命周期的等等。</p>
+<p>举个例子 我们定义俩个  AppScoped, ActivityScoped. 分别让我们的依赖实现 全局单例和Activity内单例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * APP全局单例</span></span><br><span class="line"><span class="comment"> * 此注解使用的 Component 要全局范围内唯一 ，不然无法实现全局单例</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Scope</span></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> APPScoped &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * activity 内单例</span></span><br><span class="line"><span class="comment"> * 使用 此注解的Component 生命周期要跟随 Activity 的生命周期。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Scope</span></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ActivityScoped &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>创建一个类 SingletonObj 让其在 Activity范围内 单例,  让 DBManager 全局单例</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ActivityScoped</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonObj</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SingletonObj</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@APPScoped</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DBManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span> DBHelper helper;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DBManager</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>定义 Component ，注意 AppScoped , ActivityScoped 的位置</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@APPScoped</span></span><br><span class="line"><span class="meta">@Component</span>(modules = &#123; APIModule.class,APPModule.class&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">APPComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">MainComponent <span class="title">plus</span><span class="params">(MainModule <span class="keyword">module</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">SecondComponent <span class="title">plus</span><span class="params">(SecondModule <span class="keyword">module</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">DBManager <span class="title">getDBManager</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ActivityScoped</span></span><br><span class="line"><span class="meta">@Subcomponent</span>(modules = MainModule.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MainComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">inject</span><span class="params">(MainActivity mainActivity)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ActivityScoped</span></span><br><span class="line"><span class="meta">@Subcomponent</span>(modules = SecondModule.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SecondComponent</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">inject</span><span class="params">(SecondActivity activity)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>获取 Component 并开始注入</li>
+</ol>
+<p>在 Application 获取 AppComponent 的实例 ，并保持唯一。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MApplication</span> <span class="keyword">extends</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> APPComponent appComponent;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate();</span><br><span class="line"></span><br><span class="line">        appComponent = DaggerAPPComponent.builder()</span><br><span class="line">                .aPPModule(<span class="keyword">new</span> APPModule(<span class="keyword">this</span>))</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> APPComponent <span class="title">getAppComponent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> appComponent;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在 MainActivity 获取到 MainComponent 的实例 并注入</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> <span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnClickListener</span></span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    DBManager dbManager;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span> DBManager dbManager1;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    SingletonObj mainSingleton;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    SingletonObj mainSingleton1;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        findViewById(R.id.bt_to_second).setOnClickListener(<span class="keyword">this</span>);</span><br><span class="line">        findViewById(R.id.bt_to_third).setOnClickListener(<span class="keyword">this</span>);</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        ((MApplication)getApplication()).getAppComponent()</span><br><span class="line">                .plus(<span class="keyword">new</span> MainModule())</span><br><span class="line">                .inject(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">        Log.e(MainActivity.class.getSimpleName(), <span class="string">"onCreate: appdb--&gt;"</span>+((MApplication)getApplication()).getAppComponent().getDBManager().hashCode());</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//查看 是否和 second的一致，是否是全局范围内单例</span></span><br><span class="line">        <span class="keyword">if</span> (dbManager==dbManager1) &#123;</span><br><span class="line">            Log.e(MainActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager-sintleton-&gt;"</span>+dbManager.hashCode());</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            Log.e(MainActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager:"</span>+dbManager.hashCode());</span><br><span class="line">            Log.e(MainActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager1:"</span>+dbManager1.hashCode());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//主要看 这个 和 second的是否一致，是否是activity范围内单例。</span></span><br><span class="line">        <span class="keyword">if</span> (mainSingleton==mainSingleton1)&#123;</span><br><span class="line">            Log.e(MainActivity.class.getSimpleName(), <span class="string">"onCreate: main-singleton-&gt;"</span>+mainSingleton.hashCode());</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            Log.e(MainActivity.class.getSimpleName(), <span class="string">"onCreate: main:"</span>+mainSingleton.hashCode());</span><br><span class="line">            Log.e(MainActivity.class.getSimpleName(), <span class="string">"onCreate: main1:"</span>+mainSingleton1.hashCode());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 SecondActivity 获取到 SecondComponent 的实例 并注入 ，这里就可以看出来 是否是 范围内单例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecondActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    DBManager dbManager;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    DBManager dbManager1;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    SingletonObj mainSingleton;</span><br><span class="line">    <span class="meta">@Inject</span></span><br><span class="line">    SingletonObj mainSingleton1;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_second);</span><br><span class="line">        </span><br><span class="line">        ((MApplication)getApplication()).getAppComponent()</span><br><span class="line">                .plus(<span class="keyword">new</span> SecondModule())</span><br><span class="line">                .inject(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (dbManager==dbManager1) &#123;</span><br><span class="line">            Log.e(SecondActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager-singleton-&gt;"</span>+dbManager.hashCode());</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            Log.e(SecondActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager:"</span>+dbManager.hashCode());</span><br><span class="line">            Log.e(SecondActivity.class.getSimpleName(), <span class="string">"onCreate: dbmanager1:"</span>+dbManager1.hashCode());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mainSingleton==mainSingleton1)&#123;</span><br><span class="line">            Log.e(SecondActivity.class.getSimpleName(), <span class="string">"onCreate: main-singleton&gt;"</span>+mainSingleton.hashCode());</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            Log.e(SecondActivity.class.getSimpleName(), <span class="string">"onCreate: main:"</span>+mainSingleton.hashCode());</span><br><span class="line">            Log.e(SecondActivity.class.getSimpleName(), <span class="string">"onCreate: main1:"</span>+mainSingleton1.hashCode());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>log 可以看出 范围内单例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">E/MainActivity: onCreate: appdb--&gt;<span class="number">229426894</span></span><br><span class="line">   onCreate: dbmanager-sintleton-&gt;<span class="number">229426894</span></span><br><span class="line">   onCreate: main-singleton-&gt;<span class="number">142055919</span></span><br><span class="line">   </span><br><span class="line">E/SecondActivity: onCreate: dbmanager-singleton-&gt;<span class="number">229426894</span></span><br><span class="line">   onCreate: main-singleton&gt;<span class="number">241744847</span></span><br></pre></td></tr></table></figure>
+<p>总结 ：我们可以通过 <code>@Scope</code> 随意自定义我们自己的作用域，当然不是说我们定义了 ActivityScoped 他就能保证 Activity内单例了，要配合 Component 范围并用对位置。</p>
+<hr>
+
+<p>这些Demo 的代码 我放在了 <a href="https://github.com/skymxc/Example" target="_blank" rel="noopener">Github</a> </p>
+<blockquote>
+<p>基础部分就先介绍这些吧，接下来我会继续 Dagger2-Android 的分享。</p>
+</blockquote>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://google.github.io/dagger/" target="_blank" rel="noopener">https://google.github.io/dagger/</a></li>
+<li><a href="https://medium.com/@harivigneshjayapalan/dagger-2-for-android-beginners-introduction-be6580cb3edb" target="_blank" rel="noopener">https://medium.com/@harivigneshjayapalan/dagger-2-for-android-beginners-introduction-be6580cb3edb</a></li>
+<li><a href="https://proandroiddev.com/how-to-dagger-2-with-android-part-1-18b5b941453f" target="_blank" rel="noopener">https://proandroiddev.com/how-to-dagger-2-with-android-part-1-18b5b941453f</a></li>
+<li><a href="https://blog.csdn.net/briblue/article/details/75578459" target="_blank" rel="noopener">https://blog.csdn.net/briblue/article/details/75578459</a></li>
+<li><a href="https://juejin.im/entry/593cee56ac502e006b3dc9c2" target="_blank" rel="noopener">https://juejin.im/entry/593cee56ac502e006b3dc9c2</a></li>
+<li><a href="https://medium.com/@harivigneshjayapalan/dagger-2-for-android-beginners-dagger-2-part-i-f2de5564ab25" target="_blank" rel="noopener">https://medium.com/@harivigneshjayapalan/dagger-2-for-android-beginners-dagger-2-part-i-f2de5564ab25</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/pay/wechatpay.png" alt="skymxc 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/pay/alipay.jpg" alt="skymxc 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Dagger2/" rel="tag"># Dagger2</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/24/thread-basic/" rel="next" title="Java线程基础操作">
+                <i class="fa fa-chevron-left"></i> Java线程基础操作
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/user.jpg"
+                alt="skymxc" />
+            
+              <p class="site-author-name" itemprop="name">skymxc</p>
+              <p class="site-description motion-element" itemprop="description">开发学习总结</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">博文</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/skymxc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:skymxcdev@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#依赖注入"><span class="nav-number">1.</span> <span class="nav-text">依赖注入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是-依赖。"><span class="nav-number">1.1.</span> <span class="nav-text">什么是 依赖。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#依赖类型"><span class="nav-number">1.2.</span> <span class="nav-text">依赖类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#硬编码依赖的不好"><span class="nav-number">1.3.</span> <span class="nav-text">硬编码依赖的不好</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是依赖注入"><span class="nav-number">1.3.1.</span> <span class="nav-text">什么是依赖注入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用注解"><span class="nav-number">2.</span> <span class="nav-text">常用注解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Inject"><span class="nav-number">2.1.</span> <span class="nav-text">@Inject</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Component"><span class="nav-number">2.2.</span> <span class="nav-text">@Component</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SubComponent"><span class="nav-number">2.3.</span> <span class="nav-text">@SubComponent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Module-amp-amp-Provides"><span class="nav-number">2.4.</span> <span class="nav-text">@Module &amp;&amp; @Provides</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Named"><span class="nav-number">2.5.</span> <span class="nav-text">@Named</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Qualifier"><span class="nav-number">2.6.</span> <span class="nav-text">@Qualifier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Singleton"><span class="nav-number">2.7.</span> <span class="nav-text">@Singleton</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scope"><span class="nav-number">2.8.</span> <span class="nav-text">@Scope</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">skymxc</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'skymxc',
+            repo: 'skymxc.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'e36a9a5dc887b0063d2c7044540722f9180a26eb',
+            
+                client_id: '1392e503613ddc9e087c'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

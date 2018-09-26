@@ -76,11 +76,13 @@
 
 
 <meta name="description" content="利用github pages+hexo 搭建个人博客">
+<meta name="keywords" content="githubPages+hexo,github搭建博客,githubPages+hexo 搭建个人博客">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用github+hexo 搭建个人博客">
 <meta property="og:url" content="http://blog.skymxc.com/2016/12/04/buildBlogs/index.html">
 <meta property="og:site_name" content="孟祥超">
 <meta property="og:description" content="利用github pages+hexo 搭建个人博客">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://blog.skymxc.com/images/github+hexo/checkNode.png">
 <meta property="og:image" content="http://blog.skymxc.com/images/github+hexo/安装hexo.png">
 <meta property="og:image" content="http://blog.skymxc.com/images/github+hexo/checkHexo.png">
@@ -94,7 +96,7 @@
 <meta property="og:image" content="http://blog.skymxc.com/images/github+hexo/我的发布配置.png">
 <meta property="og:image" content="http://blog.skymxc.com/images/github+hexo/发布完成0.png">
 <meta property="og:image" content="http://blog.skymxc.com/images/github+hexo/修改主题.png">
-<meta property="og:updated_time" content="2018-04-22T08:32:06.156Z">
+<meta property="og:updated_time" content="2018-08-29T13:45:00.503Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用github+hexo 搭建个人博客">
 <meta name="twitter:description" content="利用github pages+hexo 搭建个人博客">
@@ -344,7 +346,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-04T18:23:57+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-04T09:09:02+08:00">
                 2016-12-04
               </time>
             
@@ -419,27 +421,27 @@
 
       
         <blockquote>
-<p><strong>sky-mxc总结</strong> 转载注明：<a href="https://sky-mxc.github.io/2016/09/29/buildBlogs" target="_blank" rel="external">https://sky-mxc.github.io/2016/09/29/buildBlogs</a></p>
+<p><strong>sky-mxc总结</strong> 转载注明：<a href="https://sky-mxc.github.io/2016/09/29/buildBlogs" target="_blank" rel="noopener">https://sky-mxc.github.io/2016/09/29/buildBlogs</a></p>
 </blockquote>
 <h1 id="githubPages-hexo-搭建个人博客"><a href="#githubPages-hexo-搭建个人博客" class="headerlink" title="githubPages + hexo 搭建个人博客"></a>githubPages + hexo 搭建个人博客</h1><blockquote>
 <p>hexo是基于git和Node.js的 必须先安装 git和Node.js;</p>
 </blockquote>
 <h2 id="node-js安装"><a href="#node-js安装" class="headerlink" title="node.js安装"></a>node.js安装</h2><blockquote>
-<p>Node.js 下载地址 <a href="http://nodejs.cn/download/" target="_blank" rel="external">http://nodejs.cn/download/</a> 选择好安装路径之后一路 next就可以了;<br>检测是否安装成功：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">node -v</div></pre></td></tr></table></figure></p>
-<p>查看 npm是否安装 以前的版本没有集成npm，新版本已经集成了npn<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm -version</div></pre></td></tr></table></figure></p>
+<p>Node.js 下载地址 <a href="http://nodejs.cn/download/" target="_blank" rel="noopener">http://nodejs.cn/download/</a> 选择好安装路径之后一路 next就可以了;<br>检测是否安装成功：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br></pre></td></tr></table></figure></p>
+<p>查看 npm是否安装 以前的版本没有集成npm，新版本已经集成了npn<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm -version</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <p><img src="/images/github+hexo/checkNode.png" alt="image"></p>
 <h2 id="hexo-安装"><a href="#hexo-安装" class="headerlink" title="hexo 安装"></a>hexo 安装</h2><blockquote>
-<p>关于hexo 的安装 在官网有很详细的教程 ：<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">https://hexo.io/zh-cn/docs/</a></p>
-<p>安装 hexo<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g hexo-cli</div></pre></td></tr></table></figure></p>
+<p>关于hexo 的安装 在官网有很详细的教程 ：<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/</a></p>
+<p>安装 hexo<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <p><img src="/images/github+hexo/安装hexo.png" alt="image"></p>
 <blockquote>
-<p>检测安装是否成功<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo -v</div></pre></td></tr></table></figure></p>
+<p>检测安装是否成功<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo -v</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <p><img src="/images/github+hexo/checkHexo.png" alt=""></p>
 <blockquote>
-<p>指定一个文件夹 必须是空目录 配置hexo<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo init</div></pre></td></tr></table></figure></p>
+<p>指定一个文件夹 必须是空目录 配置hexo<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <p><img src="/images/github+hexo/initHexo.png" alt="image"><br><img src="/images/github+hexo/initHexo2.png" alt="image"></p>
 <blockquote>
@@ -451,7 +453,7 @@
 <li>source     资源文件夹 存放 资源 如图片之类的；除 <em>posts 文件夹之外，开头命名为 </em> (下划线)的文件 / 文件夹和隐藏的文件将会被忽略。Markdown 和 HTML 文件会被解析并放到 public 文件夹，而其他文件会被拷贝过去。</li>
 <li>themes   主题文件夹  Hexo很久主题生成静态页面</li>
 </ul>
-<p>剩下的就是配置了 主要是在 _config.yml中配置 怎么配置 官网也解释的跟清楚了。这里说一下主要的，详情移步官网查看:<a href="https://hexo.io/zh-cn/docs/configuration.html" target="_blank" rel="external">https://hexo.io/zh-cn/docs/configuration.html</a></p>
+<p>剩下的就是配置了 主要是在 _config.yml中配置 怎么配置 官网也解释的跟清楚了。这里说一下主要的，详情移步官网查看:<a href="https://hexo.io/zh-cn/docs/configuration.html" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/configuration.html</a></p>
 </blockquote>
 <ul>
 <li>title 网站标题</li>
@@ -464,7 +466,7 @@
 <blockquote>
 <p>到这里基本上本地已经配置完了 现在可以 测试一下了</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo g # 生成静态文件 生成文件在public 目录下</div><div class="line">$ hexo s # 启动本地预览 hexo s --debug 命令可以用来调试</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g # 生成静态文件 生成文件在public 目录下</span><br><span class="line">$ hexo s # 启动本地预览 hexo s --debug 命令可以用来调试</span><br></pre></td></tr></table></figure>
 <p><img src="/images/github+hexo/serverHexo.png" alt="image"><br><img src="/images/github+hexo/hexoTest0.png" alt="image"></p>
 <h2 id="发布到github"><a href="#发布到github" class="headerlink" title="发布到github"></a>发布到github</h2><blockquote>
 <p>首先在github上建一个repository 名字格式：[your_user_name.github.io]</p>
@@ -472,26 +474,26 @@
 </blockquote>
 <p><img src="/images/github+hexo/github仓库.png" alt=""></p>
 <blockquote>
-<p>要发布到 github 还得下载 一个组件( hexo-deployer-git) 执行命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-deployer-git --save</div></pre></td></tr></table></figure></p>
+<p>要发布到 github 还得下载 一个组件( hexo-deployer-git) 执行命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></p>
 <p><em>还需要修改 _config.yml  ;参考官网得说明</em><br><img src="/images/github+hexo/发布到github前的配置.png" alt=""></p>
 <p><strong>我的配置如下：</strong><br><img src="/images/github+hexo/我的发布配置.png" alt=""></p>
-<p>配置完之后 就可以发布到 github上了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo d  #发布</div></pre></td></tr></table></figure></p>
-<p>发布完成之后 就可输入网址查看了 这里贴一下我的吧：<a href="https://sky-mxc.github.io" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
+<p>配置完之后 就可以发布到 github上了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d  #发布</span><br></pre></td></tr></table></figure></p>
+<p>发布完成之后 就可输入网址查看了 这里贴一下我的吧：<a href="https://sky-mxc.github.io" target="_blank" rel="noopener">https://sky-mxc.github.io</a></p>
 </blockquote>
 <p><img src="/images/github+hexo/发布完成0.png" alt=""></p>
 <blockquote>
 <p><strong>这里就基本搭建完成了</strong> </p>
-<p>常用 命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">hexo clean # 清理之前的内容</div><div class="line">hexo g # 生成静态文件</div><div class="line">hexo d #部署</div><div class="line">hexo s # 启动本地服务 ，可以通过 http://localhost:4000查看</div><div class="line">hexo s --debug # 使用debug模式启动服务</div></pre></td></tr></table></figure></p>
+<p>常用 命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo clean # 清理之前的内容</span><br><span class="line">hexo g # 生成静态文件</span><br><span class="line">hexo d #部署</span><br><span class="line">hexo s # 启动本地服务 ，可以通过 http://localhost:4000查看</span><br><span class="line">hexo s --debug # 使用debug模式启动服务</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <h2 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h2><blockquote>
-<p>感觉默认主题有点low 关于主题的选择 这里贴个连接 <a href="https://hexo.io/themes/" target="_blank" rel="external">https://hexo.io/themes/</a></p>
-<p>我要更换的主题：<a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="external">http://theme-next.iissnan.com/getting-started.html</a></p>
-<p>在要theme 目录下 clone<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/iissnan/hexo-theme-next themes/next</div></pre></td></tr></table></figure></p>
+<p>感觉默认主题有点low 关于主题的选择 这里贴个连接 <a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes/</a></p>
+<p>我要更换的主题：<a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">http://theme-next.iissnan.com/getting-started.html</a></p>
+<p>在要theme 目录下 clone<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <p>clone完成后 修改 _config.yml 将theme 的值修改为 next</p>
 <p><img src="/images/github+hexo/修改主题.png" alt=""></p>
 <blockquote>
-<p>具体看官网配置：<a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="external">http://theme-next.iissnan.com/getting-started.html</a></p>
+<p>具体看官网配置：<a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">http://theme-next.iissnan.com/getting-started.html</a></p>
 </blockquote>
 
       
@@ -692,7 +694,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">博文</span>
                 </a>
               </div>
@@ -703,7 +705,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -714,7 +716,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

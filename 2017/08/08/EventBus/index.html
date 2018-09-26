@@ -76,18 +76,20 @@
 
 
 <meta name="description" content="EventBus3.0学习笔记">
+<meta name="keywords" content="EventBus">
 <meta property="og:type" content="article">
 <meta property="og:title" content="EventBus3 学习笔记">
 <meta property="og:url" content="http://blog.skymxc.com/2017/08/08/EventBus/index.html">
 <meta property="og:site_name" content="孟祥超">
 <meta property="og:description" content="EventBus3.0学习笔记">
-<meta property="og:image" content="http://blog.skymxc.com/\images\Android\EventBus\EventBus.png">
-<meta property="og:image" content="http://blog.skymxc.com/\images\Android\EventBus\index.png">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.skymxc.com/images/Android/EventBus/EventBus.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Android/EventBus/index.png">
 <meta property="og:updated_time" content="2018-04-22T08:36:31.348Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EventBus3 学习笔记">
 <meta name="twitter:description" content="EventBus3.0学习笔记">
-<meta name="twitter:image" content="http://blog.skymxc.com/\images\Android\EventBus\EventBus.png">
+<meta name="twitter:image" content="http://blog.skymxc.com/images/Android/EventBus/EventBus.png">
 
 
 
@@ -416,25 +418,25 @@
 <li>注册/取消订阅</li>
 <li>发送事件</li>
 </ul>
-<h2 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile &apos;org.greenrobot:eventbus:3.0.0&apos;</div></pre></td></tr></table></figure>
+<h2 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compile &apos;org.greenrobot:eventbus:3.0.0&apos;</span><br></pre></td></tr></table></figure>
 <h2 id="定义事件"><a href="#定义事件" class="headerlink" title="定义事件"></a>定义事件</h2><blockquote>
 <p>这里的事件是一个任意的POJO 没有任何要求</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public class MessageEvent &#123;</div><div class="line"></div><div class="line">    public final String message;</div><div class="line"></div><div class="line">    public MessageEvent(String message) &#123;</div><div class="line">        this.message = message;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class MessageEvent &#123;</span><br><span class="line"></span><br><span class="line">    public final String message;</span><br><span class="line"></span><br><span class="line">    public MessageEvent(String message) &#123;</span><br><span class="line">        this.message = message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="订阅"><a href="#订阅" class="headerlink" title="订阅"></a>订阅</h2><blockquote>
 <p>准备订阅者</p>
 </blockquote>
 <p>使用注解 <strong>@Subscribe</strong> ，在3.0中对方法名称没有任何要求 当发送事件时EventBus会调用方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// This method will be called when a MessageEvent is posted (in the UI thread for Toast)</div><div class="line">@Subscribe(threadMode = ThreadMode.MAIN)</div><div class="line">public void onMessageEvent(MessageEvent event) &#123;</div><div class="line">    Toast.makeText(getActivity(), event.message, Toast.LENGTH_SHORT).show();</div><div class="line">&#125;</div><div class="line"></div><div class="line">// This method will be called when a SomeOtherEvent is posted</div><div class="line">@Subscribe</div><div class="line">public void handleSomethingElse(SomeOtherEvent event) &#123;</div><div class="line">    doSomethingWith(event);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// This method will be called when a MessageEvent is posted (in the UI thread for Toast)</span><br><span class="line">@Subscribe(threadMode = ThreadMode.MAIN)</span><br><span class="line">public void onMessageEvent(MessageEvent event) &#123;</span><br><span class="line">    Toast.makeText(getActivity(), event.message, Toast.LENGTH_SHORT).show();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// This method will be called when a SomeOtherEvent is posted</span><br><span class="line">@Subscribe</span><br><span class="line">public void handleSomethingElse(SomeOtherEvent event) &#123;</span><br><span class="line">    doSomethingWith(event);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>注册/取消订阅</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public void onStart() &#123;</div><div class="line">    super.onStart();</div><div class="line">    EventBus.getDefault().register(this);</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public void onStop() &#123;</div><div class="line">    EventBus.getDefault().unregister(this);</div><div class="line">    super.onStop();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void onStart() &#123;</span><br><span class="line">    super.onStart();</span><br><span class="line">    EventBus.getDefault().register(this);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public void onStop() &#123;</span><br><span class="line">    EventBus.getDefault().unregister(this);</span><br><span class="line">    super.onStop();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>发送事件</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EventBus.getDefault().post(new MessageEvent(&quot;Hello everyone!&quot;));</div></pre></td></tr></table></figure>
-<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/how-to-get-started/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/how-to-get-started/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EventBus.getDefault().post(new MessageEvent(&quot;Hello everyone!&quot;));</span><br></pre></td></tr></table></figure>
+<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/how-to-get-started/" target="_blank" rel="noopener">http://greenrobot.org/eventbus/documentation/how-to-get-started/</a></p>
 <h1 id="交付线程-Delivery-Threads-ThreadMode"><a href="#交付线程-Delivery-Threads-ThreadMode" class="headerlink" title="交付线程 Delivery Threads (ThreadMode)"></a>交付线程 Delivery Threads (ThreadMode)</h1><p>EventBus 通过 threadMode 决定订阅事件 在哪个线程处理，threadMode的取值 有四个枚举类型</p>
 <ul>
 <li>POSTING</li>
@@ -445,56 +447,56 @@
 <blockquote>
 <p>POSTING。 默认值，将会与发送线程一致，发送事件在哪个线程，订阅者就在哪个线程处理</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// Called in the same thread (default)</div><div class="line">// ThreadMode is optional here</div><div class="line">@Subscribe(threadMode = ThreadMode.POSTING)</div><div class="line">public void onMessage(MessageEvent event) &#123;</div><div class="line">    log(event.message);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// Called in the same thread (default)</span><br><span class="line">// ThreadMode is optional here</span><br><span class="line">@Subscribe(threadMode = ThreadMode.POSTING)</span><br><span class="line">public void onMessage(MessageEvent event) &#123;</span><br><span class="line">    log(event.message);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>MAIN 。 UI线程，订阅者将会在UI线程处理</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// Called in Android UI&apos;s main thread</div><div class="line">@Subscribe(threadMode = ThreadMode.MAIN)</div><div class="line">public void onMessage(MessageEvent event) &#123;</div><div class="line">textField.setText(event.message);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// Called in Android UI&apos;s main thread</span><br><span class="line">@Subscribe(threadMode = ThreadMode.MAIN)</span><br><span class="line">public void onMessage(MessageEvent event) &#123;</span><br><span class="line">textField.setText(event.message);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>BACKGROUND 。 后台线程处理，如果发送者在UI线程发出就会另开线程处理，否则就直接在同一线程处理，不会在UI线程处理就对了</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// Called in the background thread</div><div class="line">@Subscribe(threadMode = ThreadMode.BACKGROUND)</div><div class="line">public void onMessage(MessageEvent event)&#123;</div><div class="line">    saveToDisk(event.message);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// Called in the background thread</span><br><span class="line">@Subscribe(threadMode = ThreadMode.BACKGROUND)</span><br><span class="line">public void onMessage(MessageEvent event)&#123;</span><br><span class="line">    saveToDisk(event.message);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>ASYNC 。异步，订阅者将会另开一个线程处理，无论发送者从哪个线程发出</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// Called in a separate thread</div><div class="line">@Subscribe(threadMode = ThreadMode.ASYNC)</div><div class="line">public void onMessage(MessageEvent event)&#123;</div><div class="line">    backend.send(event.message);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/delivery-threads-threadmode/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/delivery-threads-threadmode/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// Called in a separate thread</span><br><span class="line">@Subscribe(threadMode = ThreadMode.ASYNC)</span><br><span class="line">public void onMessage(MessageEvent event)&#123;</span><br><span class="line">    backend.send(event.message);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/delivery-threads-threadmode/" target="_blank" rel="noopener">http://greenrobot.org/eventbus/documentation/delivery-threads-threadmode/</a></p>
 <h1 id="优先级及事件取消-Priorities-and-Event-Cancellation"><a href="#优先级及事件取消-Priorities-and-Event-Cancellation" class="headerlink" title="优先级及事件取消 Priorities and Event Cancellation"></a>优先级及事件取消 Priorities and Event Cancellation</h1><blockquote>
 <p>优先级</p>
 </blockquote>
 <p>EventBus 通过 <code>priority</code> 属性决定优先级 ，默认0 值越高 优先级越高。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">@Subscribe(priority = 1);</div><div class="line">public void onEvent(MessageEvent event) &#123;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">@Subscribe(priority = 1);</span><br><span class="line">public void onEvent(MessageEvent event) &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>事件取消</p>
 </blockquote>
 <p> EventBus 通过 <code>cancelEventDelivery(Object event)</code> 取消事件，这可是优先级高的特权了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// Called in the same thread (default)</div><div class="line">@Subscribe</div><div class="line">public void onEvent(MessageEvent event)&#123;</div><div class="line">    // Process the event</div><div class="line">    ...</div><div class="line">    // Prevent delivery to other subscribers</div><div class="line">    EventBus.getDefault().cancelEventDelivery(event) ;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/priorities-and-event-cancellation/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/priorities-and-event-cancellation/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// Called in the same thread (default)</span><br><span class="line">@Subscribe</span><br><span class="line">public void onEvent(MessageEvent event)&#123;</span><br><span class="line">    // Process the event</span><br><span class="line">    ...</span><br><span class="line">    // Prevent delivery to other subscribers</span><br><span class="line">    EventBus.getDefault().cancelEventDelivery(event) ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/priorities-and-event-cancellation/" target="_blank" rel="noopener">http://greenrobot.org/eventbus/documentation/priorities-and-event-cancellation/</a></p>
 <h1 id="配置-Configuration"><a href="#配置-Configuration" class="headerlink" title="配置 Configuration"></a>配置 Configuration</h1><p>一般我们使用 <code>EventBus.getDefault()</code> 得到EventBus实例，<br>如果有别的需求可以使用 EventBusBuilder 类构建EventBus，例如 关闭log</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">EventBus eventBus = EventBus.builder()</div><div class="line">    .logNoSubscriberMessages(false)</div><div class="line">    .sendNoSubscriberEvent(false)</div><div class="line">    .build();</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">EventBus eventBus = EventBus.builder()</span><br><span class="line">    .logNoSubscriberMessages(false)</span><br><span class="line">    .sendNoSubscriberEvent(false)</span><br><span class="line">    .build();</span><br></pre></td></tr></table></figure>
 <p>或者说 当订阅者抛出异常时 发送 <code>SubscriberExceptionEvent</code> 事件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EventBus eventBus = EventBus.builder().throwSubscriberException(true).build();</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EventBus eventBus = EventBus.builder().throwSubscriberException(true).build();</span><br></pre></td></tr></table></figure>
 <p>默认情况下 订阅者抛出异常EventBus会捕获异常并发一个 <code>SubscriberExceptionEvent</code> 事件</p>
 <p>我们可以通过 <code>installDefaultEventBus()</code>方法我们的配置放到默认实例上；但是要在使用 <code>EventBus.getDefault()</code>之前</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EventBus.builder().throwSubscriberException(BuildConfig.DEBUG).installDefaultEventBus();</div></pre></td></tr></table></figure>
-<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/configuration/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/configuration/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EventBus.builder().throwSubscriberException(BuildConfig.DEBUG).installDefaultEventBus();</span><br></pre></td></tr></table></figure>
+<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/configuration/" target="_blank" rel="noopener">http://greenrobot.org/eventbus/documentation/configuration/</a></p>
 <h1 id="粘性事件-Sticky-Events"><a href="#粘性事件-Sticky-Events" class="headerlink" title="粘性事件 Sticky Events"></a>粘性事件 Sticky Events</h1><p><em>对于一般的事件，我们首先要注册订阅者，然后发送事件，订阅者才能收到事件。如果先发送事件，再订阅此事件，将收不到事件，而粘性事件恰恰相反，粘性事件是可以先发送，然后再注册订阅者，后注册的订阅者依然可以接收到事件（ps：在发送前注册的也可以收到）</em></p>
 <blockquote>
 <p>先发送粘性事件</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EventBus.getDefault().postSticky(new MessageEvent(&quot;Hello everyone!&quot;));</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EventBus.getDefault().postSticky(new MessageEvent(&quot;Hello everyone!&quot;));</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>再启动一个Activity 仍然可以接受到之前发送的事件</p>
 </blockquote>
 <p>属性 sticky 的取值决定是否是粘性事件</p>
 <p><em>ps:你不注册的话，啥事件也是收不到的</em></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public void onStart() &#123;</div><div class="line">    super.onStart();</div><div class="line">    EventBus.getDefault().register(this);</div><div class="line">&#125;</div><div class="line"></div><div class="line">// UI updates must run on MainThread</div><div class="line">@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)</div><div class="line">public void onEvent(MessageEvent event) &#123;   </div><div class="line">    textField.setText(event.message);</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public void onStop() &#123;</div><div class="line">    EventBus.getDefault().unregister(this);    </div><div class="line">    super.onStop();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void onStart() &#123;</span><br><span class="line">    super.onStart();</span><br><span class="line">    EventBus.getDefault().register(this);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// UI updates must run on MainThread</span><br><span class="line">@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)</span><br><span class="line">public void onEvent(MessageEvent event) &#123;   </span><br><span class="line">    textField.setText(event.message);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public void onStop() &#123;</span><br><span class="line">    EventBus.getDefault().unregister(this);    </span><br><span class="line">    super.onStop();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>移除粘性事件</p>
 </blockquote>
 <p>如果你不移除粘性事件，那么它将一直存在，直到你程序被杀死</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">MessageEvent stickyEvent = EventBus.getDefault().getStickyEvent(MessageEvent.class);</div><div class="line">// Better check that an event was actually posted before</div><div class="line">if(stickyEvent != null) &#123;</div><div class="line">    // &quot;Consume&quot; the sticky event</div><div class="line">    EventBus.getDefault().removeStickyEvent(stickyEvent);</div><div class="line">    // Now do something with it</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>官网传送门 <a href="http://greenrobot.org/eventbus/documentation/configuration/sticky-events/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/configuration/sticky-events/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">MessageEvent stickyEvent = EventBus.getDefault().getStickyEvent(MessageEvent.class);</span><br><span class="line">// Better check that an event was actually posted before</span><br><span class="line">if(stickyEvent != null) &#123;</span><br><span class="line">    // &quot;Consume&quot; the sticky event</span><br><span class="line">    EventBus.getDefault().removeStickyEvent(stickyEvent);</span><br><span class="line">    // Now do something with it</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>官网传送门 <a href="http://greenrobot.org/eventbus/documentation/configuration/sticky-events/" target="_blank" rel="noopener">http://greenrobot.org/eventbus/documentation/configuration/sticky-events/</a></p>
 <h1 id="订阅索引-Subscriber-Index"><a href="#订阅索引-Subscriber-Index" class="headerlink" title="订阅索引 Subscriber Index"></a>订阅索引 Subscriber Index</h1><p>订阅索引是3.0中的新特性，是可选项。</p>
 <p>在3.0中由于使用了注解，比起使用反射来遍历方法的2.4版本逊色不少。但开启索引后性能远远超出旧版本。<br>看作者放出的图</p>
 <p><img src="\images\Android\EventBus\index.png" alt="EventBus性能对比"></p>
@@ -512,39 +514,39 @@
 <ul>
 <li>顶级 build.gradle 中加入</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">buildscript &#123;</div><div class="line">    dependencies &#123;</div><div class="line">        classpath &apos;com.neenbedankt.gradle.plugins:android-apt:1.8&apos;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">buildscript &#123;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath &apos;com.neenbedankt.gradle.plugins:android-apt:1.8&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>再module的build.gradle 中使用 apt插件</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">apply plugin: &apos;com.android.application&apos;</div><div class="line">apply plugin: &apos;com.neenbedankt.android-apt&apos;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &apos;com.android.application&apos;</span><br><span class="line">apply plugin: &apos;com.neenbedankt.android-apt&apos;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>module的build.gradle 添加依赖</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    compile &apos;org.greenrobot:eventbus:3.0.0&apos;</div><div class="line">    apt &apos;org.greenrobot:eventbus-annotation-processor:3.0.1&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compile &apos;org.greenrobot:eventbus:3.0.0&apos;</span><br><span class="line">    apt &apos;org.greenrobot:eventbus-annotation-processor:3.0.1&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>module 的 build.gradle 配置参数 ，这里写自己的包名</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">apt &#123;</div><div class="line">    arguments &#123;</div><div class="line">        eventBusIndex &quot;com.example.myapp.MyEventBusIndex&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">apt &#123;</span><br><span class="line">    arguments &#123;</span><br><span class="line">        eventBusIndex &quot;com.example.myapp.MyEventBusIndex&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>使用索引</p>
 </blockquote>
 <p>编译过后 会生成 MyEventBusIndex类，没有生成就多编译几遍</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EventBus eventBus = EventBus.builder().addIndex(new MyEventBusIndex()).build();</div></pre></td></tr></table></figure>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EventBus eventBus = EventBus.builder().addIndex(new MyEventBusIndex()).build();</span><br></pre></td></tr></table></figure>
 <p> 将索引配置到默认实例中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">EventBus.builder().addIndex(new MyEventBusIndex()).installDefaultEventBus();</div><div class="line">// Now the default instance uses the given index. Use it like this:</div><div class="line">EventBus eventBus = EventBus.getDefault();</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">EventBus.builder().addIndex(new MyEventBusIndex()).installDefaultEventBus();</span><br><span class="line">// Now the default instance uses the given index. Use it like this:</span><br><span class="line">EventBus eventBus = EventBus.getDefault();</span><br></pre></td></tr></table></figure>
 <p>还可以添加多个不同的library中索引</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">EventBus eventBus = EventBus.builder()</div><div class="line">    .addIndex(new MyEventBusAppIndex())</div><div class="line">    .addIndex(new MyEventBusLibIndex()).build();</div></pre></td></tr></table></figure>
-<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/subscriber-index/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/subscriber-index/</a></p>
-<h1 id="混淆-ProGuard"><a href="#混淆-ProGuard" class="headerlink" title="混淆 ProGuard"></a>混淆 ProGuard</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">-keepattributes *Annotation*</div><div class="line">-keepclassmembers class ** &#123;</div><div class="line">    @org.greenrobot.eventbus.Subscribe &lt;methods&gt;;</div><div class="line">&#125;</div><div class="line">-keep enum org.greenrobot.eventbus.ThreadMode &#123; *; &#125;</div><div class="line"></div><div class="line"># Only required if you use AsyncExecutor</div><div class="line">-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent &#123;</div><div class="line">    &lt;init&gt;(java.lang.Throwable);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/proguard/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/proguard/</a></p>
-<h1 id="AsyncExecutor"><a href="#AsyncExecutor" class="headerlink" title="AsyncExecutor"></a>AsyncExecutor</h1><p>懒得翻译了，直接看吧<br><a href="http://greenrobot.org/eventbus/documentation/asyncexecutor/" target="_blank" rel="external">http://greenrobot.org/eventbus/documentation/asyncexecutor/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">EventBus eventBus = EventBus.builder()</span><br><span class="line">    .addIndex(new MyEventBusAppIndex())</span><br><span class="line">    .addIndex(new MyEventBusLibIndex()).build();</span><br></pre></td></tr></table></figure>
+<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/subscriber-index/" target="_blank" rel="noopener">http://greenrobot.org/eventbus/documentation/subscriber-index/</a></p>
+<h1 id="混淆-ProGuard"><a href="#混淆-ProGuard" class="headerlink" title="混淆 ProGuard"></a>混淆 ProGuard</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-keepattributes *Annotation*</span><br><span class="line">-keepclassmembers class ** &#123;</span><br><span class="line">    @org.greenrobot.eventbus.Subscribe &lt;methods&gt;;</span><br><span class="line">&#125;</span><br><span class="line">-keep enum org.greenrobot.eventbus.ThreadMode &#123; *; &#125;</span><br><span class="line"></span><br><span class="line"># Only required if you use AsyncExecutor</span><br><span class="line">-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent &#123;</span><br><span class="line">    &lt;init&gt;(java.lang.Throwable);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>官网指南 <a href="http://greenrobot.org/eventbus/documentation/proguard/" target="_blank" rel="noopener">http://greenrobot.org/eventbus/documentation/proguard/</a></p>
+<h1 id="AsyncExecutor"><a href="#AsyncExecutor" class="headerlink" title="AsyncExecutor"></a>AsyncExecutor</h1><p>懒得翻译了，直接看吧<br><a href="http://greenrobot.org/eventbus/documentation/asyncexecutor/" target="_blank" rel="noopener">http://greenrobot.org/eventbus/documentation/asyncexecutor/</a></p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><em>感谢各位大神的分享</em></p>
 <ul>
-<li><a href="https://juejin.im/entry/570ae5668ac247004c3128a4" target="_blank" rel="external">https://juejin.im/entry/570ae5668ac247004c3128a4</a></li>
-<li><a href="https://dev.qq.com/topic/59190e9ae315487c53deeca3" target="_blank" rel="external">https://dev.qq.com/topic/59190e9ae315487c53deeca3</a></li>
-<li><a href="http://www.jianshu.com/p/4a3d953d1319" target="_blank" rel="external">http://www.jianshu.com/p/4a3d953d1319</a></li>
+<li><a href="https://juejin.im/entry/570ae5668ac247004c3128a4" target="_blank" rel="noopener">https://juejin.im/entry/570ae5668ac247004c3128a4</a></li>
+<li><a href="https://dev.qq.com/topic/59190e9ae315487c53deeca3" target="_blank" rel="noopener">https://dev.qq.com/topic/59190e9ae315487c53deeca3</a></li>
+<li><a href="http://www.jianshu.com/p/4a3d953d1319" target="_blank" rel="noopener">http://www.jianshu.com/p/4a3d953d1319</a></li>
 </ul>
-<p>Demo地址： <a href="https://github.com/sky-mxc/AndroidDemo/tree/master/event" target="_blank" rel="external">https://github.com/sky-mxc/AndroidDemo/tree/master/event</a></p>
+<p>Demo地址： <a href="https://github.com/sky-mxc/AndroidDemo/tree/master/event" target="_blank" rel="noopener">https://github.com/sky-mxc/AndroidDemo/tree/master/event</a></p>
 
       
     </div>
@@ -742,7 +744,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">博文</span>
                 </a>
               </div>
@@ -753,7 +755,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -764,7 +766,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

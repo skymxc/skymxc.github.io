@@ -76,27 +76,29 @@
 
 
 <meta name="description" content="MySQL5.7.17安装教程">
+<meta name="keywords" content="mysql5.7.17解压版安装，孟祥超，sky-mxc">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mysql5.7.17解压版安装教程">
 <meta property="og:url" content="http://blog.skymxc.com/2017/01/05/installMysql5-7/index.html">
 <meta property="og:site_name" content="孟祥超">
 <meta property="og:description" content="MySQL5.7.17安装教程">
-<meta property="og:image" content="http://blog.skymxc.com/\images\database\msyql\install\download.png">
-<meta property="og:image" content="http://blog.skymxc.com/\images\database\msyql\install\decompression.png">
-<meta property="og:image" content="http://blog.skymxc.com/\images\database\msyql\install\addsysPath.png">
-<meta property="og:image" content="http://blog.skymxc.com/\images\database\msyql\install\initialize.jpg">
-<meta property="og:image" content="http://blog.skymxc.com/\images\database\msyql\install\imi.png">
-<meta property="og:image" content="http://blog.skymxc.com/\images\database\msyql\install\registerService.png">
-<meta property="og:image" content="http://blog.skymxc.com/\images\database\msyql\install\start.png">
-<meta property="og:image" content="http://blog.skymxc.com/\images\database\msyql\install\login&updatePwd.png">
-<meta property="og:image" content="http://blog.skymxc.com/\images\database\msyql\install\exit.png">
-<meta property="og:image" content="http://blog.skymxc.com/\images\database\msyql\install\error.png">
-<meta property="og:image" content="http://blog.skymxc.com/\images\database\msyql\install\success.png">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.skymxc.com/images/database/msyql/install/download.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/database/msyql/install/decompression.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/database/msyql/install/addsysPath.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/database/msyql/install/initialize.jpg">
+<meta property="og:image" content="http://blog.skymxc.com/images/database/msyql/install/imi.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/database/msyql/install/registerService.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/database/msyql/install/start.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/database/msyql/install/login&updatePwd.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/database/msyql/install/exit.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/database/msyql/install/error.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/database/msyql/install/success.png">
 <meta property="og:updated_time" content="2018-04-22T08:37:33.474Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mysql5.7.17解压版安装教程">
 <meta name="twitter:description" content="MySQL5.7.17安装教程">
-<meta name="twitter:image" content="http://blog.skymxc.com/\images\database\msyql\install\download.png">
+<meta name="twitter:image" content="http://blog.skymxc.com/images/database/msyql/install/download.png">
 
 
 
@@ -417,9 +419,9 @@
 
       
         <blockquote>
-<p><strong>sky-mxc</strong>总结 转载注明: <a href="https://sky-mxc.github.io/2017/01/05/installMysql5-7/" target="_blank" rel="external">https://sky-mxc.github.io</a></p>
+<p><strong>sky-mxc</strong>总结 转载注明: <a href="https://sky-mxc.github.io/2017/01/05/installMysql5-7/" target="_blank" rel="noopener">https://sky-mxc.github.io</a></p>
 </blockquote>
-<h1 id="Mysql5-7-17-解压版安装"><a href="#Mysql5-7-17-解压版安装" class="headerlink" title="Mysql5.7.17 解压版安装"></a>Mysql5.7.17 解压版安装</h1><h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>解压版下载地址(需要登录) <a href="http://dev.mysql.com/downloads/mysql/" target="_blank" rel="external">http://dev.mysql.com/downloads/mysql/</a></p>
+<h1 id="Mysql5-7-17-解压版安装"><a href="#Mysql5-7-17-解压版安装" class="headerlink" title="Mysql5.7.17 解压版安装"></a>Mysql5.7.17 解压版安装</h1><h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>解压版下载地址(需要登录) <a href="http://dev.mysql.com/downloads/mysql/" target="_blank" rel="noopener">http://dev.mysql.com/downloads/mysql/</a></p>
 <p><img src="\images\database\msyql\install\download.png" alt="下载"></p>
 <p>下载后解压到你想要安装的目录就可以了</p>
 <p><img src="\images\database\msyql\install\decompression.png" alt="解压后"></p>
@@ -428,9 +430,9 @@
 <p><img src="\images\database\msyql\install\addsysPath.png" alt="增加环境变量"></p>
 <p>在path变量后追加 <strong>%MYSQL_HOME%\bin;</strong>  注意前面加分号；</p>
 <h2 id="初始化数据库得到data目录"><a href="#初始化数据库得到data目录" class="headerlink" title="初始化数据库得到data目录"></a>初始化数据库得到data目录</h2><p>两种命令方式 一种是初始化一个无密码的 root ，一个是初始化一个随机密码的root<br>无密码的方式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysqld --initialize-insecure</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld --initialize-insecure</span><br></pre></td></tr></table></figure>
 <p>随机密码的方式，不过要记住随即密码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysqld --initialize</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld --initialize</span><br></pre></td></tr></table></figure>
 <p><img src="\images\database\msyql\install\initialize.jpg" alt="初始化data目录"></p>
 <h2 id="配置-my-imi文件"><a href="#配置-my-imi文件" class="headerlink" title="配置 my.imi文件"></a>配置 my.imi文件</h2><blockquote>
 <p>主要是配置 basedir,datadir,port,在5.7之后 有些配置是不识别的例如：<code>default-character-set=utf8</code></p>
@@ -536,7 +538,7 @@ MySQL 服务无法启动。
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/12/25/designModel-observer/" rel="next" title="观察者模式">
+              <a href="/2017/01/04/designModel-observer/" rel="next" title="观察者模式">
                 <i class="fa fa-chevron-left"></i> 观察者模式
               </a>
             
@@ -674,7 +676,7 @@ MySQL 服务无法启动。
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">博文</span>
                 </a>
               </div>
@@ -685,7 +687,7 @@ MySQL 服务无法启动。
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -696,7 +698,7 @@ MySQL 服务无法启动。
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
