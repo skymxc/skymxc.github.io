@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Gradle 是什么" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Gradle 是一个开源的自动化构建工具，它灵活的设计，几乎可以构建任何软件。">
+<meta name="keywords" content="Gradle 是什么">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gardle 是什么">
+<meta property="og:url" content="http://blog.skymxc.com/2019/08/04/WhatIsGradle/index.html">
+<meta property="og:site_name" content="佛系编码">
+<meta property="og:description" content="Gradle 是一个开源的自动化构建工具，它灵活的设计，几乎可以构建任何软件。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/task-dag-examples.png">
+<meta property="og:updated_time" content="2019-08-04T14:58:30.052Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gardle 是什么">
+<meta name="twitter:description" content="Gradle 是一个开源的自动化构建工具，它灵活的设计，几乎可以构建任何软件。">
+<meta name="twitter:image" content="http://blog.skymxc.com/images/Gradle/task-dag-examples.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'sky-mxc'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.skymxc.com/2019/08/04/WhatIsGradle/"/>
+
+
+
+
+
+  <title>Gardle 是什么 | 佛系编码</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db8042d9d7c31f7cbbc5ecedd326a573";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">佛系编码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">好记性不如烂笔头</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.skymxc.com/2019/08/04/WhatIsGradle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="佛系编码">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="佛系编码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Gardle 是什么</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-04T17:08:43+08:00">
+                2019-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gradle/" itemprop="url" rel="index">
+                    <span itemprop="name">Gradle</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/08/04/WhatIsGradle/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/08/04/WhatIsGradle/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  Gradle 是一个开源的自动化构建工具，它灵活的设计，几乎可以构建任何软件。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>写在前面的话，最近在系统的学习Gradle,本来想写一篇关于 Gradle 的介绍。<br>但在官网发现了这篇关于 Gradle 的介绍，已经介绍的很好了，我就很直接翻译过来了。<br>原文地址 <a href="https://docs.gradle.org/current/userguide/what_is_gradle.html" target="_blank" rel="noopener">https://docs.gradle.org/current/userguide/what_is_gradle.html</a></p>
+</blockquote>
+<h2 id="Gradle-的几个优点"><a href="#Gradle-的几个优点" class="headerlink" title="Gradle 的几个优点"></a>Gradle 的几个优点</h2><p>Gradle 是开源的自动化构建工具，它的设计足够灵活，可以构建几乎任何软件。</p>
+<p>它有以下几个显著的优点：</p>
+<h3 id="高性能"><a href="#高性能" class="headerlink" title="高性能"></a>高性能</h3><p>Gradle 只运行那些输入和输出有改变的任务，从而避免无效的工作。另外，还可以通过缓存开关重用之前的任务输出（其他的机器上的缓存也是可以的）。<br>Gradle还实现了许多其他优化，开发团队会持续不断地改进Gradle的性能。</p>
+<h3 id="基于-JVM"><a href="#基于-JVM" class="headerlink" title="基于 JVM"></a>基于 JVM</h3><p>Gradle 是运行在 JDK上的，必须安装 JDK 才能运行。因为是运行在 JDK 上，这对于使用 Java 的用户是个额外的好处，可以在构建脚本中使用标准的 Java API，例如 自定义任务和插件，另外，因为是基于JDK的，它可以很好的跨平台运行。<br>Gradle 并不限于构建JVM项目，甚至还附带了对于构建本地项目的支持。</p>
+<h3 id="约定"><a href="#约定" class="headerlink" title="约定"></a>约定</h3><p>Gradle 借鉴 Mavean 的做法，通过实现约定，使常见类型的项目(比如Java项目)易于构建。使用适当的插件可以很容易的为许多项目生成构建脚本。<br>约定并没有什么限制，可以覆盖原有的约定，添加自定义任务等来实现自己的构建模型。</p>
+<h3 id="扩展性"><a href="#扩展性" class="headerlink" title="扩展性"></a>扩展性</h3><p>Gradle有很好的扩展性，可以添加定义自己的任务，覆盖已有的任务类型甚至定义自己的构建模型。Android 支持插件就是个很好的例子，在原有的基础上 增加了 flavor 和 buildType 约定。</p>
+<h3 id="IDE-支持"><a href="#IDE-支持" class="headerlink" title="IDE 支持"></a>IDE 支持</h3><p>常见的几个主流 IDE 都支持导入 Gradle项目，并可以与之交互，例如 Android studio,Eclipse ， IntelliJ IDEA，NetBeans等。Gradle 也有将项目文件加载进 Visual studio 的解决方案。</p>
+<h3 id="Insight"><a href="#Insight" class="headerlink" title="Insight"></a>Insight</h3><p>构建扫描 提供了构建运行的大量信息，可以使用它去定位构建问题。它可以帮你定位构建性能问题。也可以把它分享给其他人，这样在交流问题的时候就很有用了。更详细的构建扫描可以查看这个文档 <a href="https://scans.gradle.com/?_ga=2.3508848.1142716506.1563790305-874993899.1553652374" target="_blank" rel="noopener">https://scans.gradle.com/?_ga=2.3508848.1142716506.1563790305-874993899.1553652374</a></p>
+<h2 id="Gradle-的五个重要概念"><a href="#Gradle-的五个重要概念" class="headerlink" title="Gradle 的五个重要概念"></a>Gradle 的五个重要概念</h2><p>Gradle 是一个灵活而强大的工具，在刚使用的时候很容易望而生畏。理解下面几个核心原则后就会觉得Gradle还是很好理解的，这会帮助你更好的使用Gradle。</p>
+<h3 id="Gradle-是一个通用构建工具"><a href="#Gradle-是一个通用构建工具" class="headerlink" title="Gradle 是一个通用构建工具"></a>Gradle 是一个通用构建工具</h3><p>因为Gradle 不对要做的构建或者如何构建做任何设想，所以Gradle几乎可以构建任务软件。</p>
+<p>目前最大的限制就是依赖管理只支持 Maven 和 lvy 的编译库和文件。<br>虽然有这样的限制，但是在用的时候也不麻烦，对常见类型的项目都是很容易构建的-例如 Java编译库，通过添加一层约定和插件预构建功能，可以将自己的约定和功能封装成一个插件，当然也可以发布这个插件。</p>
+<h3 id="Gradle-的核心是基于任务"><a href="#Gradle-的核心是基于任务" class="headerlink" title="Gradle 的核心是基于任务"></a>Gradle 的核心是基于任务</h3><p>Gradle 将其构建建模为任务（工作单元）的有向无环图。意思是构建实际上是配置一组任务，并根据他们的依赖性创建一个有向无环图。一旦图创建完成，Gradle 将确定哪些任务以何种顺序运行，然后执行它们。<br>下面是两个任务图，一个是简单的，一个是很详细的，任务的依赖关系通过箭头表示。</p>
+<p><img src="/images/Gradle/task-dag-examples.png" alt="image"></p>
+<p>几乎所有的构建过程都可以建模为任务图,这也是Gradle如此灵活的原因之一。任务图可以通过插件和你自己的脚本定义,关于任务依赖性可以看文档  <a href="https://docs.gradle.org/current/userguide/tutorial_using_tasks.html#sec:task_dependencies" target="_blank" rel="noopener">https://docs.gradle.org/current/userguide/tutorial_using_tasks.html#sec:task_dependencies</a></p>
+<p>任务由三部分构成</p>
+<ul>
+<li>操作 ——做一些工作，例如复制文件或者编译源码</li>
+<li>输入 ——值，行为能够操作的值，文件或者目录。</li>
+<li>输出 ——行为修改或产生的值，文件或目录</li>
+</ul>
+<p>实际上根据现实情况以上都是可选的，例如在Gradle 的生命周期里任务就有的什么也没做，只是将多个任务组合起来。<br>另外 Gradle 的增量编译是很强大可靠的，为了快速编译除非真的需要执行 clean 任务之外没必要执行 clean 操作。</p>
+<p>你可以选择运行哪些任务。通过指定执行所需任务来节省时间，但也仅此而已。如果你想运行单元测试，就应该执行 test任务。如果您想打包应用程序，大多数构建都有相应的 assemble 任务。</p>
+<p>最后一件事:Gradle的增量构建支持是健壮和可靠的，所以除非您真的想执行一个clean任务，否则通过避免clean任务来保持构建的快速运行</p>
+<h3 id="Gradle有几个固定的构建阶段"><a href="#Gradle有几个固定的构建阶段" class="headerlink" title="Gradle有几个固定的构建阶段"></a>Gradle有几个固定的构建阶段</h3><p>理解Gradle在三个阶段评估和执行构建脚本是很重要的：</p>
+<ol>
+<li>初始化<br> 创建构建环境并确定哪些项目参与构建</li>
+<li>配置<br>为构建构造和配置任务图，根据用户想要运行的任务确定以何种顺序执行哪些任务。</li>
+<li>执行<br> 运行配置阶段结束时选择的任务。</li>
+</ol>
+<p>这些阶段就构成了 Gradle 的生命周期。</p>
+<blockquote>
+<p>与Apache Maven术语的比较：<br>Gradle的构建阶段不像Maven的阶段。Maven的构建阶段将构建分为多个阶段。它们的作用类似于Gradle的任务图，尽管不那么灵活。<br>Maven的构建生命周期概念与Gradle的生命周期任务大致相似。</p>
+</blockquote>
+<p>好的设计构建脚本主要由声明式配置而非命令逻辑组成。在配置阶段可以理解地评估该配置。即便如此，许多此类构建还具有任务操作 - 例如通过doLast {}和doFirst {}块 - 在执行阶段进行评估。这很重要，因为在配置阶段评估的代码不会看到在执行阶段发生的更改。</p>
+<p>配置阶段另一个重要的方面是每次构建都会对其中涉及的所有内容做评估。这也是为什么应该在配置阶段避免多余的工作。构建扫描可以帮助你识别这样的事情。</p>
+<h3 id="Gradle-的扩展方式"><a href="#Gradle-的扩展方式" class="headerlink" title="Gradle 的扩展方式"></a>Gradle 的扩展方式</h3><p>如果Gradle 附带的构建逻辑无法满足我们的构建需求，而往往通常是这样。大部分的构建都有特定的需求，需要我们添加自己的构建逻辑。</p>
+<p>Gradle 提供了以下几个主要方式去扩展它。</p>
+<ol>
+<li><p>自定义任务类型</p>
+<p>当 Gradle 本身的任务无法满足你的时候，你可以编写自己的任务类型。最好将编写的任务源文件放在 buildSrc 目录或者打包一个插件，然后你就可以像使用其他的Gradle 任务那样使用了。<br>参考 <a href="https://docs.gradle.org/current/userguide/custom_tasks.html" target="_blank" rel="noopener">https://docs.gradle.org/current/userguide/custom_tasks.html</a></p>
+</li>
+<li><p>自定义任务操作</p>
+<p> 你可以将自己的构建逻辑附加在任务的 开始之前 Task.doFirst() 和 结束之后 Task.doLast() 的方法里。</p>
+</li>
+<li><p>项目和任务的额外属性</p>
+<p> Gradle 允许你为项目或者任务添加自己的属性，你可以在自定义行为或者其他构建逻辑中使用。额外的属性甚至可以应用于你没有显式创建的任务，比如由Gradle的核心插件创建的任务。</p>
+</li>
+<li><p>自定义约定</p>
+<p> 约定是一种简化构建的强大方法，这样用户就可以更容易地理解和使用它们。这可以在使用标准项目结构和命名约定(如Java构建)的构建中看到。<br> 你可以编写自己的插件来提供约定——它们只需要为构建的相关方面配置默认值。</p>
+</li>
+<li><p>自定义模型</p>
+<p> Gradle允许你引进除任务，文件和依赖配置之外的概念。可以在大多数语言插件中看到这一点，它们将源集的概念添加到构建中。对构建过程进行适当的建模可以极大地提高构建的易用性和效率。</p>
+</li>
+</ol>
+<h3 id="脚本对API进行操作"><a href="#脚本对API进行操作" class="headerlink" title="脚本对API进行操作"></a>脚本对API进行操作</h3><p>   构建脚本其实就是可执行代码。好的脚本描述了构建软件需要哪些步骤，而不是这些步骤应该怎么工作。那是定制任务和插件应该做的。</p>
+<p>   有一个常见的误解是Gradle的强大和灵活是因为它的脚本是代码，其实并不是。提供这种的能力的是底层模型和API。就像我们在实践中建议的那样，你不应该放太多命令式逻辑在脚本里。然而，将构建脚本视为可执行代码有一个方面是有用的:理解构建脚本的语法如何映射到Gradle的API。由Groovy DSL引用和 Javadocs组成的API文档列出了方法和属性，并引用了闭包和操作。这些在构建脚本上下文中意味着什么? 查看Groovy构建脚本入门，了解这个问题的答案，以便能够有效地使用API文档。    <a href="https://docs.gradle.org/current/userguide/groovy_build_script_primer.html#groovy_build_script_primer" target="_blank" rel="noopener">https://docs.gradle.org/current/userguide/groovy_build_script_primer.html#groovy_build_script_primer</a></p>
+<blockquote>
+<p>因为Gradle运行在 JVM上，所以脚本中也可以使用标准的Java API，Groovy 脚本可以使用 Groovy API，Kotlin 脚本可以使用 Kotlin API。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="佛系编码 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎您扫一扫上面的微信公众号，订阅我的博客！有什么问题也可以在公众号留言交流</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/pay/wechatpay.png" alt="佛系编码 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/pay/alipay.jpg" alt="佛系编码 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Gradle/" rel="tag"># Gradle</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/26/Dagger2-basic/" rel="next" title="Dagger2使用攻略-基础部分">
+                <i class="fa fa-chevron-left"></i> Dagger2使用攻略-基础部分
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/user.jpg"
+                alt="佛系编码" />
+            
+              <p class="site-author-name" itemprop="name">佛系编码</p>
+              <p class="site-description motion-element" itemprop="description">写点编码的日常</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">博文</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/skymxc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:skymxc@foxmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle-的几个优点"><span class="nav-number">1.</span> <span class="nav-text">Gradle 的几个优点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#高性能"><span class="nav-number">1.1.</span> <span class="nav-text">高性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于-JVM"><span class="nav-number">1.2.</span> <span class="nav-text">基于 JVM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#约定"><span class="nav-number">1.3.</span> <span class="nav-text">约定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展性"><span class="nav-number">1.4.</span> <span class="nav-text">扩展性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IDE-支持"><span class="nav-number">1.5.</span> <span class="nav-text">IDE 支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Insight"><span class="nav-number">1.6.</span> <span class="nav-text">Insight</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle-的五个重要概念"><span class="nav-number">2.</span> <span class="nav-text">Gradle 的五个重要概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradle-是一个通用构建工具"><span class="nav-number">2.1.</span> <span class="nav-text">Gradle 是一个通用构建工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradle-的核心是基于任务"><span class="nav-number">2.2.</span> <span class="nav-text">Gradle 的核心是基于任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradle有几个固定的构建阶段"><span class="nav-number">2.3.</span> <span class="nav-text">Gradle有几个固定的构建阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradle-的扩展方式"><span class="nav-number">2.4.</span> <span class="nav-text">Gradle 的扩展方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#脚本对API进行操作"><span class="nav-number">2.5.</span> <span class="nav-text">脚本对API进行操作</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">佛系编码</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skymxc.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://blog.skymxc.com/2019/08/04/WhatIsGradle/';
+          this.page.identifier = '2019/08/04/WhatIsGradle/';
+          this.page.title = 'Gardle 是什么';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skymxc.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
