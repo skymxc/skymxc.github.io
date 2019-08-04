@@ -64,7 +64,7 @@
 
 
 
-  <meta name="keywords" content="孟祥超" />
+  <meta name="keywords" content="Gradle," />
 
 
 
@@ -75,16 +75,24 @@
 
 
 
-<meta name="description" content="写点编码的日常">
-<meta property="og:type" content="website">
-<meta property="og:title" content="佛系编码">
-<meta property="og:url" content="http://blog.skymxc.com/categories/mysql/index.html">
+<meta name="description" content="Gradle创建项目，定义任务，扩展任务，使用插件以及分析构建。">
+<meta name="keywords" content="Gradle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradle—创建简单的项目">
+<meta property="og:url" content="http://blog.skymxc.com/2019/08/04/gradle-basic-project/index.html">
 <meta property="og:site_name" content="佛系编码">
-<meta property="og:description" content="写点编码的日常">
+<meta property="og:description" content="Gradle创建项目，定义任务，扩展任务，使用插件以及分析构建。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/basic-execult-result.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/basic_init.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/basic-execult-result.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/basic-scan-execute.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/basic-scan-result.png">
+<meta property="og:updated_time" content="2019-08-04T15:12:13.357Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="佛系编码">
-<meta name="twitter:description" content="写点编码的日常">
+<meta name="twitter:title" content="Gradle—创建简单的项目">
+<meta name="twitter:description" content="Gradle创建项目，定义任务，扩展任务，使用插件以及分析构建。">
+<meta name="twitter:image" content="http://blog.skymxc.com/images/Gradle/basic-execult-result.png">
 
 
 
@@ -114,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://blog.skymxc.com/categories/mysql/"/>
+  <link rel="canonical" href="http://blog.skymxc.com/2019/08/04/gradle-basic-project/"/>
 
 
 
 
 
-  <title>分类: mysql | 佛系编码</title>
+  <title>Gradle—创建简单的项目 | 佛系编码</title>
   
 
 
@@ -149,7 +157,7 @@
     
   
 
-  <div class="container sidebar-position-right ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -287,83 +295,326 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>mysql<small>分类</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.skymxc.com/2019/08/04/gradle-basic-project/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="佛系编码">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="佛系编码">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2017/01/08/mysqlcommand/" itemprop="url">
-              
-                <span itemprop="name">MySql命令集锦</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">Gradle—创建简单的项目</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-01-08T21:41:00+08:00"
-              content="2017-01-08" >
-          01-08
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-04T23:05:21+08:00">
+                2019-08-04
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gradle/" itemprop="url" rel="index">
+                    <span itemprop="name">Gradle</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/08/04/gradle-basic-project/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/08/04/gradle-basic-project/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  Gradle创建项目，定义任务，扩展任务，使用插件以及分析构建。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
+      
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/01/05/installMysql5-7/" itemprop="url">
-              
-                <span itemprop="name">Mysql5.7.17解压版安装教程</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-01-05T23:16:44+08:00"
-              content="2017-01-05" >
-          01-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
+        <h2 id="项目-amp-任务"><a href="#项目-amp-任务" class="headerlink" title="项目 &amp; 任务"></a>项目 &amp; 任务</h2><p>Gradle 的一切都是基于项目和任务的。</p>
+<p>构建由一个或多个项目组成。项目的概念很抽象，它取决于你要用Gradle 做什么 。项目可以是 一个 Jar 库或者一个 web 程序。也可以是一个 zip 压缩包，也可以是将项目部署到生产环境等等；</p>
+<p>一个项目是由一个或多个任务组成的；任务是构建工作的原子单位，最小的工作单元。例如：编译字节码，创建 jar 。</p>
+<h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><p>创建一个简单的任务，输出 Hello World!.</p>
+<p>Groovy</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">task hello&#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">	    println &apos;Hello World.&apos;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Kotlin</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tasks.register(&quot;hello&quot;)&#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">		println (&quot;Hello World.&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输入命令 运行该任务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle hello</span><br></pre></td></tr></table></figure>
+<p><img src="/images/Gradle/basic-execult-result.png" alt="运行结果"></p>
+<h2 id="创建一个简单的构建"><a href="#创建一个简单的构建" class="headerlink" title="创建一个简单的构建"></a>创建一个简单的构建</h2><p>新建一个目录</p>
+<p>使用 init 命令创建构建项目</p>
+<p>Gradle 现在支持两种–Kotlin DSL 和 Groovy DSL .默认是 基于Groovy的，如果要使用 Kotlin 可以 使用 <code>--dsl kotlin</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle init --dsl kotlin</span><br></pre></td></tr></table></figure>
+<p><img src="/images/Gradle/basic_init.png" alt="初始化"></p>
+<p>会生成如下目录</p>
+<p><img src="/images/Gradle/basic-execult-result.png" alt="生成的目录"></p>
+<p>其中 .gitigonre 是 git 忽略文件；.gradle 是 gradle 的一些信息。</p>
+<p>需要我们关注的是下面这些文件</p>
+<p>├── gradle</p>
+<p>│   └── wrapper</p>
+<p>│       ├── gradle-wrapper.jar  </p>
+<p>│       └── gradle-wrapper.properties  </p>
+<p>├── build.gradle.kts   </p>
+<p>├── gradlew  </p>
+<p>├── gradlew.bat</p>
+<p>└── settings.gradle.kts  </p>
+<ul>
+<li>warpper 是 Gradle Wrapper 使用的目录</li>
+<li>gradle-wrapper.jar 是执行 Gradle Wrapper 使用的</li>
+<li>gradle-wrapper.properties 是 配置 Gradle Wrapper 属性的</li>
+<li>build.gradle.kts 用于配置当前项目的Gradle构建脚本</li>
+<li>gradlew 是 Unix 机器上的 执行脚本</li>
+<li>gradlew.bat 是 window 上的执行脚本</li>
+<li>settings.gradle.kts 是 用于配置Gradle构建的Gradle设置脚本</li>
+</ul>
+<h2 id="创建任务"><a href="#创建任务" class="headerlink" title="创建任务"></a>创建任务</h2><p>Gradle提供了通过Groovy或基于kotlin的DSL创建和配置任务的api。项目包含一组任务，每个任务执行一些基本操作。</p>
+<p>Gradle提供了一个任务库，我们可以在自己的项目中配置这些任务。例如，有一个核心类型的 Copy 任务，它可以复制文件。<br>下面我们就配置这个 任务来使用一下。</p>
+<p>创建一个目录 src<br>在 src 下创建一个文件名称任意，例如 myFile.txt。添加任意内容，例如 Hello World!<br>在 配置脚本（build.gradle.kts） 添加 一个 Copy 类型的 copy 任务，从 src 目录复制到 dest 目录</p>
+<p>Gradle 在执行时会自动创建 dest 目录。</p>
+<p>Kotlin</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tasks.register&lt;Copy&gt;(&quot;copy&quot;)&#123;</span><br><span class="line">    description = &quot;Copies sources to the dest directory&quot;</span><br><span class="line">    group = &quot;Custom&quot;</span><br><span class="line">    from(&quot;src&quot;)</span><br><span class="line">    into(&quot;dest&quot;)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Groovy</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">task copy(type: Copy, group: &quot;Custom&quot;, description: &quot;Copies sources to the dest directory&quot;) &#123;</span><br><span class="line">    from &quot;src&quot;</span><br><span class="line">    into &quot;dest&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>description 和 group 都是可选的，可以随便你定义；也是可以省略的；</em></p>
+<p>执行 copy 任务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle copy</span><br></pre></td></tr></table></figure>
+<p>检查里面的 myFile.txt 是否复制完成。</p>
+<h2 id="使用插件"><a href="#使用插件" class="headerlink" title="使用插件"></a>使用插件</h2><p>Gradle 提供了大量的插件，在 <a href="https://plugins.gradle.org/" target="_blank" rel="noopener">Gradle 插件站</a> 可以查到</p>
+<p>今天使用 一个 base 插件 结合它的核心类型 Zip 任务，实现打包压缩包的任务。</p>
+<p>使用 base 插件</p>
+<p>Kotlin</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id(&quot;base&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">... rest of the build file ...</span><br></pre></td></tr></table></figure>
+<p>Groovy<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id &quot;base&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">... rest of the build file ...</span><br></pre></td></tr></table></figure></p>
+<p>创建一个 zip 任务，扩展自 核心类型 Zip</p>
+<p>Kotlin<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tasks.create&lt;Zip&gt;(&quot;zip&quot;) &#123;</span><br><span class="line">    description = &quot;Archives sources in a zip file&quot;</span><br><span class="line">    group = &quot;Archive&quot;</span><br><span class="line"></span><br><span class="line">    from(&quot;src&quot;)</span><br><span class="line">    setArchiveName(&quot;basic-demo-1.0.zip&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Groovy<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">task zip(type: Zip, group: &quot;Archive&quot;, description: &quot;Archives sources in a zip file&quot;) &#123;</span><br><span class="line">    from &quot;src&quot;</span><br><span class="line">    setArchiveName &quot;basic-demo-1.0.zip&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行 zip</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle zip</span><br></pre></td></tr></table></figure>
+<p>至此，一个简单的构建完成了。</p>
+<h2 id="分析构建过程"><a href="#分析构建过程" class="headerlink" title="分析构建过程"></a>分析构建过程</h2><p>Gradle 提供了一个基于 web的构建视图——构建扫描</p>
+<p>在执行时 使用 –scan 选项或者明确使用构建扫描插件都可以免费的在 <a href="https://scans.gradle.com" target="_blank" rel="noopener">https://scans.gradle.com</a> 创建一个扫描视图分析</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle zip --scan</span><br></pre></td></tr></table></figure>
+<p>在同一服务条款后会直接发送到 构建扫描的平台，复制下面的连接打开即可。</p>
+<p><img src="/images/Gradle/basic-scan-execute.png" alt="构建扫描"></p>
+<p>打开之后会有详细的项目构建分析</p>
+<p><img src="/images/Gradle/basic-scan-result.png" alt="构建分析"></p>
 
       
     </div>
+    
+    
+    
 
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="佛系编码 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎您扫一扫上面的微信公众号，订阅我的博客！有什么问题也可以在公众号留言交流</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/pay/wechatpay.png" alt="佛系编码 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/pay/alipay.jpg" alt="佛系编码 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Gradle/" rel="tag"># Gradle</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/04/WhatIsGradle/" rel="next" title="Gardle 是什么">
+                <i class="fa fa-chevron-left"></i> Gardle 是什么
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
 
 
           </div>
@@ -371,6 +622,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -391,8 +656,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -472,6 +746,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#项目-amp-任务"><span class="nav-number">1.</span> <span class="nav-text">项目 &amp; 任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hello-World"><span class="nav-number">2.</span> <span class="nav-text">Hello World</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个简单的构建"><span class="nav-number">3.</span> <span class="nav-text">创建一个简单的构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建任务"><span class="nav-number">4.</span> <span class="nav-text">创建任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用插件"><span class="nav-number">5.</span> <span class="nav-text">使用插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析构建过程"><span class="nav-number">6.</span> <span class="nav-text">分析构建过程</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -612,6 +902,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -629,6 +923,18 @@
       <script id="dsq-count-scr" src="https://skymxc.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://blog.skymxc.com/2019/08/04/gradle-basic-project/';
+          this.page.identifier = '2019/08/04/gradle-basic-project/';
+          this.page.title = 'Gradle—创建简单的项目';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skymxc.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
