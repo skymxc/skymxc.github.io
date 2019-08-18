@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Groovy语法，变量定义，方法声明，集合操作，闭包，运算符，断言等基础知识。" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Groovy语法，变量定义，方法声明，集合操作，闭包，运算符，断言等基础知识。">
+<meta name="keywords" content="Groovy语法，变量定义，方法声明，集合操作，闭包，运算符，断言等基础知识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradle-Groovy语法">
+<meta property="og:url" content="http://blog.skymxc.com/2019/08/18/groovy-basic/index.html">
+<meta property="og:site_name" content="佛系编码">
+<meta property="og:description" content="Groovy语法，变量定义，方法声明，集合操作，闭包，运算符，断言等基础知识。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/Groovy-basic-topic.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/gradle-version.png">
+<meta property="og:updated_time" content="2019-08-18T15:13:19.033Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gradle-Groovy语法">
+<meta name="twitter:description" content="Groovy语法，变量定义，方法声明，集合操作，闭包，运算符，断言等基础知识。">
+<meta name="twitter:image" content="http://blog.skymxc.com/images/Gradle/Groovy-basic-topic.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'sky-mxc'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.skymxc.com/2019/08/18/groovy-basic/"/>
+
+
+
+
+
+  <title>Gradle-Groovy语法 | 佛系编码</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db8042d9d7c31f7cbbc5ecedd326a573";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">佛系编码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">好记性不如烂笔头</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.skymxc.com/2019/08/18/groovy-basic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="佛系编码">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="佛系编码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Gradle-Groovy语法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-18T22:18:34+08:00">
+                2019-08-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gradle/" itemprop="url" rel="index">
+                    <span itemprop="name">Gradle</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gradle/Groovy/" itemprop="url" rel="index">
+                    <span itemprop="name">Groovy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/08/18/groovy-basic/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/08/18/groovy-basic/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  Groovy语法，变量定义，方法声明，集合操作，闭包，运算符，断言等基础知识。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/images/Gradle/Groovy-basic-topic.png" alt="先来一张思维导图"></p>
+<h1 id="Groovy-简介"><a href="#Groovy-简介" class="headerlink" title="Groovy 简介"></a>Groovy 简介</h1><p>Groovy 是一种基于 JVM 的动态语言，他的语法和 Java 相似，最终也是要编译 .class 在JVM上运行。</p>
+<p>Groovy 完全兼容 Java 并且在此基础上添加了很多动态类型和灵活的特性，比如支持闭包，支持DSL，是一门非常灵活的动态脚本语言。</p>
+<p><strong>这篇文章是为了能看懂在 Gradle脚本中的代码，知道怎么写。所以不会深入Groovy。</strong></p>
+<p>每个 build 脚本配置文件都是一个 Groovy脚本文件。在里面可以写任何符合 Groovy 语法的代码。<br>例如定义类，方法，变量等。又因为Groovy 是完全兼容Java的，故也可以写任何Java代码，是完全兼容的。</p>
+<h1 id="DSL"><a href="#DSL" class="headerlink" title="DSL"></a>DSL</h1><p>DSL（Domain Specific Language) 中文意思是 领域特定语言，专门关注某一领域，在于专而不是全。所以才是领域特定的。</p>
+<p>Gradle 的脚本就是基于 Groovy 的DSL，专门解决自动化构建的DSL。<br>我们只需要按照相应的语法，配置相应的 Gradle 脚本就可以达到自动化构建的目的，这也是 DSL 的初衷。</p>
+<h1 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h1><h3 id="单行注释"><a href="#单行注释" class="headerlink" title="单行注释"></a>单行注释</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//这里是注释</span><br><span class="line">def name = &quot;佛系编码&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="多行注释"><a href="#多行注释" class="headerlink" title="多行注释"></a>多行注释</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/* 这里是多行注释</span><br><span class="line">   啦啦啦啦 */</span><br></pre></td></tr></table></figure>
+<h3 id="doc-注释"><a href="#doc-注释" class="headerlink" title="doc 注释"></a>doc 注释</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 这里是 doc 注释</span><br><span class="line"> * 啦啦啦啦</span><br><span class="line"> */</span><br></pre></td></tr></table></figure>
+<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><p>Java中的基本数据类型，对象它都支持；另外还有<br>闭包<br>加强的 List，Map的集合<br>加强的File，Stream等IO类型</p>
+<p>类型可以显式声明，也可以用 def 来声明，用 def 声明的类型Groovy将会进行类型推断。</p>
+<p>基本数据类型都是和Java 中的一致，就不拿出来说了。下面说一下，对象，字符串，闭包等;</p>
+<p>另外：Groovy 中的分号是可以省略的；</p>
+<h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><p>使用单引号和双引号都可以定义一个字符串常量。</p>
+<p>差别是 单引号只是单纯的字符串，不能使用表达式，运算，求值，正则等。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">task character()&#123;</span><br><span class="line">  doLast&#123;</span><br><span class="line">      def name = &apos;张三&apos;</span><br><span class="line">      def address =&quot;北京市&quot;</span><br><span class="line">      def age = 19</span><br><span class="line">      println &quot;单引号双引号都是字符串 name is $&#123;name&#125;; age is $age ; address is $&#123;address&#125;&quot;</span><br><span class="line">      println &apos;单引号里无法运算表达式例如 name is $&#123;name&#125;&apos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行 character<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle character</span><br></pre></td></tr></table></figure></p>
+<p>得到结果如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">单引号双引号都是字符串 name is 张三; age is 19 ; address is 北京市</span><br><span class="line">单引号里无法运算表达式例如 name is $&#123;name&#125;</span><br></pre></td></tr></table></figure>
+<p>双引号的字符串可以直接进行表达式计算，规则是一个美元符号紧跟一个花括号: ${expression} ，如果只有一个变量可以省略花括号。例如上面的 $age</p>
+<h1 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h1><p>集合默认是 java.util.ArrayList 类型的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">def nums = [1,2,4,5,6]</span><br><span class="line">println &quot;nums is $&#123;nums.getClass().getName()&#125; size = $&#123;nums.size()&#125;&quot;</span><br></pre></td></tr></table></figure></p>
+<p>输出结果为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nums is java.util.ArrayList size = 5</span><br></pre></td></tr></table></figure></p>
+<p>也可以显式指定集合类型 使用 as 关键字；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">def nums1 = [0,&quot;23&quot;,4,5,62,false] as LinkedList</span><br><span class="line">println &quot;nums1 is $&#123;nums1.getClass().getName()&#125;;size = $&#123;nums1.size()&#125;&quot;</span><br></pre></td></tr></table></figure>
+<p>输出为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nums1 is java.util.LinkedList;size = 6</span><br></pre></td></tr></table></figure>
+<p>或者在前面显式指定类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LinkedList otherLinked = [3, 4, 5]</span><br></pre></td></tr></table></figure>
+<h2 id="访问元素"><a href="#访问元素" class="headerlink" title="访问元素"></a>访问元素</h2><p>元素的访问是通过下标访问的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">println &quot;第三个元素是 $&#123;nums1[2]&#125;,倒数第一个是 $&#123;nums1[-1]&#125;;第一个和倒数第一个：$&#123;nums1[0,-1]&#125;&quot;</span><br><span class="line">println &quot;第二个到第四个：$&#123;nums1[1..3]&#125;&quot;</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">第三个元素是 4,倒数第一个是 false;第一个和倒数第一个：[0, false]</span><br><span class="line">第二个到第四个：[23, 4, 5]</span><br></pre></td></tr></table></figure>
+<h2 id="遍历元素"><a href="#遍历元素" class="headerlink" title="遍历元素"></a>遍历元素</h2><p>使用 each 方法遍历集合 参数默认是 it</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//遍历</span><br><span class="line">nums1.each &#123;</span><br><span class="line">  print &quot;$it, &quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0, 23, 4, 5, 62, false,</span><br></pre></td></tr></table></figure>
+<p>带有下标的遍历：使用 eachWithIndex 方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">numList.eachWithIndex &#123; int value ,int index-&gt;</span><br><span class="line">    println &quot;list[$index] = $value&quot;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>数组的定义要明确的指定数组类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">String [] strings = [&quot;I&quot;,&quot;&apos;&quot;,&quot;m&quot;,&quot;is&quot;,&quot;a&quot;,&quot;dog&quot;,&quot;.&quot;]</span><br><span class="line">println &quot;\n 数组 :$&#123;strings.getClass().getName()&#125;&quot;</span><br><span class="line">strings.each&#123;</span><br><span class="line">   print &quot;$it &quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">def multi = [5,7,5,8,54,87] as int[]</span><br><span class="line"></span><br><span class="line">println &quot;\n使用 as 显式指定类型: $&#123;multi.getClass().getName()&#125;&quot;</span><br><span class="line">multi.each&#123;</span><br><span class="line">   print &quot;$it &quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">数组 :[Ljava.lang.String;</span><br><span class="line">I &apos; m is a dog .</span><br><span class="line">使用 as 显式指定类型: [I</span><br><span class="line">5 7 5 8 54 87</span><br></pre></td></tr></table></figure>
+<h2 id="添加元素"><a href="#添加元素" class="headerlink" title="添加元素"></a>添加元素</h2><p>使用 List.add() 添加元素</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">numList.add(-11)</span><br></pre></td></tr></table></figure>
+<p>使用 可以使用 &lt;&lt; 操作符添加一个</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">numList &lt;&lt; 13</span><br></pre></td></tr></table></figure>
+<h2 id="修改元素"><a href="#修改元素" class="headerlink" title="修改元素"></a>修改元素</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">numList[0] = 0</span><br></pre></td></tr></table></figure>
+<p>不用担心下标越界；Groovy就自动增加到所需的下标,中间的会设置为 null</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">def numList = [0,1,2,3,4,5] as LinkedList</span><br><span class="line"></span><br><span class="line">numList.each&#123;</span><br><span class="line">    print &quot;$it &quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">println &quot;\n 在 10位置添加一个 11&quot;</span><br><span class="line"></span><br><span class="line">numList[10] =11</span><br><span class="line"></span><br><span class="line">println &quot;添加后的：&quot;</span><br><span class="line"></span><br><span class="line">numList.each&#123;</span><br><span class="line">    print &quot;$it &quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; Task :collect1</span><br><span class="line">0 1 2 3 4 5</span><br><span class="line"> 在 10位置添加一个 11</span><br><span class="line">添加后的：</span><br><span class="line">0 1 2 3 4 5 null null null null 11</span><br><span class="line">BUILD SUCCESSFUL in 0s</span><br></pre></td></tr></table></figure>
+<h2 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h2><p>使用 List.remove() 移除元素 参数可以是 下标，可以是值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">numList.remove 0</span><br><span class="line">numList.remove((Object)10)</span><br></pre></td></tr></table></figure>
+<p>使用 List.removeLast() 移除最后一个元素</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">numList.removeLast()</span><br></pre></td></tr></table></figure>
+<h2 id="查找元素"><a href="#查找元素" class="headerlink" title="查找元素"></a>查找元素</h2><p>使用 List.find() 查找第一个符合条件的元素</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print &quot;\n list.find() 查找第一个符合条件的元素 numList.find &#123; it%2==0&#125;&quot;</span><br><span class="line">print numList.find &#123; it%2==0&#125;</span><br></pre></td></tr></table></figure>
+<p>使用 List.findAll() 查找所有符合条件的元素</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print &quot;\n list.findAll() 查找所有符合条件的元素 numList.findAll &#123;it % 2 ==0 &#125;&quot;</span><br><span class="line">print numList.findAll &#123; it % 2 ==0&#125;</span><br></pre></td></tr></table></figure>
+<p>使用 List.any() 查找元素，只要有一个元素符合就返回 true</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print &quot;\n list.any() 只要有一个元素符合条件就返回 true numList.any &#123; it % 2 ==1&#125; &quot;</span><br><span class="line">print numList.any &#123; it % 2 ==1&#125;</span><br></pre></td></tr></table></figure>
+<p>使用 List.every() 查找元素，必须所有元素都符合条件才会返回 true</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print &quot;\n list.every() 必须所有元素都符合条件才会返回 true numList.every &#123;it % 2 == 0&#125; &quot;</span><br><span class="line">print numList.every &#123; it % 2 == 0&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="统计元素"><a href="#统计元素" class="headerlink" title="统计元素"></a>统计元素</h2><p>统计符合条件的元素个数：使用 List.count()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print numList.count &#123; it % 2 ==0 &#125;</span><br></pre></td></tr></table></figure>
+<p>统计最大值：List.max()，最小值：List.min()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print &quot;\n 最大值是 $&#123;numList.max()&#125; ,最小值是 $&#123;numList.min()&#125;， 最小的绝对值是 &quot;</span><br><span class="line">print numList.min &#123; Math.abs it&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h1><p>Map 的定义是键值对的方式，使用逗号隔开</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def colors = [red:&apos;#FF0000&apos;,green:&apos;#00FF00&apos;,blue:&apos;#0000FF&apos;]</span><br></pre></td></tr></table></figure>
+<p>访问 Map 中的元素有三种方式：</p>
+<ul>
+<li>map.key</li>
+<li>map[key]</li>
+<li>map.get(key)</li>
+</ul>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">task map&#123;</span><br><span class="line">    doLast&#123;</span><br><span class="line">        def colors = [red:&apos;#FF0000&apos;,green:&apos;#00FF00&apos;,blue:&apos;#0000FF&apos;]</span><br><span class="line">        println &quot; map calss is $&#123;colors.getClass().getName()&#125;&quot;</span><br><span class="line">        println &quot;通过 map.key 的方式访问 colors.red = $&#123;colors.red&#125;&quot;</span><br><span class="line">        println &quot;通过 map[key] 的方式访问 colors[&apos;red&apos;] = $&#123;colors[&apos;red&apos;]&#125;&quot;</span><br><span class="line">        println &quot;通过 map.get(key) 的方式访问 colors.get(red) = $&#123;colors.get(&apos;red&apos;)&#125;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出为 ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; Task :map</span><br><span class="line"> map calss is java.util.LinkedHashMap</span><br><span class="line">通过 map.key 的方式访问 colors.red = #FF0000</span><br><span class="line">通过 map[key] 的方式访问 colors[&apos;red&apos;] = #FF0000</span><br><span class="line">通过 map.get(key) 的方式访问 colors.get(red) = #FF0000</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 0s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure>
+<h2 id="添加元素-1"><a href="#添加元素-1" class="headerlink" title="添加元素"></a>添加元素</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//添加元素</span><br><span class="line">colors[&apos;pink&apos;] = &apos;#FF00FF&apos;</span><br><span class="line">colors.yellow = &apos;#FFFF00&apos;</span><br></pre></td></tr></table></figure>
+<h2 id="修改元素-1"><a href="#修改元素-1" class="headerlink" title="修改元素"></a>修改元素</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//修改元素</span><br><span class="line">colors.red = &apos;red&apos;</span><br><span class="line">colors[&apos;blue&apos;] = &apos;blue&apos;</span><br><span class="line">println &quot;修改后的元素是 colors.red = $&#123;colors.red&#125;,colors.blue = $&#123;colors.blue&#125;&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="删除元素-1"><a href="#删除元素-1" class="headerlink" title="删除元素"></a>删除元素</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//删除元素</span><br><span class="line">colors.remove(&apos;red&apos;)</span><br></pre></td></tr></table></figure>
+<h2 id="遍历元素-1"><a href="#遍历元素-1" class="headerlink" title="遍历元素"></a>遍历元素</h2><p>和上面的一样 使用 each 方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//遍历</span><br><span class="line">colors.each&#123;</span><br><span class="line">    println &quot;$&#123;it.key&#125; :$&#123;it.value&#125;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="查找元素-1"><a href="#查找元素-1" class="headerlink" title="查找元素"></a>查找元素</h2><p>查找的方法 和 上面的都一样，只是 参数换成了 Map.Entry 或者 key,value ;<br>这里只用 find 做一个示例：</p>
+<p>find 方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">def green = colors.find &#123; key ,value -&gt;</span><br><span class="line">  if(key.equals(&apos;green&apos;)) &#123;</span><br><span class="line">      return colors[key]</span><br><span class="line">  &#125;</span><br><span class="line">  return null</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">println &quot;查找结果是 $&#123;green&#125;&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def blue = colors.find &#123; Map.Entry entry -&gt;</span><br><span class="line">    if(entry.key.equals(&apos;blue&apos;))&#123;</span><br><span class="line">        return entry.value</span><br><span class="line">    &#125;</span><br><span class="line">    return null</span><br><span class="line">&#125;</span><br><span class="line">println &quot;查找的结果是 $&#123;blue&#125;&quot;</span><br></pre></td></tr></table></figure>
+<h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><p>方法也是使用 def 定义的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * 返回大的那个</span><br><span class="line"> */</span><br><span class="line">def max(int a ,int b)&#123;</span><br><span class="line">    if(a&gt;b)&#123;</span><br><span class="line">      return   a</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">      return   b</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="return-是可以省略的"><a href="#return-是可以省略的" class="headerlink" title="return 是可以省略的"></a>return 是可以省略的</h3><p>Groovy 会把执行过程中的最后一句代码作为返回值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * 返回大的那个</span><br><span class="line"> */</span><br><span class="line">def max(int a ,int b)&#123;</span><br><span class="line">    if(a&gt;b)&#123;</span><br><span class="line">         a</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">       b</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="括号是可以省略的；"><a href="#括号是可以省略的；" class="headerlink" title="括号是可以省略的；"></a>括号是可以省略的；</h3><p>在调用方法时括号是可以省略的；使用 空格间隔开参数即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def printMaximum(int a,int b)&#123;</span><br><span class="line">    if(a&gt;b)&#123;</span><br><span class="line">        println &quot;The maximum value of $a and $b is $a&quot;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        println &quot;The maximum value of $a and $b is $b&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task method &#123;</span><br><span class="line">    doLast&#123;</span><br><span class="line">        println &quot;max is $&#123;max(0,1)&#125;&quot;</span><br><span class="line">        printMaximum 10,20</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; Task :method</span><br><span class="line">max is 1</span><br><span class="line">The maximum value of 10 and 20 is 20</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 0s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure>
+<h3 id="代码块是可以作为参数传递的"><a href="#代码块是可以作为参数传递的" class="headerlink" title="代码块是可以作为参数传递的"></a>代码块是可以作为参数传递的</h3><p>代码块就是一段被花括号包围的代码，其实就是闭包；</p>
+<p>例如 each 方法</p>
+<p>最原始的应该是这样的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colors.each(&#123;println it&#125;)</span><br></pre></td></tr></table></figure>
+<p>格式化后</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">colors.each(&#123;</span><br><span class="line">    println it</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>Groovy 规定最后一个参数是闭包,可以将闭包放在方法外面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">colors.each()&#123;</span><br><span class="line">    println it</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用时方法的括号是可以省略的 就成了这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">colors.each &#123;</span><br><span class="line">    println it</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h1><p>闭包是 Groovy 的一个重要特性，可以说是 DSL 的基础。</p>
+<p>闭包其实就是一段匿名代码块。</p>
+<p>闭包在 Groovy 中是 groovy.lang.Closure 类的实例，这使得闭包可以赋值给变量或字段。</p>
+<p>定义一个闭包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def hello = &#123; println &quot;Hello 佛系编码&quot; &#125;</span><br></pre></td></tr></table></figure>
+<p>调用这个闭包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hello.call()</span><br></pre></td></tr></table></figure>
+<p>另一种调用方式 直接在后面跟上 ()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hello()</span><br></pre></td></tr></table></figure>
+<p>下面模拟一个 each 的执行，定一个方法迭代集合中的元素</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">  * closure 就是 闭包参数</span><br><span class="line">  */</span><br><span class="line">def customEach(closure)&#123;</span><br><span class="line">    //迭代元素</span><br><span class="line">    for(int i in 1..10)&#123;</span><br><span class="line">    //在闭包后跟上 () 就是调用了 括号里的参数就是闭包要接收的参数</span><br><span class="line">        closure(i)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用这个方法，传入一个闭包打印元素; 如果闭包只有一个参数，那么默认就是 it</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 如果只有一个参数 默认就是 it</span><br><span class="line">customEach &#123;</span><br><span class="line">     println it</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果闭包要接收多个参数，那就必须把参数显式的列出来，使用 -&gt; 将参数和主体分开</p>
+<p>再次模拟一个 map 的 迭代:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def eachMap(closure)&#123;</span><br><span class="line">    def map1 = [name:&apos;佛系编码&apos;,age:666]</span><br><span class="line">    map1.each &#123;</span><br><span class="line">        closure(it.key,it.value)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">·····</span><br><span class="line"></span><br><span class="line">//如果有多个参数，就必须要把参数列出来，使用 -&gt; 将 参数和主体分开</span><br><span class="line">eachMap &#123; key,value -&gt;</span><br><span class="line">    println &quot;$key:$value&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="闭包委托"><a href="#闭包委托" class="headerlink" title="闭包委托"></a>闭包委托</h2><p>Groovy 闭包的强大之处在于它支持闭包方法的委托。</p>
+<p>Groovy 的闭包有三个重要属性</p>
+<ul>
+<li>thisObject 闭包定义所在的类</li>
+<li>owner 表示闭包定义所在的对象或闭包（闭包内还是可以定义闭包的），这个是最近原则，下面会做说明</li>
+<li>delegate 默认和 owner 一致，可以手动修改。</li>
+</ul>
+<p>如果将闭包定义在一个类中，默认三个属性都是相等的；</p>
+<p>举个例子： 在 Person 类中 定义了 一个 act 闭包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Person&#123;</span><br><span class="line">    private String name</span><br><span class="line"></span><br><span class="line">    public int getAge()&#123;</span><br><span class="line">       12</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Closure act =&#123;</span><br><span class="line">         println &quot;thisObject:$&#123;thisObject.getClass()&#125;&quot;</span><br><span class="line">        println &quot;owner:$&#123;owner.getClass()&#125;&quot;</span><br><span class="line">        println &quot;delegate:$&#123;delegate.getClass()&#125;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用这个闭包，将会有下面的输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; Task :test</span><br><span class="line">thisObject:class Person</span><br><span class="line">owner:class Person</span><br><span class="line">delegate:class Person</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 0s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure>
+<p>如果将 闭包定义在一个 闭包里，那么 thisOjbect 就和 其他两个不一样，因为 thisObject 是表示的定义闭包所在的类，而 owner 表示 类或闭包</p>
+<p>这次在 一个闭包里再定一个闭包看一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class Person&#123;</span><br><span class="line">    private String name</span><br><span class="line"></span><br><span class="line">    public int getAge()&#123;</span><br><span class="line">       12</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Closure act =&#123;</span><br><span class="line">        println &quot;thisObject:$thisObject&quot;</span><br><span class="line">        println &quot;owner:$owner&quot;</span><br><span class="line">        println &quot;delegate:$delegate&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Closure eat = &#123;</span><br><span class="line">        def test = &#123;</span><br><span class="line">            println &quot;thisObject:$&#123;thisObject.getClass()&#125;&quot;</span><br><span class="line">            println &quot;owner:$&#123;owner.getClass()&#125;&quot;</span><br><span class="line">            println &quot;delegate:$&#123;delegate.getClass()&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">        test()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行这个 eat 闭包，将会得到以下结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; Task :test</span><br><span class="line">thisObject:class Person</span><br><span class="line">owner:class Person$_closure2</span><br><span class="line">delegate:class Person$_closure2</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 0s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure>
+<p>可以看到 thisObject 和 owner 已经不一样了，因为 thisObject 表示的是 所在的类，而 owner 表示的定义所在的类或闭包（最近原则）</p>
+<p>三个属性已经很明白了吧，</p>
+<h2 id="委托策略"><a href="#委托策略" class="headerlink" title="委托策略"></a>委托策略</h2><p>无论什么时候在闭包中访问某属性或调用某方法时，若没有明确的设置对象，那么就会调用一个委托策略。通过这个委托策略来决定如果访问属性或调用方法。</p>
+<p>有以下几个策略，可以通过 闭包的属性更改：resolveStrategy</p>
+<ul>
+<li><a href="https://docs.groovy-lang.org/latest/html/gapi/groovy/lang/Closure.html#OWNER_FIRST" target="_blank" rel="noopener">Closure.OWNER_FIRST</a> 默认策略，首先在 owner 上寻找属性和方法，找不到则在 delegate 上找。</li>
+<li><a href="https://docs.groovy-lang.org/latest/html/gapi/groovy/lang/Closure.html#DELEGATE_FIRST" target="_blank" rel="noopener">Closure.DELEGATE_FIRST</a> 和上面的相反，首先在 delegate 上寻找，找不到则在 owner 上找</li>
+<li><a href="https://docs.groovy-lang.org/latest/html/gapi/groovy/lang/Closure.html#OWNER_ONLY" target="_blank" rel="noopener">Closure.OWNER_ONLY</a> 只在 owner 上找，忽略 delegate</li>
+<li><a href="https://docs.groovy-lang.org/latest/html/gapi/groovy/lang/Closure.html#DELEGATE_ONLY" target="_blank" rel="noopener">Closure.DELEGATE_ONLY</a> 只在 delegate 上找 忽略 owner</li>
+<li><a href="https://docs.groovy-lang.org/latest/html/gapi/groovy/lang/Closure.html#TO_SELF" target="_blank" rel="noopener">Closure.TO_SELF</a> 高级选项，开发者自己定义策略</li>
+</ul>
+<p>下面通过一个嵌套类演示一下 策略更改的实际应用。</p>
+<p>定义两个类 Person 和 内部类 Foot ，并且两者都有 name 属性。Person 多一个 age 属性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Person&#123;</span><br><span class="line">    private String name</span><br><span class="line"></span><br><span class="line">    public int getAge()&#123;</span><br><span class="line">       12</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class Foot &#123;</span><br><span class="line">      String name</span><br><span class="line">      Closure walk = &#123; it -&gt;</span><br><span class="line">          println &quot;name is $name,age is $age ,delegate is $&#123;delegate.getClass()&#125;&quot;</span><br><span class="line">          //设置 delegate 属性</span><br><span class="line">          delegate = it;</span><br><span class="line">          resolveStrategy = Closure.DELEGATE_FIRST</span><br><span class="line">          println &quot;修改策略为 Closure.DELEGATE_FIRST delegate 优先&quot;</span><br><span class="line">          println &quot;name is $name, age is $age ,delegate is $&#123;delegate.getClass()&#125;&quot;</span><br><span class="line"></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    void walk()&#123;</span><br><span class="line">        Foot foot = new Foot(name:&apos;脚&apos;);</span><br><span class="line">        foot.walk(this)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用 Person 的 walk 方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Person person = new Person()</span><br><span class="line">person.name =&quot;佛系编码&quot;</span><br><span class="line">person.walk()</span><br></pre></td></tr></table></figure>
+<p>将会得到下面的输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; Task :test</span><br><span class="line">name is 脚,age is 12 ,delegate is class Person$Foot</span><br><span class="line">修改策略为 Closure.DELEGATE_FIRST delegate 优先</span><br><span class="line">name is 佛系编码, age is 12 ,delegate is class Person</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 0s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure>
+<p>我来解释一下这个输出</p>
+<p>第一个name 是 脚 ；这是因为默认策略是 Closure.OWNER_FIRST 是在 owner 寻找属性的；owner 当然是 Foot了。</p>
+<p>第二个 name 是 佛系编码;这是因为 策略改为了 Clousre.DELEGATE_FIRST 是优先在 delegate 上寻找的，而又把 delegate 属性修改为了传进去的 Person 实例，他的值在上面已经明确声明为了 佛系编码 。</p>
+<p>而 age 只有在 Person 中声明了 getAge() 方法，明确返回了 12.所以即使更改了策略，换了delegate 的值，仍然是 12.</p>
+<p>注：三个属性中 只有 delegate 属性可以修改。</p>
+<p>在 Gradle 中，我们一般会指定 delegate 为当前的 it,这样在闭包中就可以对 it 进行配置</p>
+<p>定义一个 User 类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class User&#123;</span><br><span class="line"></span><br><span class="line">    String name</span><br><span class="line">    int age</span><br><span class="line"></span><br><span class="line">    def dumpUser()&#123;</span><br><span class="line"></span><br><span class="line">        println &quot;name is $name,age is $age .&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在构建配置脚本中定义一个方法，传入一个闭包参数用来配置 User 类</p>
+<p>将闭包委托策略更改，并设置 delegate 属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def user(Closure&lt;User&gt; closure)&#123;</span><br><span class="line">    User user = new User()</span><br><span class="line">    closure.delegate = user</span><br><span class="line">    closure.resolveStrategy = Closure.DELEGATE_FIRST</span><br><span class="line">    closure(user)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在使用的时候就是这样的了，Gradle 中就有很多这种的 DSL 配置，例如我们创建的 task</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">task configClosure()&#123;</span><br><span class="line">    doLast&#123;</span><br><span class="line">      user &#123;</span><br><span class="line">        name = &apos;佛系编码&apos;</span><br><span class="line">        age = 0</span><br><span class="line">        dumpUser()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; Task :configClosure</span><br><span class="line">name is 佛系编码,age is 0 .</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 0s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure>
+<p><a href="https://docs.groovy-lang.org/latest/html/gapi/groovy/lang/Closure.html" target="_blank" rel="noopener">闭包 API 传送门</a></p>
+<h1 id="类"><a href="#类" class="headerlink" title="类"></a>类</h1><p>这里只介绍和 Java 中不同的地方.</p>
+<p>先看段代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">task obj&#123;</span><br><span class="line">    doLast&#123;</span><br><span class="line">        Person p = new Person()</span><br><span class="line">        println &quot;没赋值前的 ：$&#123;p.name&#125;&quot;</span><br><span class="line">        p.name = &apos;佛系编码&apos;</span><br><span class="line">        println &quot;赋值后的 ：$&#123;p.name&#125;&quot;</span><br><span class="line"></span><br><span class="line">        println &quot;age is $&#123;p.age&#125;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Person&#123;</span><br><span class="line">    private String name</span><br><span class="line"></span><br><span class="line">    public int getAge()&#123;</span><br><span class="line">       12</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行 obj 任务的输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Task :obj</span><br><span class="line">没赋值前的 ：null</span><br><span class="line">赋值后的 ：佛系编码</span><br><span class="line">age is 12</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 0s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure>
+<p>在 Person 类中并没有定义 name 属性的 get/set 方法；却可以设置和修改它的值；</p>
+<p>这是因为 Groovy 帮我们搞定了 get/set 方法。</p>
+<p> age 属性也没有在 Person 类中定义，只是定义了一个 getAge() 方法却可以使用 age 属性。</p>
+<p> 但是,因为没有定义 set 方法，所以 age 属性只能访问。</p>
+<h1 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h1><p>这里只列出来和 Java 不同且常用的运算符</p>
+<h3 id="可空运算符"><a href="#可空运算符" class="headerlink" title="可空运算符"></a>可空运算符</h3><p>对象非空时使用对象本身，对象为空时使用给定值；常用于给定某个可空变量的默认值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">task operator &#123;</span><br><span class="line">    doLast&#123;</span><br><span class="line">        Person person = new Person();</span><br><span class="line">        //person.name 为 null 所以会使用 佛系编码</span><br><span class="line">        def name = person.name ? person.name:&apos;佛系编码&apos;</span><br><span class="line">        // getAge 返回 12 不为空 所以使用本身</span><br><span class="line">        def age = person.age ?:10</span><br><span class="line">        println &quot;name is $name , age is $age&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; Task :operator</span><br><span class="line">name is 佛系编码 , age is 12</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 0s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure>
+<h3 id="安全导航运算符"><a href="#安全导航运算符" class="headerlink" title="安全导航运算符"></a>安全导航运算符</h3><p>当调用一个对象上的属性或方法时，如果对象是空的，就会抛出空异常，这个使用 ?. 运算符，当对象为空时，表达式的值也是空，就不会抛出异常。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">task operator &#123;</span><br><span class="line">    doLast&#123;</span><br><span class="line">        User user</span><br><span class="line">        println &quot;user.name is $&#123;user?.name&#125;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; Task :operator</span><br><span class="line">user.name is null</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 0s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure>
+<h1 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h1><p>断言是用于验证假设条件是否为真，在Groovy的断言中，如果假设的条件不为真，那么就会抛出java.lang.AssertionError异常。</p>
+<p>Groovy断言和Java断言完全不同。Groovy断言是一项语言功能，一直处于开启状态，和JVM的断言功能-ea完全无关。所以它是我们进行单元测试的首选方式。</p>
+<p>例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">assert 1==2 :&quot;1不等于2&quot;</span><br></pre></td></tr></table></figure>
+<p>会抛出以下异常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">FAILURE: Build failed with an exception.</span><br><span class="line"></span><br><span class="line">······</span><br><span class="line"></span><br><span class="line">* What went wrong:</span><br><span class="line">Execution failed for task &apos;:operator&apos;.</span><br><span class="line">&gt; 1不等于2. Expression: (1 == 2)</span><br></pre></td></tr></table></figure>
+<p>当然不给出消息也是可以的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">assert 1==2</span><br></pre></td></tr></table></figure>
+<p>那么异常就是这样的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Execution failed for task &apos;:operator&apos;.</span><br><span class="line">&gt; assert 1==2</span><br><span class="line">          |</span><br><span class="line">          false</span><br></pre></td></tr></table></figure>
+<p>在使用断言时最好是给出一条消息，此消息可以帮助其他人理解和维护你的代码，理清你的意图。</p>
+<h1 id="Groovy-API-查询方式"><a href="#Groovy-API-查询方式" class="headerlink" title="Groovy API 查询方式"></a>Groovy API 查询方式</h1><p>对于闭包的参数，只能在 API 查询了，没有什么好的办法。</p>
+<p>这里把 Groovy 文档地址列出来，方便大家查询相关 API</p>
+<ul>
+<li><a href="http://www.groovy-lang.org/syntax.html" target="_blank" rel="noopener">语法</a></li>
+<li><a href="http://docs.groovy-lang.org/latest/html/groovy-jdk/java/lang/Object.html" target="_blank" rel="noopener">API 文档</a></li>
+</ul>
+<h1 id="运行须知"><a href="#运行须知" class="headerlink" title="运行须知"></a>运行须知</h1><p>要使用 gradle 或者 ./gradle 或者 gradlew 命令，必须是要安装Gradle 并设置过环境变量的，当然在Gradle所在的目录也是可以的。</p>
+<p>build.gradle 是Gradle 的默认构建脚本文件，在执行 Gradle 命令的时候会默认找在当前目录下的 build.gradle 文件。</p>
+<p>也可以通过 -b 参数指定加载执行的文件。</p>
+<p>例如 要执行 groovu-basic.build 里的 operator 任务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle -b groovy-basic.gradle operator</span><br></pre></td></tr></table></figure>
+<p>如果要执行上面的测试代码，步骤是</p>
+<ol>
+<li>新建一个 build.grale 文件 或者是通过 gradle 新建一个项目 看这篇</li>
+<li>定义一个任务，添加动作</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">task test&#123;</span><br><span class="line">    doLast&#123;</span><br><span class="line">        //这里是代码</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>粘贴代码</li>
+<li>运行任务</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle test</span><br></pre></td></tr></table></figure>
+<p>附上我的 Gradle 版本</p>
+<p><img src="/images/Gradle/gradle-version.png" alt="Gradle 版本"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="佛系编码 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎您扫一扫上面的微信公众号，订阅我的博客！有什么问题也可以在公众号留言交流</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/pay/wechatpay.png" alt="佛系编码 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/pay/alipay.jpg" alt="佛系编码 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Gradle/" rel="tag"># Gradle</a>
+          
+            <a href="/tags/Groovy/" rel="tag"># Groovy</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/10/gradle-lifecycle/" rel="next" title="Gradle-构建生命周期">
+                <i class="fa fa-chevron-left"></i> Gradle-构建生命周期
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/user.jpg"
+                alt="佛系编码" />
+            
+              <p class="site-author-name" itemprop="name">佛系编码</p>
+              <p class="site-description motion-element" itemprop="description">写点编码的日常</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">博文</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/skymxc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:skymxc@foxmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Groovy-简介"><span class="nav-number">1.</span> <span class="nav-text">Groovy 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DSL"><span class="nav-number">2.</span> <span class="nav-text">DSL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注释"><span class="nav-number">3.</span> <span class="nav-text">注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单行注释"><span class="nav-number">3.0.1.</span> <span class="nav-text">单行注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多行注释"><span class="nav-number">3.0.2.</span> <span class="nav-text">多行注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#doc-注释"><span class="nav-number">3.0.3.</span> <span class="nav-text">doc 注释</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据类型"><span class="nav-number">4.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串"><span class="nav-number">5.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#集合"><span class="nav-number">6.</span> <span class="nav-text">集合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#访问元素"><span class="nav-number">6.1.</span> <span class="nav-text">访问元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遍历元素"><span class="nav-number">6.2.</span> <span class="nav-text">遍历元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组"><span class="nav-number">6.3.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加元素"><span class="nav-number">6.4.</span> <span class="nav-text">添加元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改元素"><span class="nav-number">6.5.</span> <span class="nav-text">修改元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除元素"><span class="nav-number">6.6.</span> <span class="nav-text">删除元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找元素"><span class="nav-number">6.7.</span> <span class="nav-text">查找元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统计元素"><span class="nav-number">6.8.</span> <span class="nav-text">统计元素</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Map"><span class="nav-number">7.</span> <span class="nav-text">Map</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#添加元素-1"><span class="nav-number">7.1.</span> <span class="nav-text">添加元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改元素-1"><span class="nav-number">7.2.</span> <span class="nav-text">修改元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除元素-1"><span class="nav-number">7.3.</span> <span class="nav-text">删除元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遍历元素-1"><span class="nav-number">7.4.</span> <span class="nav-text">遍历元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找元素-1"><span class="nav-number">7.5.</span> <span class="nav-text">查找元素</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方法"><span class="nav-number">8.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#return-是可以省略的"><span class="nav-number">8.0.1.</span> <span class="nav-text">return 是可以省略的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#括号是可以省略的；"><span class="nav-number">8.0.2.</span> <span class="nav-text">括号是可以省略的；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码块是可以作为参数传递的"><span class="nav-number">8.0.3.</span> <span class="nav-text">代码块是可以作为参数传递的</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#闭包"><span class="nav-number">9.</span> <span class="nav-text">闭包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#闭包委托"><span class="nav-number">9.1.</span> <span class="nav-text">闭包委托</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#委托策略"><span class="nav-number">9.2.</span> <span class="nav-text">委托策略</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类"><span class="nav-number">10.</span> <span class="nav-text">类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运算符"><span class="nav-number">11.</span> <span class="nav-text">运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可空运算符"><span class="nav-number">11.0.1.</span> <span class="nav-text">可空运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全导航运算符"><span class="nav-number">11.0.2.</span> <span class="nav-text">安全导航运算符</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#断言"><span class="nav-number">12.</span> <span class="nav-text">断言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Groovy-API-查询方式"><span class="nav-number">13.</span> <span class="nav-text">Groovy API 查询方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运行须知"><span class="nav-number">14.</span> <span class="nav-text">运行须知</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">佛系编码</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skymxc.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://blog.skymxc.com/2019/08/18/groovy-basic/';
+          this.page.identifier = '2019/08/18/groovy-basic/';
+          this.page.title = 'Gradle-Groovy语法';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skymxc.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
