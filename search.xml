@@ -4,6 +4,134 @@
   
     
     <entry>
+      <title><![CDATA[Gradle-日志]]></title>
+      <url>http://blog.skymxc.com/2019/08/24/gradle-logger/</url>
+      <content type="html"><![CDATA[<p><img src="\images\Gradle\logger.png" alt="思维导图"></p>
+<h1 id="日志级别"><a href="#日志级别" class="headerlink" title="日志级别"></a>日志级别</h1><p>Gradle 的日志 和Android 一样也有多个级别。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">级别</th>
+<th style="text-align:center">用于</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ERROR</td>
+<td style="text-align:center">错误消息</td>
+</tr>
+<tr>
+<td style="text-align:center">QUITE</td>
+<td style="text-align:center">重要消息</td>
+</tr>
+<tr>
+<td style="text-align:center">WARNING</td>
+<td style="text-align:center">警告消息</td>
+</tr>
+<tr>
+<td style="text-align:center">LIFECYCLE</td>
+<td style="text-align:center">进度消息</td>
+</tr>
+<tr>
+<td style="text-align:center">INFO</td>
+<td style="text-align:center">信息消息</td>
+</tr>
+<tr>
+<td style="text-align:center">DEBUG</td>
+<td style="text-align:center">调试消息</td>
+</tr>
+</tbody>
+</table>
+<p>要显示指定级别的日志，可以通过日志开关来控制的，在执行的时候加入下面这些开关即可.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">开关选项</th>
+<th style="text-align:center">输出的日志级别</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">无选项 LIFECYCLE</td>
+<td style="text-align:center">及其更高级别</td>
+</tr>
+<tr>
+<td style="text-align:center">-q 或者 –quite</td>
+<td style="text-align:center">QUITE</td>
+</tr>
+<tr>
+<td style="text-align:center">-i 或者 –info</td>
+<td style="text-align:center">INFO</td>
+</tr>
+<tr>
+<td style="text-align:center">-d 或者 –debug</td>
+<td style="text-align:center">DEBUG</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//在执行 build task时的输出的日志会是 QUITE 级别    </span><br><span class="line">gradle -q build</span><br></pre></td></tr></table></figure>
+<p>如果不想每次都在命令行加入参数来指定,可以在 配置文件(gradle.properties) 中修改,值可以是六种的任意一个，不区分大小写</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.gradle.logging.level=(quiet,warn,lifecycle,info,debug)</span><br></pre></td></tr></table></figure>
+<p>或者在脚本中更改级别 ，project 类 提供了 LoggerManager 来管理 日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">logging.captureStandardOutput LogLevel.INFO</span><br><span class="line">println &apos;A message which is logged at INFO level&apos;</span><br></pre></td></tr></table></figure>
+<p>Task 类也提供了这个 LoggerManager 所以在 任务中也是可以配置的；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">task logInfo &#123;</span><br><span class="line">    logging.captureStandardOutput LogLevel.INFO</span><br><span class="line">    doFirst &#123;</span><br><span class="line">        println &apos;A task message which is logged at INFO level&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="输出堆栈信息"><a href="#输出堆栈信息" class="headerlink" title="输出堆栈信息"></a>输出堆栈信息</h1><p>在任务执行出问题的时候，堆栈信息就显得尤为重要了， 然而默认堆栈信息开关是关闭的，只有打开开关才会输出出来。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">命令行选项</th>
+<th style="text-align:center">用于</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">无选项</td>
+<td style="text-align:center">没有堆栈信息输出</td>
+</tr>
+<tr>
+<td style="text-align:center">-s 或者 –stacktrace</td>
+<td style="text-align:center">输出关键堆栈信息</td>
+</tr>
+<tr>
+<td style="text-align:center">-S 或者 -full-stacktrace</td>
+<td style="text-align:center">输出全部堆栈信息</td>
+</tr>
+</tbody>
+</table>
+<p>一般使用 -s 或者 –stacktrace 输出关键堆栈，输出全部堆栈信息就太多了，不好定位问题。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle build -s</span><br></pre></td></tr></table></figure></p>
+<h1 id="输入自己的日志"><a href="#输入自己的日志" class="headerlink" title="输入自己的日志"></a>输入自己的日志</h1><p>通常情况下都是使用 print 系列方法，把日子输出到 控制台（它把 Gradle 定向为 QUITE 级别日志）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">println &apos;输出一段日志信息&apos;</span><br></pre></td></tr></table></figure>
+<p>除了 print 系列之外，还可以使用内置的 logger 更灵活的控制输出不同级别的日志。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">task log()&#123;</span><br><span class="line">  doLast&#123;    </span><br><span class="line">  logger.quiet(&apos;quiet 重要消息&apos;)    </span><br><span class="line">  logger.error(&apos;error 错误消息&apos;)    </span><br><span class="line">  logger.lifecycle(&apos;lifecycler 进度消息&apos;)    </span><br><span class="line">  logger.warn(&apos;warn 警告消息&apos;)    </span><br><span class="line">  logger.info(&apos;info 消息 信息&apos;)    </span><br><span class="line">  logger.debug(&apos;debug 调试信息&apos;)  </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>新建一个 logger.gradle 添加一个 log Task 运行 log Task</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle -b logger.gradle log</span><br></pre></td></tr></table></figure>
+<p><img src="\images\Gradle\logger-output-def.jpg" alt="执行结果-默认"></p>
+<p>如果使用 -d 的话 就是下面这种了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle -b logger.gradle -d log</span><br></pre></td></tr></table></figure>
+<p><img src="\images\Gradle\logger-output-d.jpg" alt="执行结果-d"></p>
+<h1 id="更改日志内容"><a href="#更改日志内容" class="headerlink" title="更改日志内容"></a>更改日志内容</h1><p>可以通过 <a href="https://docs.gradle.org/current/dsl/org.gradle.api.invocation.Gradle.html#org.gradle.api.invocation.Gradle:useLogger(java.lang.Object" target="_blank" rel="noopener">Gradle.useLogger()</a>) 方法传入一个自定义的日志对象。</p>
+<p>这个对象可以是以下几个监听的派生类</p>
+<ul>
+<li><a href="https://docs.gradle.org/current/javadoc/org/gradle/BuildListener.html" target="_blank" rel="noopener">BuildListener</a></li>
+<li><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/execution/TaskExecutionGraphListener.html" target="_blank" rel="noopener">TaskExecutionGraphListener</a></li>
+<li><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/ProjectEvaluationListener.html" target="_blank" rel="noopener">ProjectEvaluationListener</a></li>
+<li><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/execution/TaskExecutionListener.html" target="_blank" rel="noopener">TaskExecutionListener</a></li>
+<li><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/execution/TaskActionListener.html" target="_blank" rel="noopener">TaskActionListener</a></li>
+<li><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/logging/StandardOutputListener.html" target="_blank" rel="noopener">StandardOutputListener</a></li>
+<li><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/testing/TestListener.html" target="_blank" rel="noopener">TestListener</a></li>
+<li><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/testing/TestOutputListener.html" target="_blank" rel="noopener">TestOutputListener</a></li>
+<li><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/artifacts/DependencyResolutionListener.html" target="_blank" rel="noopener">DependencyResolutionListener</a></li>
+</ul>
+<p>这里以 任务执行 (TaskExecutionListener ) 为例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">task test &#123;</span><br><span class="line">    doLast&#123;</span><br><span class="line">        logger.quiet &quot;级别：&#123;&#125;&quot;,&quot;quite&quot;</span><br><span class="line">        logger.error &quot;级别：error&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//使用指定的日志对象</span><br><span class="line">gradle.useLogger(new CustomEventLogger())</span><br><span class="line"></span><br><span class="line">//自定义日志内容</span><br><span class="line">class CustomEventLogger extends BuildAdapter implements TaskExecutionListener &#123;</span><br><span class="line">   void beforeExecute(Task task)&#123;</span><br><span class="line">       println &quot;beforeExecute-&gt; $&#123;task.name&#125;&quot;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   void afterExecute(Task task,TaskState state)&#123;</span><br><span class="line">       println &quot;afterExecute -&gt; $&#123;task.name&#125; successed?$&#123;state.failure==null&#125;&quot;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   void buildFinished(BuildResult result)&#123;</span><br><span class="line">       println &quot;build completed&quot;</span><br><span class="line">       if(result.failure)&#123;</span><br><span class="line">           result.failure.printStackTrace()</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle test</span><br></pre></td></tr></table></figure>
+<p>输出如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; Task :test</span><br><span class="line">beforeExecute-&gt; test</span><br><span class="line">级别：quite</span><br><span class="line">级别：error</span><br><span class="line">afterExecute -&gt; test succeed?true</span><br><span class="line">build completed</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Gradle-Groovy语法]]></title>
       <url>http://blog.skymxc.com/2019/08/18/groovy-basic/</url>
       <content type="html"><![CDATA[<p><img src="/images/Gradle/Groovy-basic-topic.png" alt="先来一张思维导图"></p>
