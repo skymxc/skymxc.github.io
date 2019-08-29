@@ -64,7 +64,7 @@
 
 
 
-  <meta name="keywords" content="Android 导入现有数据库,sky-mxc," />
+  <meta name="keywords" content="Gradle," />
 
 
 
@@ -75,18 +75,22 @@
 
 
 
-<meta name="description" content="Android 导入现有数据库">
-<meta name="keywords" content="Android 导入现有数据库,sky-mxc,">
+<meta name="description" content="Gradle 脚本介绍，常识科普">
+<meta name="keywords" content="Gradle">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android 导入现有数据库">
-<meta property="og:url" content="http://blog.skymxc.com/2017/02/26/copyDB/index.html">
+<meta property="og:title" content="Gradle 构建脚本">
+<meta property="og:url" content="http://blog.skymxc.com/2019/08/29/gradle-buildscript/index.html">
 <meta property="og:site_name" content="佛系编码">
-<meta property="og:description" content="Android 导入现有数据库">
+<meta property="og:description" content="Gradle 脚本介绍，常识科普">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-22T08:33:39.539Z">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/构建脚本.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/project-api.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/dependency-config.png">
+<meta property="og:updated_time" content="2019-08-29T15:08:27.038Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android 导入现有数据库">
-<meta name="twitter:description" content="Android 导入现有数据库">
+<meta name="twitter:title" content="Gradle 构建脚本">
+<meta name="twitter:description" content="Gradle 脚本介绍，常识科普">
+<meta name="twitter:image" content="http://blog.skymxc.com/images/Gradle/构建脚本.png">
 
 
 
@@ -116,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://blog.skymxc.com/2017/02/26/copyDB/"/>
+  <link rel="canonical" href="http://blog.skymxc.com/2019/08/29/gradle-buildscript/"/>
 
 
 
 
 
-  <title>Android 导入现有数据库 | 佛系编码</title>
+  <title>Gradle 构建脚本 | 佛系编码</title>
   
 
 
@@ -303,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.skymxc.com/2017/02/26/copyDB/">
+    <link itemprop="mainEntityOfPage" href="http://blog.skymxc.com/2019/08/29/gradle-buildscript/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="佛系编码">
@@ -320,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Android 导入现有数据库</h1>
+          <h1 class="post-title" itemprop="name headline">Gradle 构建脚本</h1>
         
 
         <div class="post-meta">
@@ -332,8 +336,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-26T17:21:13+08:00">
-                2017-02-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-29T23:00:35+08:00">
+                2019-08-29
               </time>
             
 
@@ -355,19 +359,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/Sqlite/" itemprop="url" rel="index">
-                    <span itemprop="name">Sqlite</span>
+                  <a href="/categories/Gradle/" itemprop="url" rel="index">
+                    <span itemprop="name">Gradle</span>
                   </a>
                 </span>
 
@@ -384,9 +377,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/02/26/copyDB/#comments" itemprop="discussionUrl">
+                <a href="/2019/08/29/gradle-buildscript/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/02/26/copyDB/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/08/29/gradle-buildscript/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -401,7 +394,7 @@
 
           
               <div class="post-description">
-                  Android 导入现有数据库
+                  Gradle 脚本介绍，常识科普
               </div>
           
 
@@ -418,11 +411,151 @@
       
 
       
-        <blockquote>
-<p> <strong>sky-mxc 总结</strong> 转载注明:<a href="https://sky-mxc.github.io" target="_blank" rel="noopener">https://sky-mxc.github.io</a></p>
+        <p><img src="\images\Gradle\构建脚本.png" alt="思维导图"></p>
+<h1 id="构建语言"><a href="#构建语言" class="headerlink" title="构建语言"></a>构建语言</h1><p>Gradle提供了一种领域特定语言，目前同时支持 Groovy 和 Kotlin 。</p>
+<p>在 Groovy 构建脚本中（.gradle) 你可以使用任何 Groovy 元素。</p>
+<p>在 Kotlin 构建脚本中 (.gradle.kts) 你可以使用任何 Kotlin 元素。</p>
+<h1 id="项目（Project）-和-任务（Task）"><a href="#项目（Project）-和-任务（Task）" class="headerlink" title="项目（Project） 和 任务（Task）"></a>项目（Project） 和 任务（Task）</h1><p>Gradle 构建的一切都是基于 两个概念 ：项目 和任务；</p>
+<p>一个构建是由一个或多个项目组成的。项目的概念比较抽象，你可以创建一个 Project 用于生成一个 jar,也可以定义个项目用于生成 war 包，还可以定义一个项目用于发布上传你的 war等。</p>
+<p> 一个项目就是在你的业务范围内，被你抽象出来的一个独立的模块，你可以根据工程的实际情况抽象归类，最后这一个个的 项目组成了整个 Gradle 构建。</p>
+<p>一个 项目又包含很多个任务，每个项目是由一个或多个任务组成的。任务就是一个操作，一个原子性的操作。比如打个 jar 包，复制一份文件，编译一次 java 代码等，这就是一个任务。</p>
+<h1 id="build-gradle-amp-Project-API"><a href="#build-gradle-amp-Project-API" class="headerlink" title="build.gradle &amp; Project API"></a>build.gradle &amp; Project API</h1><p>每个项目都有一个 build.gradle 文件，该文件是该项目的构建入口，可以在这这个文件里对该项目进行配置，比如配置版本，需要哪些插件，依赖哪些库等。</p>
+<p>我们通过配置这个文件描述我们的构建，这其实就是一个配置脚本。</p>
+<p>每一个脚本在执行的时候都会被关联到一个 Project 实例上。</p>
+<p>在构建生命周期的初始化阶段，Gradle 会为每个项目创建一个 Project 实例，并根据 build.gradle的内容配置这个实例。</p>
+<p>也就是说每个 build.gradle 的配置都会被配置到 Project 实例上。</p>
+<p>实际上，build.gradle 中几乎所有的顶级属性和代码块都是 Project 类的 API，</p>
+<p>下面通过访问 Project.name 属性验证一下。</p>
+<p>在 build.gradle<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">println &quot;name is $name&quot;</span><br><span class="line">println &quot;project.name is $&#123;project.name&#125;&quot;</span><br></pre></td></tr></table></figure></p>
+<p>执行 build 任务，你将会得到下面的输出,输出的值都是 项目的名字</p>
+<p><img src="\images\Gradle\project-api.png" alt="验证输出"></p>
+<p>第一条语句使用的是Project的顶级属性。</p>
+<p>第二条语句使用的 project 属性 可以在脚本的任何地方访问，它代表的是当前脚本的Project对象。</p>
+<p>只有在你定义了和Project的成员（方法，属性）同名的时候才需要使用 project ，其他时候直接使用 名称即可访问，例如第一条语句。</p>
+<blockquote>
+<p>一个构建是由多个Project组成的，是通过项目树的形式表示的。</p>
 </blockquote>
-<p>我们都知道 Android的 数据库默认是放在data\data\packageName\datbases\下的;<br>要导入现有的数据库将我们的数据库在 程序第一次启动的时候将数据库放在这个目录下，然后我们配置好SqliteDabase对象就可以 直接操作了。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将 数据库从 assets 复制到 databases下</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">copyDB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="comment">//data/data/packageName/databases/</span></span><br><span class="line">   File mkdir = <span class="keyword">new</span> File(getFilesDir().getParent(),<span class="string">"databases"</span>);</span><br><span class="line">   <span class="comment">//创建 databases文件夹</span></span><br><span class="line">    <span class="keyword">if</span> (!mkdir.exists()) mkdir.mkdirs();</span><br><span class="line">    Log.e(TAG, <span class="string">"copyDb: mkdir="</span>+mkdir.getPath());</span><br><span class="line">    <span class="comment">//数据库文件</span></span><br><span class="line">    File file = <span class="keyword">new</span> File(mkdir,<span class="string">"SinBusinessWssm1.db"</span>);</span><br><span class="line">    <span class="comment">//只是在程序第一次启动时创建</span></span><br><span class="line">    <span class="keyword">if</span>(!file.exists())&#123;</span><br><span class="line">      <span class="comment">//获取 assets管理</span></span><br><span class="line">        AssetManager assets = getAssets();</span><br><span class="line">        <span class="comment">//执行文件复制</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            InputStream open = assets.open(<span class="string">"SinBusinessWssm1.db"</span>);</span><br><span class="line">            FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(file);</span><br><span class="line">            <span class="keyword">byte</span>[] bs = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">            <span class="keyword">int</span> len ;</span><br><span class="line">            <span class="keyword">while</span> ((len = open.read(bs))!=-<span class="number">1</span>)&#123;</span><br><span class="line">                fos.write(bs,<span class="number">0</span>,len);</span><br><span class="line">            &#125;</span><br><span class="line">            fos.flush();</span><br><span class="line">            fos.close();</span><br><span class="line">            open.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Log.e(TAG, <span class="string">"copyDb: exists="</span>+file.getPath());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以在项目树的根项目对所有的项目统一配置一些配置。例如，应用的插件，依赖的 Maven 中心库等。</p>
+<p>为所有子项目配置仓库为 jcenter<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">subprojects&#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>也可以为所有子项目配置 使用 Java 插件</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">subprojects&#123;</span><br><span class="line">    apply <span class="string">plugin:</span><span class="string">'java'</span></span><br><span class="line">    repositories &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除了 subprojects 还有 allprojects ,从名字就可以看出来这不仅是对子项目的配置而是对所有项目的配置。</p>
+<p>这两个配置其实是两个方法，接受一个闭包参数，对项目进行遍历，遍历的过程中调用我们自定义的闭包，所以我们可以在闭包里配置，打印，输出或者修改 Project 的属性。</p>
+<h2 id="Project-的属性"><a href="#Project-的属性" class="headerlink" title="Project 的属性"></a>Project 的属性</h2><p>Project 对象的属性在 脚本全局都是可以使用的。</p>
+<p>下面列出一些常用的属性，更全的属性可以在 <a href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html" target="_blank" rel="noopener">Project API</a> 中查询。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名字</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">project</td>
+<td style="text-align:center">Project</td>
+<td style="text-align:center">Project 实例</td>
+</tr>
+<tr>
+<td style="text-align:center">name</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">项目名字</td>
+</tr>
+<tr>
+<td style="text-align:center">path</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">项目的绝对路径</td>
+</tr>
+<tr>
+<td style="text-align:center">description</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">项目描述</td>
+</tr>
+<tr>
+<td style="text-align:center">projectDir</td>
+<td style="text-align:center">File</td>
+<td style="text-align:center">配置脚本所在的目录</td>
+</tr>
+<tr>
+<td style="text-align:center">buildDir</td>
+<td style="text-align:center">File</td>
+<td style="text-align:center">projectDir/build 输出目录</td>
+</tr>
+<tr>
+<td style="text-align:center">group</td>
+<td style="text-align:center">Object</td>
+<td style="text-align:center">未指定</td>
+</tr>
+<tr>
+<td style="text-align:center">version</td>
+<td style="text-align:center">Object</td>
+<td style="text-align:center">未指定</td>
+</tr>
+<tr>
+<td style="text-align:center">ant</td>
+<td style="text-align:center">AntBuilder</td>
+<td style="text-align:center">AntBuilder 实例</td>
+</tr>
+</tbody>
+</table>
+<h1 id="settings-gradle"><a href="#settings-gradle" class="headerlink" title="settings.gradle"></a>settings.gradle</h1><p>这是一个设置文件，用于初始化以及项目树的配置。设置文件的默认名字就是 settings.gradle,放在根项目目录下。</p>
+<p>关于构建生命周期和 settings.gradle 更详细的可以看我的这篇文章 <img src="" alt="构建生命周期"></p>
+<h1 id="script-API"><a href="#script-API" class="headerlink" title="script API"></a>script API</h1><p>当 Gradle 执行 Groovy 脚本(.gradle)时，会编译脚本到实现了 <a href="https://docs.gradle.org/current/dsl/org.gradle.api.Script.html" target="_blank" rel="noopener">Script</a> 的类中。</p>
+<p>也就是说，Script 接口中的所有属性和方法都可以在脚本中使用。</p>
+<p>当 Gradle 执行 Kotlin 脚本(.gradle.kts)时,会编译脚本到 <a href="https://gradle.github.io/kotlin-dsl-docs/api/org.gradle.kotlin.dsl/-kotlin-build-script/index.html" target="_blank" rel="noopener">KotlinBuildScript</a>的子类中。</p>
+<p>也就是 KotlinBuildScript 类中的所有属性和方法都可以在脚本中使用。</p>
+<p>更详细的可以参考 <a href="https://gradle.github.io/kotlin-dsl-docs/api/org.gradle.kotlin.dsl/-kotlin-settings-script/index.html" target="_blank" rel="noopener">KotlinSettingsScript</a> 和 <a href="https://gradle.github.io/kotlin-dsl-docs/api/org.gradle.kotlin.dsl/-kotlin-init-script/index.html" target="_blank" rel="noopener">KotlinInitScript</a> 类，分别用于设置脚本和init脚本。</p>
+<h1 id="脚本即代码"><a href="#脚本即代码" class="headerlink" title="脚本即代码"></a>脚本即代码</h1><p> 虽然我们在一个 Gradle 文件里写脚本，但是我们写的都是代码，这一点一定要非常的清楚。</p>
+<p> 我们写的确实是脚本，但不是简单的脚本。在脚本里可以定义 Class ，内部类，导入包，定义方法、常量、接口等。</p>
+<p> 不要把它当作简单的脚本，我们可以灵活的使用 Java ，Groovy ，Kotlin 和 Gradle.</p>
+<p> 例如 定义一个获取当前日期的方法</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def buildTime()&#123;</span><br><span class="line">    def date = new Date()</span><br><span class="line">    def formattedDate = date.format(&apos;yyyyMMdd&apos;)</span><br><span class="line">    return formattedDate</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="变量-amp-额外的自定义属性"><a href="#变量-amp-额外的自定义属性" class="headerlink" title="变量 &amp; 额外的自定义属性"></a>变量 &amp; 额外的自定义属性</h1><p> Gradle 支持两种变量 ：局部变量和自定义属性</p>
+<h2 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h2><p> 局部变量使用 def 关键字声明，局部变量只能在声明的范围内可见。</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def myName = &apos;佛系编码&apos;</span><br></pre></td></tr></table></figure>
+<h2 id="额外的自定义属性"><a href="#额外的自定义属性" class="headerlink" title="额外的自定义属性"></a>额外的自定义属性</h2><p>Gradle 领域模型中 所有的对象 都可以添加额外的自定义属性。</p>
+<p>通过对象的 ext 属性实现对自定义属性的添加，访问，设置值的操作。</p>
+<p>添加之后可以通过 ext 属性对自定义属性读取和设置，也可以同时添加多个自定义属性。</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">//为 project 添加一个 age 属性 并赋值 20</span><br><span class="line">ext.age = 20</span><br><span class="line"></span><br><span class="line">//为 project 添加两个属性</span><br><span class="line">ext&#123;</span><br><span class="line">    phone =110</span><br><span class="line">    address = &apos;404&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task myTask &#123;</span><br><span class="line">    //为 myTask 任务添加属性</span><br><span class="line">    ext.myProperty = &quot;myValue&quot;</span><br><span class="line">&#125;</span><br><span class="line">task extra&#123;</span><br><span class="line">     doLast&#123;</span><br><span class="line">         println &quot;project : age= $&#123;project.ext.age&#125;,phone= $&#123;project.ext.phone&#125; , address = $&#123;project.ext.address&#125;&quot;</span><br><span class="line">         println &quot;myTask :  $&#123;myTask.myProperty&#125;&quot;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="创建一个任务"><a href="#创建一个任务" class="headerlink" title="创建一个任务"></a>创建一个任务</h1> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">task hello &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println &apos;Hello world!&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 这里的 task 看着像一个关键字，实际上是一个方法，这个方法的原型是 <a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.TaskContainer.html#org.gradle.api.tasks.TaskContainer:create(java.lang.String,%20groovy.lang.Closure" target="_blank" rel="noopener">TaskContainer.create()</a>)</p>
+<p> 任务的创建就是使用这个方法给 Project 添加一个 Task 类型的属性；所以才能使用任务名字引用一些API，例如为任务添加额外的属性。</p>
+<h1 id="任务依赖和任务排序"><a href="#任务依赖和任务排序" class="headerlink" title="任务依赖和任务排序"></a>任务依赖和任务排序</h1><p>一个任务可以依赖其他任务或者在其他任务执行后再执行。</p>
+<p>Gradle 确保在执行任务时遵守所有任务依赖性和排序规则，以便在所有依赖项和任何 “必须运行” 的任务执行之后再执行任务。</p>
+<p>Gradle 为我们提供了几个方法用来控制任务的依赖和排序，就是下面这几个</p>
+<ul>
+<li><a href="https://docs.gradle.org/current/dsl/org.gradle.api.Task.html#org.gradle.api.Task:dependsOn(java.lang.Object[]" target="_blank" rel="noopener">Task.dependsOn(java.lang.Object[])</a>)</li>
+<li><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/Task.html#setDependsOn-java.lang.Iterable-" target="_blank" rel="noopener">Task.setDependsOn(java.lang.Iterable)</a></li>
+<li><a href="https://docs.gradle.org/current/dsl/org.gradle.api.Task.html#org.gradle.api.Task:mustRunAfter(java.lang.Object[]" target="_blank" rel="noopener">Task.mustRunAfter(java.lang.Object[])</a>)</li>
+<li><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/Task.html#setMustRunAfter-java.lang.Iterable-" target="_blank" rel="noopener">Task.setMustRunAfter(java.lang.Iterable)</a></li>
+<li><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/Task.html#shouldRunAfter-java.lang.Object[]-" target="_blank" rel="noopener">Task.shouldRunAfter(java.lang.Object[])</a></li>
+<li><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/Task.html#setShouldRunAfter-java.lang.Iterable-" target="_blank" rel="noopener">Task.setShouldRunAfter(java.lang.Iterable)</a></li>
+</ul>
+<p>这些方法可以接收 任务，任务名字，路径等，具体参数可以在 <a href="https://docs.gradle.org/current/dsl/org.gradle.api.Task.html" target="_blank" rel="noopener">Task文档</a> 里查看</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">task hello &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println &apos;Hello world!&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task taskX &#123;</span><br><span class="line">    dependsOn hello</span><br><span class="line">    doLast&#123;</span><br><span class="line">        println &quot;I&apos;m  $name.&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task taskY &#123;</span><br><span class="line">    doFirst &#123;</span><br><span class="line">        println &quot;I&apos;m $name.&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 如果 taskX 要依赖 taskY 的话，并不能直接引用，因为 taskY 是在 taskX 之后定义的。<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">task taskX &#123;</span><br><span class="line">    dependsOn &apos;taskY&apos;</span><br><span class="line">    doLast&#123;</span><br><span class="line">        println &quot;I&apos;m  $name.&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="默认任务"><a href="#默认任务" class="headerlink" title="默认任务"></a>默认任务</h1><p>在没有指定执行任务的时候，可以在脚本中定义默认任务，使用 defaultTasks 方法</p>
+<p>这个方法接收 字符串参数，传入任务的名称即可·</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">defaultTasks &apos;hello&apos;,&apos;taskY&apos;</span><br></pre></td></tr></table></figure>
+<h1 id="外部依赖"><a href="#外部依赖" class="headerlink" title="外部依赖"></a>外部依赖</h1><p>用添加外部依赖，必须添加依赖所在仓库。例如 jcenter,maven，google等</p>
+<p>目前支持很多类型的仓库，基本上都在这里列出来，可以查看 <a href="https://docs.gradle.org/current/userguide/repository_types.html" target="_blank" rel="noopener">仓库类型</a></p>
+<p>添加 google 仓库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        mavenCentral()</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p> 在 Android 的项目中，这都是放在根项目里的 allprojects 方法里，对所有项目统一配置</p>
+<p>添加外部依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    implementation &apos;io.reactivex.rxjava2:rxjava:2.1.2&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 Android 中依赖的添加放在了各个module 中，按需添加，哪个模块需要在哪个模块的构建脚本里添加。</p>
+<p>依赖属性分为三部分</p>
+<ul>
+<li>group： 这个属性用来标识一个组织、公司或者项目，可以用点号分隔，例如上面的 io.reactivex.rxjava2</li>
+<li>name： name属性唯一的描述了这个依赖，例如上面的 rxjava</li>
+<li>version： 一个库可以有很多个版本。例如上面的 2.1.2</li>
+</ul>
+<p>其中 implementation 为配置项，配置也有很多种类型，下面贴出来一张来自 Google 的说明：详情可以查看这个 <a href="https://developer.android.google.cn/studio/build/dependencies.html#dependency_configurations" target="_blank" rel="noopener">依赖项配置</a></p>
+<p><img src="\images\Gradle\dependency-config.png" alt="依赖项配置"></p>
+<blockquote>
+<p>最后是 DSL 的API 地址 <a href="https://docs.gradle.org/current/dsl/index.html" target="_blank" rel="noopener">https://docs.gradle.org/current/dsl/index.html</a></p>
+</blockquote>
 
       
     </div>
@@ -477,7 +610,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Android导入现有数据库/" rel="tag"># Android导入现有数据库</a>
+            <a href="/tags/Gradle/" rel="tag"># Gradle</a>
           
         </div>
       
@@ -490,8 +623,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/01/08/mysqlcommand/" rel="next" title="MySql命令集锦">
-                <i class="fa fa-chevron-left"></i> MySql命令集锦
+              <a href="/2019/08/25/wrong-constraintLayout-no-show/" rel="next" title="错题本:ConstraintLayout 不能正常显示">
+                <i class="fa fa-chevron-left"></i> 错题本:ConstraintLayout 不能正常显示
               </a>
             
           </div>
@@ -499,10 +632,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/06/opeateSDCardDb/" rel="prev" title="Android操作位于sd卡上的sqlite数据库">
-                Android操作位于sd卡上的sqlite数据库 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -602,8 +731,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -683,6 +821,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#构建语言"><span class="nav-number">1.</span> <span class="nav-text">构建语言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#项目（Project）-和-任务（Task）"><span class="nav-number">2.</span> <span class="nav-text">项目（Project） 和 任务（Task）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#build-gradle-amp-Project-API"><span class="nav-number">3.</span> <span class="nav-text">build.gradle &amp; Project API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Project-的属性"><span class="nav-number">3.1.</span> <span class="nav-text">Project 的属性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#settings-gradle"><span class="nav-number">4.</span> <span class="nav-text">settings.gradle</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#script-API"><span class="nav-number">5.</span> <span class="nav-text">script API</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#脚本即代码"><span class="nav-number">6.</span> <span class="nav-text">脚本即代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量-amp-额外的自定义属性"><span class="nav-number">7.</span> <span class="nav-text">变量 &amp; 额外的自定义属性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#局部变量"><span class="nav-number">7.1.</span> <span class="nav-text">局部变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#额外的自定义属性"><span class="nav-number">7.2.</span> <span class="nav-text">额外的自定义属性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建一个任务"><span class="nav-number">8.</span> <span class="nav-text">创建一个任务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务依赖和任务排序"><span class="nav-number">9.</span> <span class="nav-text">任务依赖和任务排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#默认任务"><span class="nav-number">10.</span> <span class="nav-text">默认任务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#外部依赖"><span class="nav-number">11.</span> <span class="nav-text">外部依赖</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -847,9 +1001,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://blog.skymxc.com/2017/02/26/copyDB/';
-          this.page.identifier = '2017/02/26/copyDB/';
-          this.page.title = 'Android 导入现有数据库';
+          this.page.url = 'http://blog.skymxc.com/2019/08/29/gradle-buildscript/';
+          this.page.identifier = '2019/08/29/gradle-buildscript/';
+          this.page.title = 'Gradle 构建脚本';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://skymxc.disqus.com/embed.js';
