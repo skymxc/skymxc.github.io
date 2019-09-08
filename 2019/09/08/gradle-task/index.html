@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Gradle,Task," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Gradle-Task 了解一下。">
+<meta name="keywords" content="Gradle,Task">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradle-任务">
+<meta property="og:url" content="http://blog.skymxc.com/2019/09/08/gradle-task/index.html">
+<meta property="og:site_name" content="佛系编码">
+<meta property="og:description" content="Gradle-Task 了解一下。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/task-outcomes-label.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/task-configure.png">
+<meta property="og:updated_time" content="2019-09-08T05:30:22.703Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gradle-任务">
+<meta name="twitter:description" content="Gradle-Task 了解一下。">
+<meta name="twitter:image" content="http://blog.skymxc.com/images/Gradle/task-outcomes-label.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'sky-mxc'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.skymxc.com/2019/09/08/gradle-task/"/>
+
+
+
+
+
+  <title>Gradle-任务 | 佛系编码</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db8042d9d7c31f7cbbc5ecedd326a573";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">佛系编码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">好记性不如烂笔头</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.skymxc.com/2019/09/08/gradle-task/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="佛系编码">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="佛系编码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Gradle-任务</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-08T13:22:30+08:00">
+                2019-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gradle/" itemprop="url" rel="index">
+                    <span itemprop="name">Gradle</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/09/08/gradle-task/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/09/08/gradle-task/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  Gradle-Task 了解一下。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="任务结果标签"><a href="#任务结果标签" class="headerlink" title="任务结果标签"></a>任务结果标签</h1><p>当 Gradle 执行一个任务时，它会在控制台和 Tooling API 根据任务结果给任务打标签。</p>
+<p>这些标签是根据任务是否有操作，是否应该执行操作，是否执行了操作以及这些操作做了哪些改变 来标记的。</p>
+<p>下面是 Gradle 的标签以及对应的条件</p>
+<ul>
+<li><p>(无标签)或者 EXECUTED</p>
+<p>  任务执行了它的操作。</p>
+<ul>
+<li>任务有操作并且 Gradle 已经决定作为构建的一部分来执行</li>
+<li>任务没有操作但有些依赖，并且执行了某些依赖项。参考下面的生命周期任务。</li>
+</ul>
+</li>
+<li><p>UP-TO-DATE</p>
+<p>  任务输出没有变化</p>
+<ul>
+<li>任务有输入和输出，但没有改变。另行参考增量构建</li>
+<li>任务有操作，但是没有改变它的输出。</li>
+<li>任务没有操作但是有些依赖，但所有的依赖都是最新的，忽略的或者来自缓存。参考下面的生命周期任务</li>
+</ul>
+</li>
+<li><p>FROM-CACHE</p>
+<p>  任务的输出能够在先前的任务执行中被找到</p>
+<ul>
+<li>任务输出能够从缓存中恢复。具体的可另行参考 <a href="https://docs.gradle.org/current/userguide/build_cache.html#build_cache" target="_blank" rel="noopener">构建缓存</a></li>
+</ul>
+</li>
+<li><p>SKIPPED</p>
+<p>  任务没有执行它的操作</p>
+<ul>
+<li>任务已经明确的在命令行中被排除。</li>
+<li>任务的 onlyIf 返回 false</li>
+</ul>
+</li>
+<li><p>NO-SOURCE</p>
+<p>  任务不需要执行它的操作</p>
+<ul>
+<li>任务有输出和输入，但是没有来源。例如输入是空的。</li>
+</ul>
+</li>
+</ul>
+<p>在Android studio 的 build console 就可以看到这个标签</p>
+<p><img src="\images\Gradle\task-outcomes-label.png" alt="Android studio Build console"></p>
+<blockquote>
+<p><em>Tooling API 是指 Gradle 提供的编程 API，通常给 IDE，CI 服务器使用的</em></p>
+</blockquote>
+<h1 id="创建任务"><a href="#创建任务" class="headerlink" title="创建任务"></a>创建任务</h1><p>最简单方便的定义方式：定义一个 hello 任务</p>
+<p>这是使用 DSL 的语法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">task hello &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println &apos;Hello world!&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里的 task 看着像一个关键字，实际上是一个方法，这个方法的原型是 TaskContainer.create()</p>
+<p>任务的创建就是使用这个方法给 Project 添加一个 Task 类型的属性，名字就是我们的任务名字；所以才能使用任务名字引用一些API，例如为任务添加额外的属性。</p>
+<p>也可以使用一个字符串当做任务名称，指定一个类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">task(&apos;hello&apos;) &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println &quot;hello&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task(&apos;copy&apos;, type: Copy) &#123;</span><br><span class="line">    from(file(&apos;srcDir&apos;))</span><br><span class="line">    into(buildDir)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或者是直接使用 tasks.create 方法; tasks 是 Project的一属性 类型是 TaskContainer</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">tasks.create(&apos;hello&apos;) &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println &quot;hello&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">tasks.create(&apos;copy&apos;, Copy) &#123;</span><br><span class="line">    from(file(&apos;srcDir&apos;))</span><br><span class="line">    into(buildDir)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="任务配置"><a href="#任务配置" class="headerlink" title="任务配置"></a>任务配置</h1><p>在创建任务的的时候，可以传入参数对任务进行配置，比如 任务分组，任务描述等等</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">task(hello,group:&apos;Hello&apos;,description:&apos;这是一个 Hello。&apos;)&#123;</span><br><span class="line">    doLast&#123;</span><br><span class="line">        println &quot;name:$name; group:$group; description:$description;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; Task :hello</span><br><span class="line">name:hello; group:Hello; description:这是一个 Hello。;</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 694ms</span><br></pre></td></tr></table></figure></p>
+<p>也可以在闭包中对任务进行配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">task taskX&#123;</span><br><span class="line">    group &apos;Hello&apos;</span><br><span class="line">    description &apos;在闭包里配置&apos;</span><br><span class="line">    dependsOn hello</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">tasks.create(&apos;taskY&apos;,Copy)&#123;</span><br><span class="line">    description &apos;使用 tasks.create()&apos;</span><br><span class="line">    dependsOn hello</span><br><span class="line">    group &apos;Hello&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用 <code>gradle help --task 任务名</code> 查看任务详情</p>
+<p><img src="\images\Gradle\task-configure.png" alt="任务详情"></p>
+<p>可以配置的参数如下</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">配置项</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">type</td>
+<td style="text-align:center">基于一个存在的 Task 来创建，和我们的类继承差不多</td>
+<td style="text-align:center">DefaultTask</td>
+</tr>
+<tr>
+<td style="text-align:center">dependsOn</td>
+<td style="text-align:center">用于配置任务的依赖</td>
+<td style="text-align:center">[]</td>
+</tr>
+<tr>
+<td style="text-align:center">action</td>
+<td style="text-align:center">添加到任务的一个 Action 或者一个闭包</td>
+<td style="text-align:center">null</td>
+</tr>
+<tr>
+<td style="text-align:center">description</td>
+<td style="text-align:center">任务描述</td>
+<td style="text-align:center">null</td>
+</tr>
+<tr>
+<td style="text-align:center">group</td>
+<td style="text-align:center">任务分组</td>
+<td style="text-align:center">null</td>
+</tr>
+</tbody>
+</table>
+<h1 id="任务访问"><a href="#任务访问" class="headerlink" title="任务访问"></a>任务访问</h1><p>通常是在配置任务或者是使用任务依赖的时候访问任务。</p>
+<p>下面是几种获取任务引用的方式</p>
+<h2 id="使用-DSL-语法的方式"><a href="#使用-DSL-语法的方式" class="headerlink" title="使用 DSL 语法的方式"></a>使用 DSL 语法的方式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">task hello</span><br><span class="line">task copy(type: Copy)</span><br><span class="line"></span><br><span class="line">// Access tasks using Groovy dynamic properties on Project</span><br><span class="line"></span><br><span class="line">println hello.name</span><br><span class="line">println project.hello.name</span><br><span class="line"></span><br><span class="line">println copy.destinationDir</span><br><span class="line">println project.copy.destinationDir</span><br></pre></td></tr></table></figure>
+<h2 id="使用-tasks-集合访问"><a href="#使用-tasks-集合访问" class="headerlink" title="使用 tasks 集合访问"></a>使用 tasks 集合访问</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">task hello</span><br><span class="line">task copy(type: Copy)</span><br><span class="line"></span><br><span class="line">println tasks.hello.name</span><br><span class="line">println tasks.named(&apos;hello&apos;).get().name</span><br><span class="line"></span><br><span class="line">println tasks.copy.destinationDir</span><br><span class="line">println tasks.named(&apos;copy&apos;).get().destinationDir</span><br></pre></td></tr></table></figure>
+<h2 id="使用-tasks-getByPath-方法"><a href="#使用-tasks-getByPath-方法" class="headerlink" title="使用 tasks.getByPath() 方法"></a>使用 tasks.getByPath() 方法</h2><p>可以在构建文件的任何地方使用这个方法，它接受任务名字，任务相对路径或者绝对路径。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">project(&apos;:projectA&apos;) &#123;</span><br><span class="line">    task hello</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task hello</span><br><span class="line"></span><br><span class="line">println tasks.getByPath(&apos;hello&apos;).path</span><br><span class="line">println tasks.getByPath(&apos;:hello&apos;).path</span><br><span class="line">println tasks.getByPath(&apos;projectA:hello&apos;).path</span><br><span class="line">println tasks.getByPath(&apos;:projectA:hello&apos;).path</span><br></pre></td></tr></table></figure>
+<p>输出如下</p>
+<blockquote>
+<p>gradle -q hello</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">:hello</span><br><span class="line">:hello</span><br><span class="line">:projectA:hello</span><br><span class="line">:projectA:hello</span><br></pre></td></tr></table></figure>
+<p>当我们拿到这个任务的引用的时候，就可以按照我们的任务逻辑去操作它，比如配置任务依赖，配置任务的一些属性，调用方法等。</p>
+<h1 id="添加操作"><a href="#添加操作" class="headerlink" title="添加操作"></a>添加操作</h1><p>可以使用 Task.doLast 和 Task.doFirst 为任务添加操作</p>
+<p>其中 doFirst 是在任务之前执行，doLast 在任务之后执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">task taskZ</span><br><span class="line"></span><br><span class="line">taskZ.configure &#123;</span><br><span class="line">    group &apos;Custom&apos;</span><br><span class="line">    description &apos;添加操作的实验&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">taskZ.doFirst &#123;</span><br><span class="line">    println &apos;add doFirst. first&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">taskZ.doLast &#123;</span><br><span class="line">    println &apos;add doLast. first&apos;</span><br><span class="line">&#125;</span><br><span class="line">taskZ.doLast &#123;</span><br><span class="line">    println &apos;add doLast. second&apos;</span><br><span class="line">&#125;</span><br><span class="line">taskZ.doFirst &#123;</span><br><span class="line">    println &apos;add doFirst. second&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p> gradle taskZ</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; Task :taskZ</span><br><span class="line"> add doFirst. second</span><br><span class="line"> add doFirst. first</span><br><span class="line"> add doLast. first</span><br><span class="line"> add doLast. second</span><br><span class="line"></span><br><span class="line"> BUILD SUCCESSFUL in 608ms</span><br></pre></td></tr></table></figure>
+<p>从输出可以看到是先执行 doFirst 然后是 doLast 。</p>
+<h1 id="执行分析"><a href="#执行分析" class="headerlink" title="执行分析"></a>执行分析</h1><p>任务的执行其实就是执行它的 actions 列表。</p>
+<p>这个列表保存在 Task 对象实例中的 actions 成员变量中，其类型是一个 List</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private List&lt;InputChangesAwareTaskAction&gt; actions;</span><br></pre></td></tr></table></figure>
+<p>现在我们把 Task 之前执行、Task 本身执行以及 Task 之后执行分别称为 doFirst,doSelf,doLast。下面做个演示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class CustomTask extends DefaultTask&#123;</span><br><span class="line"></span><br><span class="line">    @TaskAction</span><br><span class="line">    def doSelf()&#123;</span><br><span class="line">        println &apos;Task 自己本身在执行 in doSelf.&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task taskA(type:CustomTask)</span><br><span class="line"></span><br><span class="line">taskA.doFirst &#123;</span><br><span class="line">    println &quot;do First. Task 之前执行&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">taskA.doLast &#123;</span><br><span class="line">    println &quot;do Last. Task 之后执行&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>例子中定义了一个 CustomTask 并声明了一个 doSelf 方法，使用 @TaskAction 标注，意思是这是任务本身要执行的方法。</p>
+<p>执行 taskA 输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; Task :taskA</span><br><span class="line">  do First. Task 之前执行</span><br><span class="line">  Task 自己本身在执行 in doSelf.</span><br><span class="line">  do Last. Task 之后执行</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 726ms</span><br></pre></td></tr></table></figure>
+<p>前面说过任务执行就是执行它的 actions List。那么要达到这种 doFirst、doSelf、doLast 顺序的目的，就必须把 doFirst 的 actions 放在 actions List 的前面，把 doSelf 的 actions 放在 List 的中间，把 doLast 的 actions 放在 List 最后面，这样才能达到按约定顺序执行的目的。</p>
+<p>当我们使用 task 方法创建 taskA 这个任务的时候，Gradle 会解析其带有 Task Action 标注的方法作为其 Task 执行的 Action，然后通过 Task 的 prependParallelSafeAction 方法把该 Action 添加到 actions List 里。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line"> public void prependParallelSafeAction(final Action&lt;? super Task&gt; action) &#123;</span><br><span class="line">     if (action == null) &#123;</span><br><span class="line">         throw new InvalidUserDataException(&quot;Action must not be null!&quot;);</span><br><span class="line">     &#125;</span><br><span class="line">     getTaskActions().add(0, wrap(action));</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>这个时候任务刚刚被创建，不会有 doFirst 的 Action, actions List 一般是空的。</p>
+<p>只有在创建任务时，传入了配置参数中的 action 选项配置的时候才会有。（上面配置任务有提到）</p>
+<p>这个时候 actions List 就有了任务本身的 Action了。</p>
+<p>再来看 doFirst 和 doLast 两个方法的实现代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public Task doFirst(final Action&lt;? super Task&gt; action) &#123;</span><br><span class="line">    return doFirst(&quot;doFirst &#123;&#125; action&quot;, action);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public Task doFirst(final String actionName, final Action&lt;? super Task&gt; action) &#123;</span><br><span class="line">    hasCustomActions = true;</span><br><span class="line">    if (action == null) &#123;</span><br><span class="line">        throw new InvalidUserDataException(&quot;Action must not be null!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    taskMutator.mutate(&quot;Task.doFirst(Action)&quot;, new Runnable() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            getTaskActions().add(0, wrap(action, actionName));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    return this;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public Task doLast(final Action&lt;? super Task&gt; action) &#123;</span><br><span class="line">    return doLast(&quot;doLast &#123;&#125; action&quot;, action);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public Task doLast(final String actionName, final Action&lt;? super Task&gt; action) &#123;</span><br><span class="line">    hasCustomActions = true;</span><br><span class="line">    if (action == null) &#123;</span><br><span class="line">        throw new InvalidUserDataException(&quot;Action must not be null!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    taskMutator.mutate(&quot;Task.doLast(Action)&quot;, new Runnable() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            getTaskActions().add(wrap(action, actionName));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    return this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看最重要的 actions.add 这部分</p>
+<p>doFirst 永远都是在 actions List 第一位添加，保证其添加的 Action 在现有的 actions List 的最前面。</p>
+<p>doLast 永远都是在 actions List 末尾添加，保证其添加的 Action 在现有的 actions List 元素的最后面。</p>
+<p>一个往最前面添加，一个往最后面添加，最后这个 actions List 就形成了 doFirst,doSelf,doLast三部分的 actions.</p>
+<p>也就保证了  doFirst,doSelf,doLast三部分的 Action 顺序执行的目的。</p>
+<blockquote>
+<p>这个任务执行分析在 《Android Gradle 权威指南》 中有很详细的解释。</p>
+</blockquote>
+<h1 id="任务排序"><a href="#任务排序" class="headerlink" title="任务排序"></a>任务排序</h1><p>任务依赖也能够达到让任务排序的目的，但是还是有些区别的。</p>
+<p>主要区别是排序不影响任务执行，只影响执行顺序。</p>
+<p>有两种排序规则  “must run after” and “should run after”.</p>
+<blockquote>
+<p>taskA.mustRunAfter(taskB) 表示 taskA 必须总是在 TaskB 之后运行。</p>
+<p>taskA.shouldRunAfter(taskB) 表示 taskA 应该在 taskB 之后运行，并不一定必须运行，没有那么严格。</p>
+</blockquote>
+<p>should run after 不会被执行通常是在两个场景下</p>
+<ol>
+<li>陷入顺序循环</li>
+<li>在执行任务依赖的时候如果满足了这个规则，将不会再次执行了。例如 再执行 taskB 的依赖时将 TaskA 给执行了，那么在 taskB 完成后将不会再执行 taskA。</li>
+</ol>
+<blockquote>
+<p>must run after</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">task taskX &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println &apos;taskX&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">task taskY &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println &apos;taskY&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">taskY.mustRunAfter taskX</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q taskY taskX</span><br><span class="line"> taskX</span><br><span class="line"> taskY</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>should run after</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">task taskX &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println &apos;taskX&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">task taskY &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println &apos;taskY&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">taskY.shouldRunAfter taskX</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q taskY taskX</span><br><span class="line"> taskX</span><br><span class="line"> taskY</span><br></pre></td></tr></table></figure>
+<p> 如果只执行一个任务的话顺序规则就没用了</p>
+<blockquote>
+<p>gradle -q taskY</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">taskY</span><br></pre></td></tr></table></figure>
+<h1 id="任务跳过"><a href="#任务跳过" class="headerlink" title="任务跳过"></a>任务跳过</h1><p>Gradle 提供了多种方式跳过任务，任务被跳过将不会执行。</p>
+<h2 id="使用断言-onlyIf"><a href="#使用断言-onlyIf" class="headerlink" title="使用断言 onlyIf"></a>使用断言 onlyIf</h2><p>这个方法接收一个闭包参数，闭包返回 false 就不会执行，返回 true 将执行任务</p>
+<p>这个方法是在执行任务前被调用的，不是在配置阶段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">task hello &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println &apos;hello world&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">hello.onlyIf &#123; !project.hasProperty(&apos;skipHello&apos;) &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>gradle hello -PskipHello</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; Task :hello SKIPPED</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 0s</span><br></pre></td></tr></table></figure>
+<h2 id="使用-StopExecutionException"><a href="#使用-StopExecutionException" class="headerlink" title="使用  StopExecutionException"></a>使用  StopExecutionException</h2><p>如果断言不能满足你的话，就可以使用这个 StopExecutionException ，使用这个异常可以执行时根据逻辑进行判断。</p>
+<p>这个异常可以在一个操作中抛出，抛出后直接跳过这个任务进行下一个任务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">task compile &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println &apos;We are doing the compile.&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">compile.doFirst &#123;</span><br><span class="line">    // Here you would put arbitrary conditions in real life.</span><br><span class="line">    // But this is used in an integration test so we want defined behavior.</span><br><span class="line">    if (true) &#123; throw new StopExecutionException() &#125;</span><br><span class="line">&#125;</span><br><span class="line">task myTask &#123;</span><br><span class="line">    dependsOn(&apos;compile&apos;)</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println &apos;I am not affected&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>gradle -q myTask</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">I am not affected</span><br></pre></td></tr></table></figure>
+<h2 id="使用-enabled-false"><a href="#使用-enabled-false" class="headerlink" title="使用 enabled = false"></a>使用 enabled = false</h2><p>每个任务都有一个 enabled 标志，默认是 true，如果设置为 false 这个任务将会被标记为 SKIPPED，直接跳过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">task disableMe &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println &apos;This should not be printed if the task is disabled.&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">disableMe.enabled = false</span><br></pre></td></tr></table></figure>
+<p>执行 gradle disableMe</p>
+<blockquote>
+<p>gradle disableMe</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Task :disableMe SKIPPED</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL in 0s</span><br></pre></td></tr></table></figure>
+<h2 id="使用-超时时间"><a href="#使用-超时时间" class="headerlink" title="使用 超时时间"></a>使用 超时时间</h2><p>每个任务都有一个 timeout 属性用来限制执行时间。</p>
+<p>当任务执行超时，任务执行线程就会被终止，任务将会被标记失败。</p>
+<p>如果使用了 –continues 其他任务将会继续执行。</p>
+<p>如果任务不能响应超时，任务将不会被终止。</p>
+<p>Gradle 所有的内置任务都会响应超时。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">task hangingTask() &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        Thread.sleep(100000)</span><br><span class="line">    &#125;</span><br><span class="line">    timeout = Duration.ofMillis(500)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="任务规则"><a href="#任务规则" class="headerlink" title="任务规则"></a>任务规则</h1><p>正常情况下在使用 gradle 执行任务时，如果任务不存在就会抛出异常。</p>
+<p>而任务规则就是在 Gradle 找不到任务时应用的规则，例如我们可以在找不到任务时打印一句话或者执行其他操作。</p>
+<p>任务规则的添加和创建一样都是由 TaskContainer 完成，其实这个实在 NamedDomainObjectCollection 接口中的，不过 TaskContainer 继承了这个接口。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tasks.addRule(&quot;这就是一个任务规则描述&quot;)&#123; taskName -&gt;</span><br><span class="line">    task (taskName)&#123;</span><br><span class="line">         println &quot;$taskName 不存在&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个 方法有多个重载，详情可查看 API。<br><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/NamedDomainObjectCollection.html#addRule-org.gradle.api.Rule-" target="_blank" rel="noopener">API 传送门</a></p>
+<h1 id="生命周期任务"><a href="#生命周期任务" class="headerlink" title="生命周期任务"></a>生命周期任务</h1><p>生命周期任务通常是没有操作的，通常是表达一个概念，例如下面几个：</p>
+<ul>
+<li>一个步骤，例如 check 检查，build 构建；</li>
+<li>一个可构建的东西，例如一个可执行文件</li>
+<li>一个组合了多个逻辑任务的空壳任务，例如 使用 compileAll 任务执行所有编译任务</li>
+</ul>
+<p>Base Plugin 中定义了标准生命周期任务：</p>
+<ul>
+<li>check</li>
+<li>assemble</li>
+<li>build</li>
+</ul>
+<p>几乎所有的核心语言插件都应用了 Base Plugin， 例如 Java Plugin。</p>
+<p>所以它的生命周期任务几乎所有语言插件都有。</p>
+<p>除非生命周期任务有操作，否则它的结果标记应该是由它的依赖的执行结果决定的。</p>
+<p>如果所有的依赖都被执行了，那么就应该标记 EXECUTED</p>
+<p>如果所有的依赖都是最新的，跳过的或来自缓存，那么就应该被标记为 UP-TO-DATE</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="佛系编码 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>微信扫一扫，关注我的给公众号</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/pay/wechatpay.png" alt="佛系编码 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/pay/alipay.jpg" alt="佛系编码 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Gradle/" rel="tag"># Gradle</a>
+          
+            <a href="/tags/Task/" rel="tag"># Task</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/29/gradle-buildscript/" rel="next" title="Gradle 构建脚本">
+                <i class="fa fa-chevron-left"></i> Gradle 构建脚本
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/user.jpg"
+                alt="佛系编码" />
+            
+              <p class="site-author-name" itemprop="name">佛系编码</p>
+              <p class="site-description motion-element" itemprop="description">写点编码的日常</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">博文</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/skymxc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:skymxc@foxmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#任务结果标签"><span class="nav-number">1.</span> <span class="nav-text">任务结果标签</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建任务"><span class="nav-number">2.</span> <span class="nav-text">创建任务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务配置"><span class="nav-number">3.</span> <span class="nav-text">任务配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务访问"><span class="nav-number">4.</span> <span class="nav-text">任务访问</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-DSL-语法的方式"><span class="nav-number">4.1.</span> <span class="nav-text">使用 DSL 语法的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-tasks-集合访问"><span class="nav-number">4.2.</span> <span class="nav-text">使用 tasks 集合访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-tasks-getByPath-方法"><span class="nav-number">4.3.</span> <span class="nav-text">使用 tasks.getByPath() 方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加操作"><span class="nav-number">5.</span> <span class="nav-text">添加操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#执行分析"><span class="nav-number">6.</span> <span class="nav-text">执行分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务排序"><span class="nav-number">7.</span> <span class="nav-text">任务排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务跳过"><span class="nav-number">8.</span> <span class="nav-text">任务跳过</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用断言-onlyIf"><span class="nav-number">8.1.</span> <span class="nav-text">使用断言 onlyIf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-StopExecutionException"><span class="nav-number">8.2.</span> <span class="nav-text">使用  StopExecutionException</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-enabled-false"><span class="nav-number">8.3.</span> <span class="nav-text">使用 enabled = false</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-超时时间"><span class="nav-number">8.4.</span> <span class="nav-text">使用 超时时间</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务规则"><span class="nav-number">9.</span> <span class="nav-text">任务规则</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生命周期任务"><span class="nav-number">10.</span> <span class="nav-text">生命周期任务</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">佛系编码</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skymxc.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://blog.skymxc.com/2019/09/08/gradle-task/';
+          this.page.identifier = '2019/09/08/gradle-task/';
+          this.page.title = 'Gradle-任务';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skymxc.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
