@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Gradle 本身只提供基本框架和核心概念，几乎所有的功能都是以插件的方式提供的。" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Gradle 本身只提供基本框架和核心概念，几乎所有的功能都是以插件的方式提供的。">
+<meta name="keywords" content="Gradle 本身只提供基本框架和核心概念，几乎所有的功能都是以插件的方式提供的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradle 插件">
+<meta property="og:url" content="http://blog.skymxc.com/2019/09/15/gradle-plugin/index.html">
+<meta property="og:site_name" content="佛系编码">
+<meta property="og:description" content="Gradle 本身只提供基本框架和核心概念，几乎所有的功能都是以插件的方式提供的。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/gradle-plugin.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/pluginMarker.png">
+<meta property="og:updated_time" content="2019-09-15T09:14:25.122Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gradle 插件">
+<meta name="twitter:description" content="Gradle 本身只提供基本框架和核心概念，几乎所有的功能都是以插件的方式提供的。">
+<meta name="twitter:image" content="http://blog.skymxc.com/images/Gradle/gradle-plugin.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'sky-mxc'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.skymxc.com/2019/09/15/gradle-plugin/"/>
+
+
+
+
+
+  <title>Gradle 插件 | 佛系编码</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db8042d9d7c31f7cbbc5ecedd326a573";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">佛系编码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">好记性不如烂笔头</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.skymxc.com/2019/09/15/gradle-plugin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="佛系编码">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="佛系编码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Gradle 插件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-15T17:09:39+08:00">
+                2019-09-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gradle/" itemprop="url" rel="index">
+                    <span itemprop="name">Gradle</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gradle/Plugin/" itemprop="url" rel="index">
+                    <span itemprop="name">Plugin</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/09/15/gradle-plugin/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/09/15/gradle-plugin/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  Gradle 本身只提供基本框架和核心概念，几乎所有的功能都是以插件的方式提供的。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="\images\Gradle\gradle-plugin.png" alt="思维导图"><br>Gradle 本身只提供基本框架和核心概念，几乎所有的功能都是以插件的方式提供的。</p>
+<p>例如构建 Java 应用的功能就是通过 Java 插件实现的。</p>
+<p>Gradle 内置了很多核心语言插件，基本上能满足大部分的构建工作，但有些插件没有内置或者有些功能没有提供，我们也可以自定义插件来使用，例如 Android Gradle 插件就是基于 Java 插件扩展的。</p>
+<h1 id="插件的作用"><a href="#插件的作用" class="headerlink" title="插件的作用"></a>插件的作用</h1><p>插件可以封装一系列任务，例如 编译，测试，打包等。</p>
+<p>插进可以定义约定，例如 应用Java 插件后，约定的源代码位置就在 src/main/java 目录下。</p>
+<p>插件可以封装配置，当项目应用插件时自动应用插进的配置。</p>
+<p>插件可以扩展 Gradle 模型，添加可配置的 DSL 元素，例如 Android Gradle 的 android{}</p>
+<p>这就是插件，我们只需要按照它的约定的方式，使用它提供的任务、方法或扩展就可以对我们的项目进行构建。</p>
+<p>使用插件可以将相似的代码进行封装以提高重用性，使构建脚本高度模块化，增强组织性和可读性。</p>
+<h1 id="插件类型"><a href="#插件类型" class="headerlink" title="插件类型"></a>插件类型</h1><p>Gradle 有两种插件</p>
+<ul>
+<li>脚本插件</li>
+<li>二进制插件</li>
+</ul>
+<h2 id="脚本插件"><a href="#脚本插件" class="headerlink" title="脚本插件"></a>脚本插件</h2><p>脚本插件通常是一个脚本。</p>
+<p>脚本插件其实并不能算是一个真正的插件，但我们不能忽视它的作用，它是脚本模块化的基础。</p>
+<p>我们可以把复杂的脚本文件，进行分块，分段整理，拆分成一个个职责分明的脚本插件。</p>
+<p>就像我们平常封装的 Utils 工具类一样，封装一个 utils.gradle 工具脚本</p>
+<h2 id="二进制插件"><a href="#二进制插件" class="headerlink" title="二进制插件"></a>二进制插件</h2><p>二进制插件是实现了<a href="https://docs.gradle.org/current/javadoc/org/gradle/api/Plugin.html" target="_blank" rel="noopener">Plugin</a> 接口的插件，以编程的方式操纵构建。</p>
+<p>二进制插件一般是打包在一个 jar 里独立发布的。</p>
+<h1 id="发现插件"><a href="#发现插件" class="headerlink" title="发现插件"></a>发现插件</h1><p>Gradle 专门有一个网站可以发布和寻找插件 <a href="https://plugins.gradle.org" target="_blank" rel="noopener">https://plugins.gradle.org</a></p>
+<p>当然也可以在 Github 上搜索，开源的力量是强大的。</p>
+<h1 id="使用插件"><a href="#使用插件" class="headerlink" title="使用插件"></a>使用插件</h1><p>要使用一个插件必选先找到它，然后把它应用到我们的项目。</p>
+<p>将插件应用到我们的项目就可以使用它了。</p>
+<p>所以使用一个插件需要两步：</p>
+<ol>
+<li>找到插件并添加到类路径</li>
+<li>应用插件到项目</li>
+</ol>
+<p>一旦插件被应用就可以使用它的 API 了。</p>
+<p>应用插件就是在目标项目执行插件的 <a href="https://docs.gradle.org/current/javadoc/org/gradle/api/Plugin.html#apply-T-" target="_blank" rel="noopener"> Plugin.apply(T)</a> 方法。</p>
+<p>插件的应用是幂等的，应用多次和一次的效果是一样的。</p>
+<h2 id="应用脚本插件"><a href="#应用脚本插件" class="headerlink" title="应用脚本插件"></a>应用脚本插件</h2><p>前面说过脚本插件其实就是一个脚本，应用脚本插件其实就是将这个脚本加载进来。</p>
+<p>使用 apply from 将脚本加载进来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply from: &apos;other.gradle&apos;</span><br></pre></td></tr></table></figure>
+<p>脚本可以存在本地，也可以存在网络上。</p>
+<p>存在本地就使用本项目的相对路径。</p>
+<p>存在网络上就要使用 HTTP URL 。</p>
+<h2 id="应用二进制插件"><a href="#应用二进制插件" class="headerlink" title="应用二进制插件"></a>应用二进制插件</h2><p>二进制插件应用是通过他们的 ID 应用的。</p>
+<p>插件 ID 是插件的全局唯一标识符或者名字</p>
+<p>Gradle 核心插件的特殊之处就在于他们都有一个简短的 ID，例如 Java 插件的是 “java” 。</p>
+<p>其他所有的二进制插件都必须使用完全限定形式的插件 ID  (com.github.foo.bar) 。</p>
+<p>插件 ID 在哪用就取决于你是使用 plugins{} 还是 buildscript{} 了。</p>
+<p>核心插件是作为 Gardle 的一部分在应用时是由 Gradle 分发并自动解析的。</p>
+<p>而其他的二进制插件则必须在应用前被找到并解析。</p>
+<p>Gradle 通常是在下面这个几个地方去寻找</p>
+<ul>
+<li>在上述提到的 Plugins 网站上或者自定义的仓库里</li>
+<li>在指定的外部依赖 jar</li>
+<li>在项目的 buildSrc 目录下寻找源文件</li>
+<li>声明在脚本里的插件</li>
+</ul>
+<p>目前有两种方式使用插件，一种是使用新推出的 plugins{} 应用插件，另一种是使用 buildscript{} 应用插件。</p>
+<p>目前 Gradle 推荐使用 plugins{} 。</p>
+<p>下面是两个方式的使用方法。</p>
+<h3 id="使用-buildscript-应用二进制插件"><a href="#使用-buildscript-应用二进制插件" class="headerlink" title="使用 buildscript{} 应用二进制插件"></a>使用 buildscript{} 应用二进制插件</h3><p>使用 buildscript{} 块应用的二进制插件都是通过 Project.apply() 方法完成的。</p>
+<p>应用 Java 插件: build.gradle</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &apos;java&apos;</span><br></pre></td></tr></table></figure>
+<p>这里的 “java” 就是 Java 插件的 ID，它对应的类型是 org.gradle.api.plugins.JavaPlugin</p>
+<p>也可以通过类型应用插件：build.gradle</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply org.gradle.api.plugins.JavaPlugin</span><br></pre></td></tr></table></figure>
+<p>因为 org.gradle.api.plugins 是默认导入的，所以也可以直接去掉包名称直接写为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply plugin:JavaPlugin</span><br></pre></td></tr></table></figure></p>
+<p>要使用第三方的插件就必须先在 buildscript{} 配置 类路径才可以使用。</p>
+<p>这个不像 Gradle 的内置插件，是由 Gradle 负责分发的。</p>
+<p>例如我们的 Android Gradle 插进，就属于 Android 发布的第三方插件，如果要使用就先要进行配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        mavenCentral()</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath &apos;com.android.tools.build:gradle:3.2.0&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为 Android Gradle 插进是托管在 jcenter 仓库上，所以必须在 repositories{} 添加 jcenter 仓库。</p>
+<p>buildscript{} 块是一个在构建项目之前，为项目进行前期准备和初始化相关配置依赖的地方，配置好所需的依赖，就可以应用插件了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &apos;com.android.application&apos;</span><br></pre></td></tr></table></figure>
+<p>如果没有提前在 buildscript{} 里配置依赖的类路径，会提示找不到这个插件。</p>
+<h3 id="使用-plugins-DSL-应用二进制插件"><a href="#使用-plugins-DSL-应用二进制插件" class="headerlink" title="使用 plugins DSL 应用二进制插件"></a>使用 plugins DSL 应用二进制插件</h3><p>plugins DSL 配置可以很方便的访问 Gradle 插件网站上的插件。</p>
+<p>这个配置块配置的是一个<a href="https://docs.gradle.org/current/javadoc/org/gradle/plugin/use/PluginDependenciesSpec.html" target="_blank" rel="noopener">PluginDependenciesSpec</a> 实例</p>
+<p>应用核心插件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id &apos;java&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用插件 ID （必须是完全限定形式）应用第三方插件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id &apos;com.jfrog.bintray&apos; version &apos;0.4.1&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用 plugins{} 应用插件就不用先配置依赖然后再使用 apply 方法了，只需要在 plugins{} 里配置就可以了。</p>
+<h4 id="plugins-DSL-的限制"><a href="#plugins-DSL-的限制" class="headerlink" title="plugins DSL 的限制"></a>plugins DSL 的限制</h4><p>虽然 plugins DSL 将使用插件的步骤精简了，但还是有一些限制的，它的语法被固定了，不能改变</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id «plugin id»                                            // (1)</span><br><span class="line">    id «plugin id» version «plugin version» [apply «false»]   // (2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>适用于有简写名字的核心插件或者已经加载过的第三方插件</li>
+<li>适用于需要被解析的第三方插件</li>
+</ol>
+<p>plugin id 和 plugin version 是必需的 且必须是常量,字面量,字符串.其他语句都是不允许的</p>
+<p>apply 是可选的，默认是 true；它是控制在应用插件的时候是否立刻使用插件的默认行为。</p>
+<p>这个 plugins{} 块 是不能嵌套在别的配置块里的，必须是脚本的顶级模块。</p>
+<p>在目前的 5.6.2 版本里 plugins{} 只能在项目的构建脚本里使用，不能在脚本插件里，settings.gradle 以及 init.gradle 脚本里。</p>
+<h4 id="应用插件到子项目"><a href="#应用插件到子项目" class="headerlink" title="应用插件到子项目"></a>应用插件到子项目</h4><p>可以利用 plugins {} 的 apply 选项将插件应用到某些项目而不是所有项目里。</p>
+<p>默认 plugins {} 的插件是立即被解析并应用的。</p>
+<p>可以使用 apply false 告诉 Gradle 不应用到当前项目,<br>然后在子项目的脚本中使用 apply plugin &lt;<plugin id="">&gt; 或者 plugins{} 应用插件</plugin></p>
+<p>settings.gradle</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">include &apos;helloA&apos;</span><br><span class="line">include &apos;helloB&apos;</span><br><span class="line">include &apos;goodbyeC&apos;</span><br></pre></td></tr></table></figure>
+<p>build.gradle</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id &apos;org.gradle.sample.hello&apos; version &apos;1.0.0&apos; apply false</span><br><span class="line">    id &apos;org.gradle.sample.goodbye&apos; version &apos;1.0.0&apos; apply false</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">subprojects &#123;</span><br><span class="line">    if (name.startsWith(&apos;hello&apos;)) &#123;</span><br><span class="line">        apply plugin: &apos;org.gradle.sample.hello&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>goodbyeC/build.gradle<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id &apos;org.gradle.sample.goodbye&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的示例演示了如何给多个子项目分别应用不同的插件。</p>
+<h3 id="使用-buildSrc-目录下的插件"><a href="#使用-buildSrc-目录下的插件" class="headerlink" title="使用 buildSrc 目录下的插件"></a>使用 buildSrc 目录下的插件</h3><p>项目的 buildSrc 目录下的插件也是可以使用的，但必须定义插件 ID 。</p>
+<p>下面是一个使用 buildSrc 目录下的插件的示例</p>
+<p>这个插件 ID 是 my-plugin 实现的插件类是 my.MyPlugin<br>buildSrc/build.gradle</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id &apos;java&apos;</span><br><span class="line">    id &apos;java-gradle-plugin&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">gradlePlugin &#123;</span><br><span class="line">    plugins &#123;</span><br><span class="line">        myPlugins &#123;</span><br><span class="line">            id = &apos;my-plugin&apos;</span><br><span class="line">            implementationClass = &apos;my.MyPlugin&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    compileOnly gradleApi()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用插件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id &apos;my-plugin&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Plugin-Management"><a href="#Plugin-Management" class="headerlink" title="Plugin Management"></a>Plugin Management</h4><p>这个 pluginManagement DSL 是用来管理插件的，它可以配置插件，自定义仓库，自定义解析规则等。</p>
+<p>pluginManagement{} 只能定义在两个地方：</p>
+<ul>
+<li>settings.gradle 里，并且必须是第一个模块</li>
+<li>init.gradle 里</li>
+</ul>
+<p>settings.gradle<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pluginManagement &#123;</span><br><span class="line">    plugins &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    resolutionStrategy &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    repositories &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>init.gradle<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">settingsEvaluated &#123; settings -&gt;</span><br><span class="line">    settings.pluginManagement &#123;</span><br><span class="line">        plugins &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        resolutionStrategy &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        repositories &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="自定义仓库"><a href="#自定义仓库" class="headerlink" title="自定义仓库"></a>自定义仓库</h4><p>plugins 默认是在 Gradle 的插件网站寻找插件的</p>
+<p>我们可以在 pluginManagement{} 里的 repositories{} 里配置自己的仓库</p>
+<p>Gradle 会按照配置的仓库顺序依次寻找插件</p>
+<p>settings.gradle<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">pluginManagement &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &apos;../maven-repo&apos;</span><br><span class="line">        &#125;</span><br><span class="line">        gradlePluginPortal()</span><br><span class="line">        ivy &#123;</span><br><span class="line">            url &apos;../ivy-repo&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先在位于 ../maven-repo 的Maven 仓库找，找不到再去 Gradle 的插件网站 ，最后是位于 ../ivy-repo 的 ivy 仓库。</p>
+<h4 id="插件版本管理"><a href="#插件版本管理" class="headerlink" title="插件版本管理"></a>插件版本管理</h4><p>在 pluginManagement{} 里的 plugins{} 里配置插件是没有固定语法限制的。</p>
+<p>可以把所有的版本都放在一个单独的脚本里，或者是使用 gradle.properties 文件配置属性</p>
+<p>settings.gradle<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pluginManagement &#123;</span><br><span class="line">  plugins &#123;</span><br><span class="line">        id &apos;org.gradle.sample.hello&apos; version &quot;$&#123;helloPluginVersion&#125;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>build.gradle<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id &apos;org.gradle.sample.hello&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>gradle.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helloPluginVersion=1.0.0</span><br></pre></td></tr></table></figure></p>
+<h4 id="解析规则"><a href="#解析规则" class="headerlink" title="解析规则"></a>解析规则</h4><p>解析规则就是解析插件的规则，通过自定义插件规则可以更改 plugins{} 块中的插件请求，例如更改请求的版本或显式指定实现工件坐标。</p>
+<p>解析规则是在 pluginManagement{} 里的 resolutionStrategy{} 里配置的。</p>
+<p>插件解析策略：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">pluginManagement &#123;</span><br><span class="line">    resolutionStrategy &#123;</span><br><span class="line">        eachPlugin &#123;</span><br><span class="line">            if (requested.id.namespace == &apos;org.gradle.sample&apos;) &#123;</span><br><span class="line">                useModule(&apos;org.gradle.sample:sample-plugins:1.0.0&apos;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &apos;../maven-repo&apos;</span><br><span class="line">        &#125;</span><br><span class="line">        gradlePluginPortal()</span><br><span class="line">        ivy &#123;</span><br><span class="line">            url &apos;../ivy-repo&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这告诉 Gradle 使用指定的插件实现工件，而不是使用从插件 ID 到 Maven / lvy 坐标的内置默认映射。</p>
+<p>除了实际实现插件的工件之外，自定义 Maven 和 lvy 插件仓库必需包含 插件标记工件。</p>
+<p>关于将插件发布到自定义的仓库的可以查看 Gradle 插件开发：<br><a href="https://docs.gradle.org/current/userguide/java_gradle_plugin.html#java_gradle_plugin" target="_blank" rel="noopener">传送门</a></p>
+<h3 id="Plugin-Marker-Artifacts-插件标记工件"><a href="#Plugin-Marker-Artifacts-插件标记工件" class="headerlink" title="Plugin Marker Artifacts (插件标记工件)"></a>Plugin Marker Artifacts (插件标记工件)</h3><p>这里插入一个 Maven 中的概念：Artifact (工件)</p>
+<blockquote>
+<p>Artifact 的概念比较抽象，它是 Maven 项目将要产生的文件。<br>一个Maven 项目可能会产生多个 Artifact ，可能是 jar 文件，源文件，二进制文件，war 文件，甚至是 pom 文件。<br>每一个 artifact 都有一个 group ID (通常是反转的域名，就像包名)，一个 artifact ID （一个名字）以及一个版本号，<br>这三个组合在一个表示一个 artifact 的坐标：groupId:artifiactId:version</p>
+</blockquote>
+<p>由于 plugins DSL 块只允许通过全局唯一的插件 id 和 version 属性声明插件，因此 Gradle 需要一种方法来查找 插件实现工件 的坐标。<br>为此，Gradle 将使用坐标查找 插件标记工件 plugin.id:plugin.id.gradle.plugin:plugin.version 。<br>此标记需要依赖于实际的插件实现。java-gradle-plugin 会自动发布这些标记。</p>
+<p>例如，下面的完整示例 sample-plugins 演示了如何使用 java-gradle-plugin，maven-publish 插件和 ivy-publish 插件的组合将 org.gradle.sample.hello  插件和 org.gradle.sample.goodbye 插件发布到 Ivy 和 Maven 仓库。</p>
+<p>完整插件发布示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id &apos;java-gradle-plugin&apos;</span><br><span class="line">    id &apos;maven-publish&apos;</span><br><span class="line">    id &apos;ivy-publish&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">group &apos;org.gradle.sample&apos;</span><br><span class="line">version &apos;1.0.0&apos;</span><br><span class="line"></span><br><span class="line">gradlePlugin &#123;</span><br><span class="line">    plugins &#123;</span><br><span class="line">        hello &#123;</span><br><span class="line">            id = &apos;org.gradle.sample.hello&apos;</span><br><span class="line">            implementationClass = &apos;org.gradle.sample.hello.HelloPlugin&apos;</span><br><span class="line">        &#125;</span><br><span class="line">        goodbye &#123;</span><br><span class="line">            id = &apos;org.gradle.sample.goodbye&apos;</span><br><span class="line">            implementationClass = &apos;org.gradle.sample.goodbye.GoodbyePlugin&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">publishing &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &apos;../../consuming/maven-repo&apos;</span><br><span class="line">        &#125;</span><br><span class="line">        ivy &#123;</span><br><span class="line">            url &apos;../../consuming/ivy-repo&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行 gradle publish 将会产生如下结构</p>
+<p><img src="\images\Gradle\pluginMarker.png" alt="publish 结果"></p>
+<p>就像前面提到的 插件标记工件 的坐标和插件 id 的映射关系。</p>
+<p>下面以 hello 插件举例</p>
+<ul>
+<li>id 是 org.gradle.sample.hello</li>
+<li>版本是 1.0.0</li>
+</ul>
+<p>位于 Maven 仓库的 artifact 坐标就是 org.gradle.sample.hello:org.gradle.sample.gradle.plugin:1.0.0</p>
+<ul>
+<li>groupId: org.gradle.sample</li>
+<li>artifactId: org.gradle.sample.gradle.plugin</li>
+<li>version: 1.0.0</li>
+</ul>
+<p>对应的就是上面说到的 plugin.id: plugin.id.gradle.plugin:plugin.version</p>
+<hr>
+<p>如果我描述的不好或者不太详细，可以查看 《Android Gradle 权威指南》 和 Gradle 用户手册。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="佛系编码 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>微信扫一扫，关注我的给公众号</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/pay/wechatpay.png" alt="佛系编码 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/pay/alipay.jpg" alt="佛系编码 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Gradle/" rel="tag"># Gradle</a>
+          
+            <a href="/tags/Plugin/" rel="tag"># Plugin</a>
+          
+            <a href="/tags/Gradle-Plugin/" rel="tag"># Gradle Plugin</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/08/gradle-task/" rel="next" title="Gradle-任务">
+                <i class="fa fa-chevron-left"></i> Gradle-任务
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/user.jpg"
+                alt="佛系编码" />
+            
+              <p class="site-author-name" itemprop="name">佛系编码</p>
+              <p class="site-description motion-element" itemprop="description">写点编码的日常</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">博文</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/skymxc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:skymxc@foxmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#插件的作用"><span class="nav-number">1.</span> <span class="nav-text">插件的作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#插件类型"><span class="nav-number">2.</span> <span class="nav-text">插件类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#脚本插件"><span class="nav-number">2.1.</span> <span class="nav-text">脚本插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二进制插件"><span class="nav-number">2.2.</span> <span class="nav-text">二进制插件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发现插件"><span class="nav-number">3.</span> <span class="nav-text">发现插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用插件"><span class="nav-number">4.</span> <span class="nav-text">使用插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#应用脚本插件"><span class="nav-number">4.1.</span> <span class="nav-text">应用脚本插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用二进制插件"><span class="nav-number">4.2.</span> <span class="nav-text">应用二进制插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-buildscript-应用二进制插件"><span class="nav-number">4.2.1.</span> <span class="nav-text">使用 buildscript{} 应用二进制插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-plugins-DSL-应用二进制插件"><span class="nav-number">4.2.2.</span> <span class="nav-text">使用 plugins DSL 应用二进制插件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#plugins-DSL-的限制"><span class="nav-number">4.2.2.1.</span> <span class="nav-text">plugins DSL 的限制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用插件到子项目"><span class="nav-number">4.2.2.2.</span> <span class="nav-text">应用插件到子项目</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-buildSrc-目录下的插件"><span class="nav-number">4.2.3.</span> <span class="nav-text">使用 buildSrc 目录下的插件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Plugin-Management"><span class="nav-number">4.2.3.1.</span> <span class="nav-text">Plugin Management</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义仓库"><span class="nav-number">4.2.3.2.</span> <span class="nav-text">自定义仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插件版本管理"><span class="nav-number">4.2.3.3.</span> <span class="nav-text">插件版本管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解析规则"><span class="nav-number">4.2.3.4.</span> <span class="nav-text">解析规则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Plugin-Marker-Artifacts-插件标记工件"><span class="nav-number">4.2.4.</span> <span class="nav-text">Plugin Marker Artifacts (插件标记工件)</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">佛系编码</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skymxc.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://blog.skymxc.com/2019/09/15/gradle-plugin/';
+          this.page.identifier = '2019/09/15/gradle-plugin/';
+          this.page.title = 'Gradle 插件';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skymxc.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
