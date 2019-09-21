@@ -4,6 +4,418 @@
   
     
     <entry>
+      <title><![CDATA[Gradle Java 插件]]></title>
+      <url>http://blog.skymxc.com/2019/09/21/Gradle-Java-Plugin/</url>
+      <content type="html"><![CDATA[<p><img src="\images\Gradle\Java-plugin.png" alt="思维导图"></p>
+<p>Java 插件是构建 JVM 项目的基础，它为项目增加了很多能力，例如编译，测试，打包，发布等等。<br>很多插件都是基于 Java 插件实现的，例如 Android 插件。</p>
+<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>使用 id 应用插件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id &apos;java&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Source-sets-源集"><a href="#Source-sets-源集" class="headerlink" title="Source sets 源集"></a>Source sets 源集</h2><p>Java 插件引入了源集的概念，它在逻辑上表示一组用于编译执行的源文件，这些源文件可能包括源代码文件和资源文件。</p>
+<p>一个源集有一个相关联的编译类路径和运行时类路径。</p>
+<p>Java 插件就是通过源集的概念来管理源代码目录的。</p>
+<p>源集的一个用途是，把源文件进行逻辑上的分组，以描述它们的目的。<br>例如，你可能会使用一个源集来定义一个集成测试套件，或者你可能会使用单独的源集来定义你的项目的 API 和实现类。</p>
+<p>Java 插件提供了两个标准源集</p>
+<ul>
+<li>main 包含了项目的源代码，被用于编译和生成 JAR 文件</li>
+<li>test 包含单元测试源代码，它们将被编译并使用 JUnit 或 TestNG 来执行。</li>
+</ul>
+<p>源集提供了很多属性，我这里就列出几个重要的属性：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">属性</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">name - 只读</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">非空</td>
+<td style="text-align:center">源集的名字</td>
+</tr>
+<tr>
+<td style="text-align:center">output - 只读</td>
+<td style="text-align:center"><a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.SourceSetOutput.html" target="_blank" rel="noopener">SourceSetOutput</a></td>
+<td style="text-align:center">非空</td>
+<td style="text-align:center">源集的输出文件，包括它编译过的类和资源。</td>
+</tr>
+<tr>
+<td style="text-align:center">output.classesDirs 只读</td>
+<td style="text-align:center"><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/file/FileCollection.html" target="_blank" rel="noopener">FileCollection</a></td>
+<td style="text-align:center">$buildDir/classes/java/$name <br> <br>例如：build/classes/java/main</td>
+<td style="text-align:center">源集编译过的 class 文件目录</td>
+</tr>
+<tr>
+<td style="text-align:center">output.resourcesDir 只读</td>
+<td style="text-align:center">File</td>
+<td style="text-align:center">$buildDir/resources/$name例如main源集：build/resources/main</td>
+<td style="text-align:center">源集产生的资源目录</td>
+</tr>
+<tr>
+<td style="text-align:center">java - 只读</td>
+<td style="text-align:center"><a href="https://docs.gradle.org/current/dsl/org.gradle.api.file.SourceDirectorySet.html" target="_blank" rel="noopener">SourceDirectorySet</a></td>
+<td style="text-align:center">[${project.projectDir}/src/${sourceSet.name}/java]</td>
+<td style="text-align:center">源集的 Java 源代码 ，只包含 .java 会排除其他类型。</td>
+</tr>
+<tr>
+<td style="text-align:center">java.srcDirs</td>
+<td style="text-align:center">Set<file></file></td>
+<td style="text-align:center">src/$name/java, <br> <br>例如 src/main/java</td>
+<td style="text-align:center">源集的 Java 源文件的源目录。是一个集合，可以设置多个源代码目录，更改源代码目录就是更改这个属性</td>
+</tr>
+<tr>
+<td style="text-align:center">java.outputDir</td>
+<td style="text-align:center">File</td>
+<td style="text-align:center">$buildDir/classes/java/$name,<br> <br> e.g. build/classes/java/main</td>
+<td style="text-align:center">源代码编译的 class 文件输出目录</td>
+</tr>
+<tr>
+<td style="text-align:center">resources  - 只读</td>
+<td style="text-align:center"><a href="https://docs.gradle.org/current/dsl/org.gradle.api.file.SourceDirectorySet.html" target="_blank" rel="noopener">SourceDirectorySet</a></td>
+<td style="text-align:center">[${project.projectDir}/src/${sourceSet.name}/resources]</td>
+<td style="text-align:center">源集的资源，只包含资源。</td>
+</tr>
+<tr>
+<td style="text-align:center">resources.srcDirs</td>
+<td style="text-align:center">Set<file></file></td>
+<td style="text-align:center">[src/$name/resources]</td>
+<td style="text-align:center">源集的资源目录，是一个集合，可以指定多个</td>
+</tr>
+</tbody>
+</table>
+<p>跟多的源集属性可以查看下面的文档</p>
+<p><a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.SourceSet.html" target="_blank" rel="noopener">sourceSets DSL</a></p>
+<p><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/SourceSet.html" target="_blank" rel="noopener">sourceSets API</a></p>
+<h3 id="定义一个新的源集"><a href="#定义一个新的源集" class="headerlink" title="定义一个新的源集"></a>定义一个新的源集</h3><p>源集的位置也很重要，不要在 <code>dependencies</code> 下面，否则对源集的依赖就将不起作用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sourceSets &#123;</span><br><span class="line">    other</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="访问源集"><a href="#访问源集" class="headerlink" title="访问源集"></a>访问源集</h3><p>sourceSets 是 Java 插件为 Project 增加的一个属性，可以直接使用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">task outSourceSet &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        //遍历</span><br><span class="line">        sourceSets.all &#123;</span><br><span class="line">            println &quot;$name -&gt; &quot;</span><br><span class="line">        &#125;</span><br><span class="line">        println &quot;-----分割线----&quot;</span><br><span class="line">        //单个的</span><br><span class="line">        println &quot;$&#123;sourceSets.main.name&#125; -&gt; &quot;</span><br><span class="line">        println &quot;$&#123;sourceSets[&apos;main&apos;].name&#125; -&gt; &quot;</span><br><span class="line"></span><br><span class="line">        //一些属性</span><br><span class="line">        println &quot; java.srcDirs --&gt;$&#123;sourceSets.main.java.srcDirs&#125;&quot;</span><br><span class="line">        println &quot; resource.srcDirs --&gt;$&#123;sourceSets.main.resources.srcDirs&#125;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="为源集添加依赖"><a href="#为源集添加依赖" class="headerlink" title="为源集添加依赖"></a>为源集添加依赖</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    // This dependency is used by the application.</span><br><span class="line">    implementation &apos;com.google.guava:guava:27.1-jre&apos;</span><br><span class="line"></span><br><span class="line">    // Use JUnit test framework</span><br><span class="line">    testImplementation &apos;junit:junit:4.12&apos;</span><br><span class="line">    //为 other 源集添加依赖</span><br><span class="line">    otherImplementation &apos;com.google.code.gson:gson:2.8.5&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="将源集打成一个-JAR-包"><a href="#将源集打成一个-JAR-包" class="headerlink" title="将源集打成一个 JAR 包"></a>将源集打成一个 JAR 包</h3><p>创建一个 otherJar 任务，将源集的输出作为任务的文件来源。</p>
+<p>执行这个任务即可生成 JAR 包。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 为 other 源集打个 jar 包</span><br><span class="line"> * 默认输出目录是 build/libs</span><br><span class="line"> * 默认名字是 [archiveBaseName]-[archiveAppendix]-[archiveVersion]-[archiveClassifier].[archiveExtension]</span><br><span class="line"> */</span><br><span class="line">task otherJar(type:Jar)&#123;</span><br><span class="line">    archiveBaseName = sourceSets.other.name</span><br><span class="line">    archiveVersion = &apos;0.1.0&apos;</span><br><span class="line">    destinationDirectory = file(&quot;$&#123;project.projectDir&#125;/jar&quot;)</span><br><span class="line">    from sourceSets.other.output</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="为源集生成-doc"><a href="#为源集生成-doc" class="headerlink" title="为源集生成 doc"></a>为源集生成 doc</h3><p>创建一个任务将源集的所有 Java 文件作为源文件。</p>
+<p>执行这个任务即可生成 doc 文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">task otherDoc(type:Javadoc)&#123;</span><br><span class="line">    destinationDir = file(&quot;$&#123;project.projectDir&#125;/doc&quot;)</span><br><span class="line">    source sourceSets.other.allJava</span><br><span class="line">    title sourceSets.other.name</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><p>Java 插件的默认目录结构如下所示, 无论这些文件夹中有没有内容, Java 插件都会编译里面的内容, 并处理没有的内容。</p>
+<p>这个目录结构也是 Java 世界标准的项目目录。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">目录</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">src/main/java</td>
+<td style="text-align:left">Java 源文件目录</td>
+</tr>
+<tr>
+<td style="text-align:left">src/main/resources</td>
+<td style="text-align:left">资源文件目录，例如 xml 和 properties 文件</td>
+</tr>
+<tr>
+<td style="text-align:left">src/test/java</td>
+<td style="text-align:left">Java 测试源文件目录</td>
+</tr>
+<tr>
+<td style="text-align:left">src/test/resources</td>
+<td style="text-align:left">测试资源目录</td>
+</tr>
+<tr>
+<td style="text-align:left">src/<strong><em>sourceSet</em></strong>/java</td>
+<td style="text-align:left">给定源集的源代码目录</td>
+</tr>
+<tr>
+<td style="text-align:left">src/<strong><em>sourceSet</em></strong>/resources</td>
+<td style="text-align:left">给定源集的资源目录</td>
+</tr>
+</tbody>
+</table>
+<h3 id="更改默认目录"><a href="#更改默认目录" class="headerlink" title="更改默认目录"></a>更改默认目录</h3><p>这里以更改 main 源集的源代码和资源目录为例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sourceSets &#123;</span><br><span class="line">    main &#123;</span><br><span class="line">        java &#123;</span><br><span class="line">            srcDirs = [&apos;src/java&apos;]</span><br><span class="line">        &#125;</span><br><span class="line">        resources &#123;</span><br><span class="line">            srcDirs = [&apos;src/resources&apos;]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="增加的任务"><a href="#增加的任务" class="headerlink" title="增加的任务"></a>增加的任务</h2><p>Java 插件为 Project 增加了很多实用的任务，如下：</p>
+<ul>
+<li><p>compileJava 类型是 <a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.compile.JavaCompile.html" target="_blank" rel="noopener">JavaCompile</a></p>
+<p>  依赖于：所有参与编译类路径的任务，包括 jar 任务和通过项目依赖性在类路径上的项目中的任务。</p>
+<p>  功能：使用 JDK 编译器编译生产 Java 源文件。</p>
+</li>
+<li><p>processResources <a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.Copy.html" target="_blank" rel="noopener">Copy</a></p>
+<p>  功能：复制生产资源到资源目录</p>
+</li>
+<li><p>classes</p>
+<p>  依赖：compileJava , processResources</p>
+<p>  这是个整合的任务，只是依赖于其他任务。其他插件可能会附加别的编译任务到这里。</p>
+</li>
+<li><p>compileTestJava <a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.compile.JavaCompile.html" target="_blank" rel="noopener">JavaCompile</a></p>
+<p>  依赖：classes, 以及有助于测试编译类路径的所有任务</p>
+<p>  功能：使用 JDK 编译器编译测试 Java 源代码和资源文件</p>
+</li>
+<li><p>processTestResources <a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.Copy.html" target="_blank" rel="noopener">Copy</a></p>
+<p>  功能：复制测试资源到测试资源目录</p>
+</li>
+<li><p>testClasses</p>
+<p>  依赖：compileTestJava , processTestResources</p>
+<p>  这是个整合任务，只是依赖其他任务。其他扩展插件可能会将测试编译任务附加到这里。</p>
+</li>
+<li><p>jar <a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.bundling.Jar.html" target="_blank" rel="noopener">Jar</a></p>
+<p>  依赖：classes</p>
+<p>  功能：根据主源集的类和资源，组装生产 JAR 文件。</p>
+</li>
+<li><p>javadoc <a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.javadoc.Javadoc.html" target="_blank" rel="noopener">JavaDoc</a></p>
+<p>  依赖：classes</p>
+<p>  功能：生成 API 文档。</p>
+</li>
+<li><p>test <a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.Test.html" target="_blank" rel="noopener">Test</a></p>
+<p>  依赖：testClasses 以及生成测试运行时类路径的所有任务</p>
+<p>  功能：使用 JUnit 或者 TestNG 运行单元测试</p>
+</li>
+<li><p>uploadArchives <a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.Upload.html" target="_blank" rel="noopener">Upload</a></p>
+<p>  依赖：jar 以及生辰附加在 archives{} 配置里的构件的任何其他任务。</p>
+<p>  功能：上传 archives{} 配置里的构件包含生成的 JAR 文件到配置的仓库。</p>
+</li>
+<li><p>clean <a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.Delete.html" target="_blank" rel="noopener">Delete</a></p>
+<p>  功能：删除项目构建目录</p>
+</li>
+<li><p>clean[TaskName] <a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.Delete.html" target="_blank" rel="noopener">Delete</a></p>
+<p>  功能：删除由指定任务生成的文件。例如 cleanJar 将删除由 jar 任务产生的文件。</p>
+</li>
+</ul>
+<h3 id="源集任务"><a href="#源集任务" class="headerlink" title="源集任务"></a>源集任务</h3><p>你增加的每一个源集，Java 插件都会为它增加下面列出的任务：</p>
+<ul>
+<li><p>compile<strong><em>sourceSet</em></strong>Java  <a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.compile.JavaCompile.html" target="_blank" rel="noopener">JavaCompile</a></p>
+<p>  依赖：所有有助于源集编译类路径的任务。</p>
+<p>  功能：使用 JDK 编译器编译给定源集的 Java 源文件</p>
+</li>
+<li><p>process<strong><em>sourceSet</em></strong>Resources <a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.Copy.html" target="_blank" rel="noopener">Copy</a></p>
+<p>  功能：复制给定源集的资源到资源目录</p>
+</li>
+<li><p><strong><em>sourceSet</em></strong>Classes <a href="https://docs.gradle.org/current/dsl/org.gradle.api.Task.html" target="_blank" rel="noopener">Task</a></p>
+<p>  依赖：compile<strong><em>sourceSet</em></strong>Java , process<strong><em>sourceSet</em></strong>Resources</p>
+<p>  功能：准备给定的源集的类和资源以进行打包和执行。一些扩展插件可能会为给定源集附加编译任务到这里</p>
+</li>
+</ul>
+<h3 id="生命周期任务"><a href="#生命周期任务" class="headerlink" title="生命周期任务"></a>生命周期任务</h3><p>Java 插件将它的一些任务附加到基础插件(Java插件自动应用)定义的生命周期任务上。</p>
+<p>它还添加了一些其他的生命周期任务:</p>
+<ul>
+<li><p>assemble</p>
+<p>  依赖：jar, 以及创建附加到归档配置的工件的所有其他任务。</p>
+<p>  汇总项目中所有归档的聚合任务。 这个任务是基础插件（Base）里定义的。</p>
+</li>
+<li><p>check</p>
+<p>  依赖：test</p>
+<p>  汇总项目中的验证任务，例如运行测试。一些插件会增加自己的验证任务到这里。这个任务是基础插件（Base) 里定义的。</p>
+</li>
+<li><p>build</p>
+<p>  依赖：check, assemble</p>
+<p>  聚合执行项目完整构建的任务。这个任务是基础插件（Base) 里定义的。</p>
+</li>
+<li><p>buildNeeded</p>
+<p>  依赖：build ,以及在testRuntimeClasspath配置中依赖的所有项目中的buildNeeded任务。</p>
+<p>  执行项目本身及其依赖的所有项目的完整构建。</p>
+</li>
+<li><p>buildDependents</p>
+<p>  依赖：build, 以及在 testRuntimeClasspath 配置中依赖此项目的所有项目的 buildDependents 任务</p>
+<p>  执行项目本身以及依赖于它的所有项目的完整构建。</p>
+</li>
+<li><p>build<strong><em>ConfigName</em></strong> -任务规则</p>
+<p>  依赖：生成附加到命名- ConfigName -配置的工件的所有任务</p>
+<p>  为指定的配置组装工件。这个规则是在基础插件增加的。</p>
+</li>
+<li><p>upload<strong><em>ConfigName</em></strong> -任务规则，类型：<a href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.Upload.html" target="_blank" rel="noopener">Upload</a></p>
+<p>  依赖：生成附加到命名- ConfigName -配置的工件的所有任务</p>
+<p>  在指定的配置里组装和上传构件。这个规则是在基础插件增加的。</p>
+</li>
+</ul>
+<p>下面的图展示了这些任务的关系</p>
+<p><img src="\images\Gradle\javaPluginTasks.png" alt="Java插件任务图"></p>
+<h2 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h2><p>Java 插件增加了很多依赖配置到项目中，JavaCompile 和 test 任务就可以使用这些配置将依赖文件添加到类路径并使用他们。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">依赖配置</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><del>compile</del></td>
+<td style="text-align:left">编译时依赖，被 implementation 取代</td>
+</tr>
+<tr>
+<td style="text-align:left">implementation 继承自compile</td>
+<td style="text-align:left">仅实现依赖性。</td>
+</tr>
+<tr>
+<td style="text-align:left">compileOnly</td>
+<td style="text-align:left">仅仅编译时依赖 运行时不能用</td>
+</tr>
+<tr>
+<td style="text-align:left">compileClasspath 继承自 compile,compileOnly,implemenation</td>
+<td style="text-align:left">当编译源代码时使用的编译类路径，被 compileJava 任务使用</td>
+</tr>
+<tr>
+<td style="text-align:left">annotationProcessor</td>
+<td style="text-align:left">编译时使用的注解处理器</td>
+</tr>
+<tr>
+<td style="text-align:left"><del>runtime</del> 继承自 compile</td>
+<td style="text-align:left">运行时依赖，由 runtimeOnly 取代</td>
+</tr>
+<tr>
+<td style="text-align:left">runtimeOnly</td>
+<td style="text-align:left">仅运行时依赖，编译时不能用</td>
+</tr>
+<tr>
+<td style="text-align:left">runtimeClasspath 继承自 runtimeOnly,runtime,implementation</td>
+<td style="text-align:left">运行时类路径包含 implementation 和仅运行时的元素</td>
+</tr>
+<tr>
+<td style="text-align:left"><del>testCompile</del> 继承自 compile</td>
+<td style="text-align:left">测试编译的依赖项，被 testImplementation 取代</td>
+</tr>
+<tr>
+<td style="text-align:left">testImplementation 继承自 testCompile,implemenation</td>
+<td style="text-align:left">仅实现测试依赖</td>
+</tr>
+<tr>
+<td style="text-align:left">testCompileOnly</td>
+<td style="text-align:left">编译时测试依赖，仅仅只在编译时</td>
+</tr>
+<tr>
+<td style="text-align:left">testCompileClasspath 继承自 testCompile ,testCompileOnly ,testImplementation</td>
+<td style="text-align:left">测试编译类路径，当编译测试代码的时由 compileTestJava 任务使用</td>
+</tr>
+<tr>
+<td style="text-align:left"><del>testRuntime</del> 继承自 runtime,testCompile</td>
+<td style="text-align:left">测试运行时依赖，由 testRuntimeOnly 取代</td>
+</tr>
+<tr>
+<td style="text-align:left">testRuntimeOnly 继承自 runtimeOnly</td>
+<td style="text-align:left">测试的运行时依赖</td>
+</tr>
+<tr>
+<td style="text-align:left">testRuntimeClasspath 继承自 testRuntimeOnly,testRuntime,testImplementation</td>
+<td style="text-align:left">运行测试的运行时类路径，由 test 任务使用</td>
+</tr>
+<tr>
+<td style="text-align:left">archives</td>
+<td style="text-align:left">项目产生的构件（例如 jar)，由 uploadArchives 使用</td>
+</tr>
+</tbody>
+</table>
+<p>下面两张图是 main 和 test 源集的配置依赖关系</p>
+<ul>
+<li>灰色字体：已废弃的</li>
+<li>黑色字体绿色背景：可以根据配置声明依赖项。</li>
+<li>灰蓝背景： 该配置用于被任务使用，而不是用于声明依赖项。</li>
+<li>浅蓝色背景：任务</li>
+</ul>
+<p><img src="\images\Gradle\java-main-configurations.png" alt="main"></p>
+<p><img src="\images\Gradle\java-test-configurations.png" alt="test"></p>
+<p>除了以上的配置，Java 插件为了每个源集还添加了以下配置，这些配置只针对给定源集</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">依赖配置</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><del><strong><em>sourceSet</em></strong>Compile</del> 已废弃</td>
+<td style="text-align:left">给定源集的编译时依赖，由 <strong><em>sourceSet</em></strong>Implementation 取代</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><em>sourceSet</em></strong>Implementation extend <strong><em>sourceSet</em></strong>Compile</td>
+<td style="text-align:left">实现给定源集的依赖性。由 <strong><em>sourceSet</em></strong>CompileClasspath, <strong><em>sourceSet</em></strong>RuntimeClasspath 使用。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><em>sourceSet</em></strong>CompileOnly</td>
+<td style="text-align:left">给定源集的编译时依赖，只能在编译时使用。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><em>sourceSet</em></strong>CompileClasspath extend compile<strong><em>sourceSet</em></strong>Java</td>
+<td style="text-align:left">当编译源代码时的编译类路径，被 <strong><em>sourceSet</em></strong>Compile,<strong><em>sourceSet</em></strong>CompileOnly,<strong><em>sourceSet</em></strong>Implementation 使用。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><em>sourceSet</em></strong>AnnotationProcessor</td>
+<td style="text-align:left">给定源集在编译时使用的注解处理器</td>
+</tr>
+<tr>
+<td style="text-align:left"><del><strong><em>sourceSet</em></strong>Runtime</del> 已废弃</td>
+<td style="text-align:left">给定源集的运行时依赖，由 <strong><em>sourceSet</em></strong>RuntimeOnly 取代</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><em>sourceSet</em></strong>RuntimeOnly</td>
+<td style="text-align:left">给定源集的运行时依赖，仅仅是运行时的</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><em>sourceSet</em></strong>RuntimeClasspath extends <strong><em>sourceSet</em></strong>RuntimeOnly ,<strong><em>sourceSet</em></strong>Runtime,<strong><em>sourceSet</em></strong>Implementation</td>
+<td style="text-align:left">给定源集的运行时类路径，包含 implement 和 runtime 的元素。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="增加的属性"><a href="#增加的属性" class="headerlink" title="增加的属性"></a>增加的属性</h2><p>Java 插件为项目增加了很多新的属性，可以在脚本中直接使用这些属性。</p>
+<p>下面是一些我认为比较重要的属性：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">属性</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">默认值</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">sourceSets 只读</td>
+<td style="text-align:left"><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/SourceSetContainer.html" target="_blank" rel="noopener">SourceSetContainer</a></td>
+<td style="text-align:left">非空</td>
+<td style="text-align:left">包含项目的源集</td>
+</tr>
+<tr>
+<td style="text-align:left">sourceCompatibility</td>
+<td style="text-align:left"><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/JavaVersion.html" target="_blank" rel="noopener">JavaVersion</a></td>
+<td style="text-align:left">当前 JVM 的版本</td>
+<td style="text-align:left">编译 Java 源代码时使用的 Java 版本，可以是一个 数值或者字符串，例如 ‘1.8’ 或者 1.8</td>
+</tr>
+<tr>
+<td style="text-align:left">targetCompatibility</td>
+<td style="text-align:left"><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/JavaVersion.html" target="_blank" rel="noopener">JavaVersion</a></td>
+<td style="text-align:left">sourceCompatibility</td>
+<td style="text-align:left">生成 class 文件的版本，可以是一个 数值或者字符串，例如 ‘1.8’ 或者 1.8</td>
+</tr>
+<tr>
+<td style="text-align:left">archivesBaseName</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left">归档的文件使用的名字，例如 JAR 和 ZIP 文件</td>
+</tr>
+<tr>
+<td style="text-align:left">manifest</td>
+<td style="text-align:left"><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/java/archives/Manifest.html" target="_blank" rel="noopener">Manifest</a></td>
+<td style="text-align:left">一个空的清单</td>
+<td style="text-align:left">包含所有 JAR 文件的清单。</td>
+</tr>
+<tr>
+<td style="text-align:left">libsDirName</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left">libs</td>
+<td style="text-align:left">项目生成的库的存放目录，项目的相对路径。</td>
+</tr>
+</tbody>
+</table>
+<p>更多的属性可以查看文档 <a href="https://docs.gradle.org/current/userguide/java_plugin.html#convention_properties" target="_blank" rel="noopener">Convention properties </a></p>
+<h2 id="学习资料："><a href="#学习资料：" class="headerlink" title="学习资料："></a>学习资料：</h2><ul>
+<li><a href="https://wiki.jikexueyuan.com/project/gradle/java-package.html" target="_blank" rel="noopener">https://wiki.jikexueyuan.com/project/gradle/java-package.html</a></li>
+<li><a href="http://benweizhu.github.io/blog/2015/01/31/deep-into-gradle-in-action-2/" target="_blank" rel="noopener">http://benweizhu.github.io/blog/2015/01/31/deep-into-gradle-in-action-2/</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/java_plugin.html" target="_blank" rel="noopener">https://docs.gradle.org/current/userguide/java_plugin.html</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/building_java_projects.html" target="_blank" rel="noopener">https://docs.gradle.org/current/userguide/building_java_projects.html</a></li>
+</ul>
+<hr>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Gradle 插件]]></title>
       <url>http://blog.skymxc.com/2019/09/15/gradle-plugin/</url>
       <content type="html"><![CDATA[<p><img src="\images\Gradle\gradle-plugin.png" alt="思维导图"><br>Gradle 本身只提供基本框架和核心概念，几乎所有的功能都是以插件的方式提供的。</p>
