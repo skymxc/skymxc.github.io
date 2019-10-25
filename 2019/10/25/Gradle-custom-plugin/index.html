@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Gradle,Gradle 自定义插件," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="插件被用来封装构建逻辑和一些通用配置。将可重复使用的构建逻辑和默认约定封装到插件里，以便于其他项目使用。你可以使用你喜欢的语言开发插件，但是最终是要编译成字节码在 JVM 运行的。Gradle 有两种插件，脚本插件和二进制插件。">
+<meta name="keywords" content="Gradle,Gradle 自定义插件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradle 自定义插件">
+<meta property="og:url" content="http://blog.skymxc.com/2019/10/25/Gradle-custom-plugin/index.html">
+<meta property="og:site_name" content="佛系编码">
+<meta property="og:description" content="插件被用来封装构建逻辑和一些通用配置。将可重复使用的构建逻辑和默认约定封装到插件里，以便于其他项目使用。你可以使用你喜欢的语言开发插件，但是最终是要编译成字节码在 JVM 运行的。Gradle 有两种插件，脚本插件和二进制插件。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/custom-plugin-思维导图.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/custom-plugin-添加后的任务窗口.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/custom-plugin-buildsrc目录.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/custom-plugin-创建Groovy工程-1.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/custom-plugin-创建Groovy工程-2.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/custom-plugin-创建Groovy工程-3.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/custom-plugin-创建Groovy工程-4.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/custom-plugin-执行发布任务.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/custom-plugin-发布成功后的仓库.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/custom-plugin-应用插件后的任务-2.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/custom-plugin-为每个插件生成的任务.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/custom-plugin-发布了插件标记工件后的仓库-1.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/custom-plugin-发布插件标记工件后的仓库-2.png">
+<meta property="og:updated_time" content="2019-10-25T14:48:53.663Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gradle 自定义插件">
+<meta name="twitter:description" content="插件被用来封装构建逻辑和一些通用配置。将可重复使用的构建逻辑和默认约定封装到插件里，以便于其他项目使用。你可以使用你喜欢的语言开发插件，但是最终是要编译成字节码在 JVM 运行的。Gradle 有两种插件，脚本插件和二进制插件。">
+<meta name="twitter:image" content="http://blog.skymxc.com/images/Gradle/custom-plugin-思维导图.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'sky-mxc'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.skymxc.com/2019/10/25/Gradle-custom-plugin/"/>
+
+
+
+
+
+  <title>Gradle 自定义插件 | 佛系编码</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db8042d9d7c31f7cbbc5ecedd326a573";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">佛系编码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">好记性不如烂笔头</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.skymxc.com/2019/10/25/Gradle-custom-plugin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="佛系编码">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="佛系编码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Gradle 自定义插件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-25T22:13:48+08:00">
+                2019-10-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gradle/" itemprop="url" rel="index">
+                    <span itemprop="name">Gradle</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gradle/Plugin/" itemprop="url" rel="index">
+                    <span itemprop="name">Plugin</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/10/25/Gradle-custom-plugin/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/10/25/Gradle-custom-plugin/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  插件被用来封装构建逻辑和一些通用配置。将可重复使用的构建逻辑和默认约定封装到插件里，以便于其他项目使用。你可以使用你喜欢的语言开发插件，但是最终是要编译成字节码在 JVM 运行的。Gradle 有两种插件，脚本插件和二进制插件。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="\images\Gradle\custom-plugin-思维导图.png" alt="思维导图"></p>
+<blockquote>
+<p>使用版本 5.6.2</p>
+</blockquote>
+<p>插件被用来封装构建逻辑和一些通用配置。将可重复使用的构建逻辑和默认约定封装到插件里，以便于其他项目使用。</p>
+<p>你可以使用你喜欢的语言开发插件，但是最终是要编译成字节码在 JVM 运行的。</p>
+<p>Gradle 有两种插件，脚本插件和二进制插件。</p>
+<p>关于插件的介绍，可以参考我的另一篇文章 <a href="https://blog.skymxc.com/2019/09/15/gradle-plugin">Gradle 插件</a></p>
+<p>这里讲的自定义插件是二进制插件，二进制插件可以打包发布，有利于分享。</p>
+<h2 id="可以在三个地方定义插件"><a href="#可以在三个地方定义插件" class="headerlink" title="可以在三个地方定义插件"></a>可以在三个地方定义插件</h2><ul>
+<li>在脚本里</li>
+<li>在 buildSrc 下</li>
+<li>在单独的项目里</li>
+</ul>
+<p>三个地方的插件的用途目的不同。</p>
+<h3 id="在脚本里的插件"><a href="#在脚本里的插件" class="headerlink" title="在脚本里的插件"></a>在脚本里的插件</h3><p>其他项目无法使用，只能在本脚本里使用。</p>
+<h3 id="在-buildSrc-下"><a href="#在-buildSrc-下" class="headerlink" title="在 buildSrc 下"></a>在 buildSrc 下</h3><p>在项目的 buildSrc 目录下的插件，这个项目里的所有（子）项目都可以使用。</p>
+<h3 id="在单独的项目里"><a href="#在单独的项目里" class="headerlink" title="在单独的项目里"></a>在单独的项目里</h3><p>你可以为你的插件创建一个项目，这个项目可以打包发布 JAR，提供给其他任何项目使用。</p>
+<h2 id="创建一个插件"><a href="#创建一个插件" class="headerlink" title="创建一个插件"></a>创建一个插件</h2><p>建议使用静态语言，例如 Java ，Kotlin，开发工具建议使用 IntelliJ IDEA 。</p>
+<p>一个插件就是个实现了 Plugin<t> 的类。</t></p>
+<p>当插件被应用到项目时，Gradle 会实例化这个插件并调用 Plugin.apply() 方法，并将这个项目的实例当做参数传递进去。插件就可以对这个项目进行各种配置了。</p>
+<p>CustomPLugin.java<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个插件</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomPLugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt;&#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">void</span> apply(Project target) &#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>前面说到可以在三个地方创建插件，现在来一一实现下。</p>
+<h2 id="在脚本里创建一个插件"><a href="#在脚本里创建一个插件" class="headerlink" title="在脚本里创建一个插件"></a>在脚本里创建一个插件</h2><p>可以在 build.gradle 脚本里任意地方定义。</p>
+<p>build.gradle</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个插件</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomPLugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt;&#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">void</span> apply(Project target) &#123;</span><br><span class="line">      <span class="comment">//添加一个任务</span></span><br><span class="line">     target.task(<span class="string">'hello'</span>, <span class="string">group:</span> <span class="string">'util'</span>) &#123;</span><br><span class="line">         doLast &#123;</span><br><span class="line">             logger.quiet(<span class="string">"Hello Plugin."</span>)</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//直接在脚本里应用</span></span><br><span class="line">apply <span class="string">plugin:</span>CustomPLugin</span><br></pre></td></tr></table></figure>
+<p>在 gradle 窗口就可以看到应用插件后的添加的任务<br><img src="\images\Gradle\custom-plugin-添加后的任务窗口.png" alt="添加的任务"></p>
+<p>双击任务或者命令行输入都可以执行 hello 任务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle hello</span><br></pre></td></tr></table></figure>
+<h2 id="在项目的-buildSrc-目录下创建项目"><a href="#在项目的-buildSrc-目录下创建项目" class="headerlink" title="在项目的 buildSrc 目录下创建项目"></a>在项目的 buildSrc 目录下创建项目</h2><p>这里使用的是 Groovy 。</p>
+<p>在这个目录下创建项目会被 Gradle 自动识别的。</p>
+<p>结构如下</p>
+<p><img src="\images\Gradle\custom-plugin-buildsrc目录.png" alt="buildSrc 目录结构"></p>
+<ol>
+<li>在项目根目录下创建目录 buildSrc</li>
+<li>在 buildSrc 下按照 java 工程或者 groovy 工程（这取决于你用什么语言）新建目录</li>
+</ol>
+<p>$projectDir/buildSrc/src/main/groovy</p>
+<ol>
+<li>在 groovy 创建你的包 （可能现在还不能被识别为项目，那就创建目录），例如 com.github.skymxc</li>
+<li>在包里创建插件，也就是创建一个实现了 Plugin 的类。</li>
+</ol>
+<p>这里做简单的示范：</p>
+<p>在插件里为 jar 任务添加一个操作：生成记录文件</p>
+<p>JarLogPlugin.groovy</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 输出 生成记录到指定文件</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">JarLogPlugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; &#123;</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">void</span> apply(Project target) &#123;</span><br><span class="line">        <span class="comment">//增加一个扩展配置用来接收参数</span></span><br><span class="line">        target.extensions.create(<span class="string">"log"</span>, LogExtension)</span><br><span class="line"></span><br><span class="line">        <span class="comment">//添加一个任务</span></span><br><span class="line">        target.task(<span class="string">type:</span> Jar,<span class="string">group:</span><span class="string">'util'</span>,<span class="string">'jarWithLog'</span>,&#123;</span><br><span class="line">            doLast &#123;</span><br><span class="line">                <span class="comment">//使用配置</span></span><br><span class="line">                <span class="keyword">def</span> file = target.log.outputPath;</span><br><span class="line">                <span class="keyword">if</span> (file==<span class="literal">null</span>)&#123;</span><br><span class="line">                    file = <span class="keyword">new</span> File(target.projectDir,<span class="string">"/log/jarlog.txt"</span>).getPath()</span><br><span class="line">                &#125;</span><br><span class="line">                println <span class="string">"存储目录是 $&#123;file&#125;"</span></span><br><span class="line">                <span class="keyword">def</span> content = <span class="string">"$&#123;getArchiveFileName().get()&#125;---$&#123;getNow()&#125;\n"</span></span><br><span class="line">                writeFile(file,content)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">        <span class="comment">//为 jar 任务添加一个 操作，</span></span><br><span class="line">        target.tasks.jar.doLast &#123;</span><br><span class="line">            println <span class="string">"当前时间是 $&#123;getNow()&#125;,打了一个 jar-&gt; $&#123;version&#125;"</span></span><br><span class="line">            <span class="comment">//存到指定文件记录</span></span><br><span class="line">            <span class="keyword">def</span> file = <span class="keyword">new</span> File(target.projectDir,<span class="string">"/log/jarlog.txt"</span>);</span><br><span class="line">            <span class="keyword">def</span> content = <span class="string">"$&#123;version&#125;---$&#123;getNow()&#125;\n"</span></span><br><span class="line">            writeFile(file.getAbsolutePath(),content)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> String getNow()&#123;</span><br><span class="line">        <span class="keyword">def</span> dateFormat = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"YYYY-MM-dd HH:mm:ss.SSS"</span>);</span><br><span class="line">        <span class="keyword">return</span> dateFormat.format(Calendar.getInstance().getTime());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="keyword">void</span> writeFile(String path,String content)&#123;</span><br><span class="line">        <span class="keyword">def</span> file = <span class="keyword">new</span> File(path);</span><br><span class="line">        <span class="keyword">if</span> (!file.exists())&#123;</span><br><span class="line">            <span class="keyword">if</span> (!file.getParentFile().exists())&#123;</span><br><span class="line">                file.getParentFile().mkdirs();</span><br><span class="line">            &#125;</span><br><span class="line">            file.createNewFile();</span><br><span class="line">        &#125;</span><br><span class="line">        FileWriter writer = <span class="keyword">new</span> FileWriter(file.getAbsolutePath(),<span class="literal">true</span>);</span><br><span class="line">        BufferedWriter bufferedWriter = <span class="keyword">new</span> BufferedWriter(writer);</span><br><span class="line">        bufferedWriter.write(content);</span><br><span class="line">        bufferedWriter.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="配置-DSL"><a href="#配置-DSL" class="headerlink" title="配置 DSL"></a>配置 DSL</h3><p>上面使用了一个扩展来接收参数, 普通的对象就可以，例如</p>
+<p>LogExtension.groovy</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LogExtension</span> &#123;</span></span><br><span class="line">    String outputPath;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>扩展在这里就是用来为插件配置 DSL 用的。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//为 项目添加了一个 LogExtension 类型的属性 名字是 log</span></span><br><span class="line">project.extensions.create(<span class="string">"log"</span>, LogExtension)</span><br></pre></td></tr></table></figure>
+<p>插件可以使用 DSL 接收参数，在插件或者任务里直接通过 Project 实例访问即可。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> file = project.log.outputPath;</span><br></pre></td></tr></table></figure>
+<p>插件创建完成后，在项目的里就可以使用了。</p>
+<p>现在可以使用类名应用插件了。</p>
+<p>build.gradle</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.github.skymxc.JarLogPlugin</span><br><span class="line"></span><br><span class="line">apply <span class="string">plugin:</span> JarLogPlugin</span><br></pre></td></tr></table></figure>
+<p>插件应用成功后就可以使用 DSL 为插件配置参数。</p>
+<p>配置记录文件地址：</p>
+<p>build.gradle</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">log &#123;</span><br><span class="line">    outputPath rootProject.projectDir.getPath()+&quot;\\record\\jar.txt&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="为插件创建-ID"><a href="#为插件创建-ID" class="headerlink" title="为插件创建 ID"></a>为插件创建 ID</h3><ol>
+<li>在 main 目录下创建 resources 文件夹</li>
+<li>在 resources 目录下创建 META-INF 文件夹</li>
+<li>在 META-INF 目录下创建 gradle-plugins 文件夹</li>
+<li>在 gradle-plugins 目录下创建 properties 文件，名字就是你的插件 ID。</li>
+<li>在 id.properties 文件里通过  implementation-class 指向你的实现类。</li>
+</ol>
+<p>例如</p>
+<p><em>src / main / resources / META-INF / gradle-plugins / com.github.skymxc.sample.properties</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation-class= com.github.skymxc.JarLogPlugin</span><br></pre></td></tr></table></figure>
+<p>然后就可以使用插件 ID 了</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id <span class="string">'com.github.skymxc.sample'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于插件 id 的规范：</p>
+<ul>
+<li>可以包含任何字母数字字符 “ . ”和 “ - ”。</li>
+<li>必须至少包含一个 “ . ” 。</li>
+<li>一般使用小写的反向域名。（类似包名）</li>
+<li>不能以 “ . ” 结尾。</li>
+<li>不能包含连续的 “ . ” 。</li>
+</ul>
+<p>关于 Groovy 的语法，可以参考 <a href="https://blog.skymxc.com/2019/08/18/groovy-basic/">Groovy 语法</a>。</p>
+<h2 id="在单独的项目里创建插件"><a href="#在单独的项目里创建插件" class="headerlink" title="在单独的项目里创建插件"></a>在单独的项目里创建插件</h2><p>这次仍然是使用 Groovy 语言。</p>
+<p>这里的插件项目其实就是一个 Groovy 项目，当然了你如果使用 Java 语言就是一个 Java 工程。</p>
+<p>创建一个工程<br><img src="\images\Gradle\custom-plugin-创建Groovy工程-1.png" alt="创建Groovy工程"><br><img src="\images\Gradle\custom-plugin-创建Groovy工程-2.png" alt="创建Groovy工程"></p>
+<p>创建出来的项目就是这样子，标准的 Groovy 工程目录</p>
+<p><img src="\images\Gradle\custom-plugin-创建Groovy工程-3.png" alt="创建Groovy工程"></p>
+<p>更改 build.gradle 脚本，配置项目</p>
+<ol>
+<li>应用 maven-publih 插件</li>
+<li>添加 Gradle 和 Groovy 的依赖</li>
+<li>配置上传任务</li>
+</ol>
+<p>最后就是这样子</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id <span class="string">'groovy'</span></span><br><span class="line">    id <span class="string">'maven-publish'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">group <span class="string">'com.github.skymxc'</span></span><br><span class="line">version <span class="string">'1.0.0'</span></span><br><span class="line"></span><br><span class="line">sourceCompatibility = <span class="number">1.8</span></span><br><span class="line"></span><br><span class="line">repositories &#123;</span><br><span class="line">    mavenCentral()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用 groovy 和 gradle 依赖</span></span><br><span class="line">dependencies &#123;</span><br><span class="line">    compile gradleApi()</span><br><span class="line">    compile localGroovy()</span><br><span class="line">&#125;</span><br><span class="line">publishing &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            name <span class="string">'local'</span></span><br><span class="line">            url <span class="string">'file://E:/libs/localMaven'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    publications &#123;</span><br><span class="line">        maven(MavenPublication) &#123;</span><br><span class="line">            groupId = <span class="string">'com.github.skymxc'</span></span><br><span class="line">            artifactId = <span class="string">'plugin'</span></span><br><span class="line">            version = <span class="string">'1.0.0'</span></span><br><span class="line">            from components.java</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建两个插件：</p>
+<p>一个是上面创建的那个，就不重复粘贴了。</p>
+<p>另一个插件 Greet，配置一个任务，简单的输出一句话。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Greet</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; &#123;</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">void</span> apply(Project target) &#123;</span><br><span class="line">        target.extensions.create(<span class="string">"hello"</span>, Hello)</span><br><span class="line">        target.task(<span class="string">"hello"</span>) &#123;</span><br><span class="line">            doLast &#123;</span><br><span class="line">                println <span class="string">"message -&gt; $&#123;target.hello.message&#125;"</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Hello.groovy<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span> &#123;</span></span><br><span class="line">    String message</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>插件 ID 的配置是跟上面一样的。</p>
+<p><img src="\images\Gradle\custom-plugin-创建Groovy工程-4.png" alt="目录结构图"></p>
+<p>执行 maven-publish 的 publish 任务，将插件发布到指定仓库。</p>
+<p><img src="\images\Gradle\custom-plugin-执行发布任务.png" alt="gradlew -p plugin publish"></p>
+<p>发布成功后的仓库</p>
+<p><img src="\images\Gradle\custom-plugin-发布成功后的仓库.png" alt="发布成功的图片"></p>
+<p>插件创建完成了，也发布了，下面就是使用这个插件了。</p>
+<p>这里对插件的使用就简单介绍一下，详细的可以查看之前的这篇介绍：<a href="https://blog.skymxc.com/2019/09/15/gradle-plugin">Gradle 插件</a></p>
+<ol>
+<li>在根项目的 build.gradle 配置仓库，添加依赖</li>
+</ol>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url <span class="string">'file://E:/libs/localMaven'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath <span class="string">'com.github.skymxc:plugin:1.0.2'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>应用插件</li>
+</ol>
+<p>我分别在两个 Java 项目里使用了插件:</p>
+<ul>
+<li>一个是使用 id 的方式</li>
+<li>一个是使用类名的方式</li>
+</ul>
+<p>lib_2/ build.gradle 使用 类名的方式</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">······</span><br><span class="line"></span><br><span class="line">apply <span class="string">plugin:</span><span class="string">'com.github.skymxc.greet'</span></span><br><span class="line"></span><br><span class="line">hello&#123;</span><br><span class="line">    message <span class="string">'使用了 com.github.skymxc.greet 插件'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">······</span><br></pre></td></tr></table></figure>
+<p>lib_1/ build.gradle 使用 id 的方式</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id <span class="string">'java'</span></span><br><span class="line">    id <span class="string">'com.github.skymxc.jarlog'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">······</span><br><span class="line"></span><br><span class="line">logConfigure &#123;</span><br><span class="line">    outputPath rootProject.projectDir.getPath()+<span class="string">"\\record\\jar.txt"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>应用插件后的 gradle 视图，可以看到已经添加的任务。</p>
+<p><img src="\images\Gradle\custom-plugin-应用插件后的任务-2.png" alt="gradle 视图-任务"></p>
+<h2 id="使用-java-gradle-plugin-开发插件"><a href="#使用-java-gradle-plugin-开发插件" class="headerlink" title="使用 java-gradle-plugin 开发插件"></a>使用 java-gradle-plugin 开发插件</h2><p>像上面一样创建一个项目，不过这次是一个 java 项目，然后应用这个插件。</p>
+<p>java-gradle-plugin 可以减少重复代码，它自动的应用 java 插件，添加 gradleApi() 依赖。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id <span class="string">'java-gradle-plugin'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用 gradlePlugin {} 配置块可以配置开发的每一个插件，不用手动创建对应的属性文件了。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">gradlePlugin &#123;</span><br><span class="line">    plugins &#123;</span><br><span class="line">        greetPlugin &#123;</span><br><span class="line">            id = <span class="string">'com.github.skymxc.greet'</span></span><br><span class="line">            implementationClass = <span class="string">'com.github.skymxc.GreetPlugin'</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        jarWithLogPlugin &#123;</span><br><span class="line">            id = <span class="string">'com.github.skymxc.jar-log'</span></span><br><span class="line">            implementationClass = <span class="string">'com.github.skymxc.JarWithLogPlugin'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>插件会在 jar 文件里自动生成对应的 META-INF 目录。</p>
+<p>配合 maven-publish 可以为每个插件创建对应的发布任务。</p>
+<p>在发布时也会为每个插件发布对应的 “插件标记工件” 。</p>
+<h3 id="插件标记工件"><a href="#插件标记工件" class="headerlink" title="插件标记工件"></a>插件标记工件</h3><p>关于 插件标记工件这里插一下：</p>
+<p>每个 maven 工件都是由三部分标识的</p>
+<ul>
+<li>groupId</li>
+<li>artifactId</li>
+<li>version</li>
+</ul>
+<p>平常我们添加依赖的这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation &apos;groupId:artifactId:version&apos;</span><br></pre></td></tr></table></figure>
+<p>而我们的插件是通过 id 应用的，怎么通过 id 找到对应的工件呢，这就有了“插件标记工件”。<br>应用插件时会把 id 映射成这样：plugin.id: plugin.id.gradle.plugin:plugin.version</p>
+<p>即：</p>
+<ul>
+<li>plugin.id</li>
+<li>plugin.id.gradle.plugin</li>
+<li>plugin.version</li>
+</ul>
+<p>举个上面的例子：com.github.skymxc.greet 插件对应的工件就是：</p>
+<p>com.github.skymxc.greet:com.github.skymxc.greet.gradle.plugin:1.0.0</p>
+<p>部分代码：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id <span class="string">'java-gradle-plugin'</span></span><br><span class="line">    id <span class="string">'maven-publish'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">group <span class="string">'com.github.skymxc'</span></span><br><span class="line">version <span class="string">'1.0.0'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">gradlePlugin &#123;</span><br><span class="line">    plugins &#123;</span><br><span class="line">        greetPlugin &#123;</span><br><span class="line">            id = <span class="string">'com.github.skymxc.greet'</span></span><br><span class="line">            implementationClass = <span class="string">'com.github.skymxc.GreetPlugin'</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        jarWithLogPlugin &#123;</span><br><span class="line">            id = <span class="string">'com.github.skymxc.jar-log'</span></span><br><span class="line">            implementationClass = <span class="string">'com.github.skymxc.JarWithLogPlugin'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">publishing &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            name <span class="string">'local'</span></span><br><span class="line">            url <span class="string">'file://E:/libs/localMaven'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="maven-publish-的任务"><a href="#maven-publish-的任务" class="headerlink" title="maven-publish 的任务"></a>maven-publish 的任务</h3><p>简单介绍一下 maven-publish 的发布任务</p>
+<ul>
+<li><p><em>generatePomFileFor<code>${PubName}</code>Publication</em></p>
+<p>为名字为 PubName 的的发布创建一个 POM 文件，填充已知的元数据，例如项目名称，项目版本和依赖项。POM文件的默认位置是build / publications / $ pubName / pom-default.xml。</p>
+</li>
+<li><p><em>publish<code>${PubName}</code>PublicationTo<code>${RepoName}</code>Repository</em></p>
+<p>将 PubName 发布 发布到名为 RepoName 的仓库。<br>如果仓库定义没有明确的名称，则 RepoName 默认为 “ Maven”。</p>
+</li>
+<li><p><em>publish<code>${PubName}</code>PublicationToMavenLocal</em></p>
+<p>将 PubName 发布以及本地发布的 POM 文件和其他元数据复制到本地Maven缓存中<br>（通常为$USER_HOME / .m2 / repository）。</p>
+</li>
+<li><p><em>publish</em></p>
+<p>依赖于：所有的 publish<code>${PubName}</code>PublicationTo<code>${RepoName}</code>Repository 任务<br>将所有定义的发布发布到所有定义的仓库的聚合任务。不包括复制到本地 Maven 缓存的任务。</p>
+</li>
+<li><p><em>publishToMavenLocal</em></p>
+<p>依赖于：所有的 publish<code>${PubName}</code>PublicationToMavenLocal 任务</p>
+<p>将所有定义的发布（包括它们的元数据（POM文件等））复制到本地Maven缓存。</p>
+</li>
+</ul>
+<p>这张图列出了为每个插件生成的对应的任务。<br><img src="\images\Gradle\custom-plugin-为每个插件生成的任务.png" alt="插件对应的发布任务"></p>
+<p>执行发布任务 publish 后可以在对应的仓库查看</p>
+<p><img src="\images\Gradle\custom-plugin-发布了插件标记工件后的仓库-1.png" alt="发布后的仓库图1"><br><img src="\images\Gradle\custom-plugin-发布插件标记工件后的仓库-2.png" alt="发布后的仓库图2"></p>
+<h3 id="发布插件后的使用"><a href="#发布插件后的使用" class="headerlink" title="发布插件后的使用"></a>发布插件后的使用</h3><ol>
+<li>配置仓库，这次在 settings.gradle 里配置</li>
+</ol>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">pluginManagement &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url <span class="string">'file://E:/libs/localMaven'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>使用插件</li>
+</ol>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id <span class="string">'java'</span></span><br><span class="line">    id <span class="string">'com.github.skymxc.greet'</span> version <span class="string">'1.0.13'</span></span><br><span class="line">    id <span class="string">'com.github.skymxc.jar-log'</span> version <span class="string">'1.0.0'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>应用插件后就可以在 Gradle 的窗口看到对应的任务了。</p>
+<p>然后可以根据需要配置 DSL 。</p>
+<h2 id="为插件配置-DSL"><a href="#为插件配置-DSL" class="headerlink" title="为插件配置 DSL"></a>为插件配置 DSL</h2><p>和插件的交互就是通过 DSL 配置块进行的。</p>
+<p>那怎么为插件配置 DSL 呢，答案是随便一个普通类都可以的。</p>
+<p>通过 Gradle 的 API 可以将一个普通的类添加为 Project 的扩展，即 Project 的属性。</p>
+<p>举个例子，插件里的任务需要两个参数：文件地址，文件名字，就要通过 DSL 配置的方式解决。</p>
+<p>JarLogExtension.java 一个普通的类，有两个属性，分别是 name , path</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.skymxc.extension;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JarLogExtension</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String path;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//省略 setter/getter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在插件里将这个类添加为项目的扩展。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JarWithLogPlugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(Project target)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//添加扩展</span></span><br><span class="line">        target.getExtensions().add(<span class="string">"jarLog"</span>, JarLogExtension.class);</span><br><span class="line">        <span class="comment">//创建任务</span></span><br><span class="line">        target.getTasks().create(<span class="string">"jarWithLog"</span>, JarWithLogTask.class);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>应用插件后就可以在脚本里使用这个 DSL 配置了。</p>
+<p>build.gradle</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">······</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 为 jarWithLog 配置的 DSL</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">jarLog &#123;</span><br><span class="line">    path getBuildDir().path+<span class="string">"/libs"</span></span><br><span class="line">    name <span class="string">"record.txt"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">······</span><br></pre></td></tr></table></figure>
+<p>接下来就是在插件或者任务里获取 DSL 配置的参数了。</p>
+<p>可以通过名字或者类型获取到这个扩展对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JarWithLogTask</span> <span class="keyword">extends</span> <span class="title">Jar</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@TaskAction</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeLog</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">      <span class="comment">//获取到配置</span></span><br><span class="line">        JarLogExtension extension = getProject().getExtensions().getByType(JarLogExtension.class);</span><br><span class="line"></span><br><span class="line">        File file = <span class="keyword">new</span> File(extension.getPath(),extension.getName());</span><br><span class="line">        String s = file.getAbsolutePath();</span><br><span class="line">        String content = getNow()+<span class="string">" --- "</span>+getArchiveFileName().get();</span><br><span class="line">        System.out.println(<span class="string">"path --&gt; "</span>+s);</span><br><span class="line">        writeFile(s,content);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="嵌套-DSL"><a href="#嵌套-DSL" class="headerlink" title="嵌套 DSL"></a>嵌套 DSL</h3><p>在我们日常的使用中，嵌套 DSL 很常见，那怎么实现的呢。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hello &#123;</span><br><span class="line">    message <span class="string">'使用 pluginManagement 管理插件'</span></span><br><span class="line">    user &#123;</span><br><span class="line">        name <span class="string">'mxc'</span></span><br><span class="line">        age <span class="number">18</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在我来实现下:</p>
+<p>首先是创建里面的嵌套对象，需要注意的是要为 DSL 配置对应的方法。</p>
+<p>UserData.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.skymxc.extension;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 为了实践嵌套 DSL 建的</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserData</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 注意此方法 没有 set</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> name</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">name</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">age</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后是外层的 DSL 对应的类，因为有 DSL 嵌套，所以要使用闭包</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.skymxc.extension;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.gradle.api.Action;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 为 HelloTask 创建的扩展，用于接收配置参数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloExtension</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> UserData user = <span class="keyword">new</span> UserData();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 注意此方法没有 set</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> action</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">user</span><span class="params">(Action&lt;? <span class="keyword">super</span> UserData&gt; action)</span> </span>&#123;</span><br><span class="line">        action.execute(user);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 省略其他 getter/setter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后就是添加到项目的扩展了，和前面一样</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GreetPlugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(Project target)</span> </span>&#123;</span><br><span class="line">        target.getExtensions().create(<span class="string">"hello"</span>, HelloExtension.class);</span><br><span class="line">        target.getTasks().create(<span class="string">"hello"</span>, HelloTask.class);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在任务中的获取也是一样的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HelloExtension hello = getProject().getExtensions().getByType(HelloExtension.class);</span><br><span class="line">UserData user = hello.getUser();</span><br></pre></td></tr></table></figure>
+<h3 id="集合对象"><a href="#集合对象" class="headerlink" title="集合对象"></a>集合对象</h3><p>再看一个 DSL 配置，这种集合嵌套也经常见到，下面也来简单实现一下。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">fruits &#123;</span><br><span class="line">    apple &#123;</span><br><span class="line">        color <span class="string">'红色'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    grape &#123;</span><br><span class="line">        color <span class="string">'紫红色'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    banana &#123;</span><br><span class="line">        color <span class="string">'黄色'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    orange &#123;</span><br><span class="line">        color <span class="string">'屎黄色'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种配置是配合 NamedDomainObjectContainer 实现的，它接收一个类，这个类必须有一个包含 name 参数的构造方法。</p>
+<p>Fruit.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 必须有一个 name 属性，并且有一个 name 参数的构造函数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Fruit</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String color;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Fruit</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">color</span><span class="params">(String color)</span></span>&#123;</span><br><span class="line">        setColor(color);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//省略 setter/getter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>配置一个 Factory</p>
+<p>FruitFactory.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.gradle.api.NamedDomainObjectFactory;</span><br><span class="line"><span class="keyword">import</span> org.gradle.internal.reflect.Instantiator;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FruitFactory</span> <span class="keyword">implements</span> <span class="title">NamedDomainObjectFactory</span>&lt;<span class="title">Fruit</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Instantiator instantiator;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FruitFactory</span><span class="params">(Instantiator instantiator)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.instantiator = instantiator;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Fruit <span class="title">create</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instantiator.newInstance(Fruit.class, name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接着就是创建 NamedDomainObjectContainer 对象并添加到 Project 。</p>
+<p>GreetPlugin.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GreetPlugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(Project target)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Instantiator instantiator = ((DefaultGradle)target.getGradle()).getServices().get(Instantiator.class);</span><br><span class="line"></span><br><span class="line">        NamedDomainObjectContainer&lt;Fruit&gt; fruits = target.container(Fruit.class,<span class="keyword">new</span> FruitFactory(instantiator));</span><br><span class="line"></span><br><span class="line">        target.getExtensions().add(<span class="string">"fruits"</span>,fruits);</span><br><span class="line"></span><br><span class="line">        target.getTasks().create(<span class="string">"printlnFruits"</span>, ShowFruitTask.class);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在应用这个插件就可以在脚本里使用上述的 DSL 配置了。</p>
+<p>最后是 DSL 配置的接收了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShowFruitTask</span> <span class="keyword">extends</span> <span class="title">DefaultTask</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@TaskAction</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span>&#123;</span><br><span class="line">        NamedDomainObjectContainer&lt;Fruit&gt; fruits = (NamedDomainObjectContainer&lt;Fruit&gt;) getProject().getExtensions().getByName(<span class="string">"fruits"</span>);</span><br><span class="line"></span><br><span class="line">        fruits.forEach(fruit -&gt; &#123;</span><br><span class="line">            String format = String.format(<span class="string">"name: %s , color: %s"</span>, fruit.getName(), fruit.getColor());</span><br><span class="line">            getLogger().quiet(<span class="string">"fruit : &#123;&#125;"</span>,format);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>关于自定义插件的相关介绍就这些了，更详细的文档可以查看 <a href="https://docs.gradle.org/current/userguide/userguide.html" target="_blank" rel="noopener">Gradle 用户手册</a></p>
+</blockquote>
+<p>这篇文章的源码已经放在 github 上：<a href="https://github.com/skymxc/GradlePractice" target="_blank" rel="noopener">GradlePractice</a></p>
+<h2 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h2><ul>
+<li>自定义插件 <a href="https://docs.gradle.org/current/userguide/custom_plugins.html" target="_blank" rel="noopener">https://docs.gradle.org/current/userguide/custom_plugins.html</a></li>
+<li>开发辅助插件 <a href="https://docs.gradle.org/current/userguide/java_gradle_plugin.html" target="_blank" rel="noopener">https://docs.gradle.org/current/userguide/java_gradle_plugin.html</a></li>
+<li>使用插件 <a href="https://docs.gradle.org/current/userguide/plugins.html" target="_blank" rel="noopener">https://docs.gradle.org/current/userguide/plugins.html</a></li>
+<li>发布 <a href="https://docs.gradle.org/current/userguide/publishing_overview.html" target="_blank" rel="noopener">https://docs.gradle.org/current/userguide/publishing_overview.html</a></li>
+<li>maven 发布插件 <a href="https://docs.gradle.org/current/userguide/publishing_maven.html" target="_blank" rel="noopener">https://docs.gradle.org/current/userguide/publishing_maven.html</a></li>
+<li>Gradle 教程 <a href="https://gradle.org/guides/?q=Plugin%20Development" target="_blank" rel="noopener">https://gradle.org/guides/?q=Plugin%20Development</a></li>
+<li>Gradle DSL <a href="https://blog.csdn.net/zlcjssds/article/details/79229209" target="_blank" rel="noopener">https://blog.csdn.net/zlcjssds/article/details/79229209</a></li>
+</ul>
+<blockquote>
+<p>End</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="佛系编码 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>微信扫一扫，关注我的给公众号</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/pay/wechatpay.png" alt="佛系编码 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/pay/alipay.jpg" alt="佛系编码 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Gradle/" rel="tag"># Gradle</a>
+          
+            <a href="/tags/Gradle-自定义插件/" rel="tag"># Gradle 自定义插件</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/21/Gradle-Java-Plugin/" rel="next" title="Gradle Java 插件">
+                <i class="fa fa-chevron-left"></i> Gradle Java 插件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/user.jpg"
+                alt="佛系编码" />
+            
+              <p class="site-author-name" itemprop="name">佛系编码</p>
+              <p class="site-description motion-element" itemprop="description">写点编码的日常</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">博文</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/skymxc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:skymxc@foxmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#可以在三个地方定义插件"><span class="nav-number">1.</span> <span class="nav-text">可以在三个地方定义插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在脚本里的插件"><span class="nav-number">1.1.</span> <span class="nav-text">在脚本里的插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在-buildSrc-下"><span class="nav-number">1.2.</span> <span class="nav-text">在 buildSrc 下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在单独的项目里"><span class="nav-number">1.3.</span> <span class="nav-text">在单独的项目里</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个插件"><span class="nav-number">2.</span> <span class="nav-text">创建一个插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在脚本里创建一个插件"><span class="nav-number">3.</span> <span class="nav-text">在脚本里创建一个插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在项目的-buildSrc-目录下创建项目"><span class="nav-number">4.</span> <span class="nav-text">在项目的 buildSrc 目录下创建项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-DSL"><span class="nav-number">4.1.</span> <span class="nav-text">配置 DSL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为插件创建-ID"><span class="nav-number">4.2.</span> <span class="nav-text">为插件创建 ID</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在单独的项目里创建插件"><span class="nav-number">5.</span> <span class="nav-text">在单独的项目里创建插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-java-gradle-plugin-开发插件"><span class="nav-number">6.</span> <span class="nav-text">使用 java-gradle-plugin 开发插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#插件标记工件"><span class="nav-number">6.1.</span> <span class="nav-text">插件标记工件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#maven-publish-的任务"><span class="nav-number">6.2.</span> <span class="nav-text">maven-publish 的任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布插件后的使用"><span class="nav-number">6.3.</span> <span class="nav-text">发布插件后的使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为插件配置-DSL"><span class="nav-number">7.</span> <span class="nav-text">为插件配置 DSL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#嵌套-DSL"><span class="nav-number">7.1.</span> <span class="nav-text">嵌套 DSL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合对象"><span class="nav-number">7.2.</span> <span class="nav-text">集合对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#资料"><span class="nav-number">8.</span> <span class="nav-text">资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">佛系编码</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skymxc.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://blog.skymxc.com/2019/10/25/Gradle-custom-plugin/';
+          this.page.identifier = '2019/10/25/Gradle-custom-plugin/';
+          this.page.title = 'Gradle 自定义插件';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skymxc.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
