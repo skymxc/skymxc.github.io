@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Gradle Plugin,Gradle for Android," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="从 Gradle 角度看，Android 插件是由 Google 的 Android 团队开发的一个第三方插件。从 Android 的角度看，Android 插件是基于 Gradle 构建的，是和 Android studio 完美搭配的新一代构建系统。">
+<meta name="keywords" content="Gradle Plugin,Gradle for Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Gradle 插件">
+<meta property="og:url" content="http://blog.skymxc.com/2020/05/24/Gradle-for-android-1/index.html">
+<meta property="og:site_name" content="佛系编码">
+<meta property="og:description" content="从 Gradle 角度看，Android 插件是由 Google 的 Android 团队开发的一个第三方插件。从 Android 的角度看，Android 插件是基于 Gradle 构建的，是和 Android studio 完美搭配的新一代构建系统。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/gradle-for-android-article.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/gradle-for-android-type.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/gradle-for-android-tasks-1.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/gradle-for-android-tasks-2.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/gradle-for-android-tasks-3.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/gradle-for-android-project-director.png">
+<meta property="og:image" content="http://blog.skymxc.com/images/Gradle/gradle-for-android-app-dir.png">
+<meta property="og:updated_time" content="2020-05-24T15:18:38.019Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Gradle 插件">
+<meta name="twitter:description" content="从 Gradle 角度看，Android 插件是由 Google 的 Android 团队开发的一个第三方插件。从 Android 的角度看，Android 插件是基于 Gradle 构建的，是和 Android studio 完美搭配的新一代构建系统。">
+<meta name="twitter:image" content="http://blog.skymxc.com/images/Gradle/gradle-for-android-article.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'sky-mxc'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.skymxc.com/2020/05/24/Gradle-for-android-1/"/>
+
+
+
+
+
+  <title>Android Gradle 插件 | 佛系编码</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db8042d9d7c31f7cbbc5ecedd326a573";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">佛系编码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">好记性不如烂笔头</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.skymxc.com/2020/05/24/Gradle-for-android-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="佛系编码">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="佛系编码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android Gradle 插件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-24T23:04:07+08:00">
+                2020-05-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gradle/" itemprop="url" rel="index">
+                    <span itemprop="name">Gradle</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gradle/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/05/24/Gradle-for-android-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/05/24/Gradle-for-android-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  从 Gradle 角度看，Android 插件是由 Google 的 Android 团队开发的一个第三方插件。从 Android 的角度看，Android 插件是基于 Gradle 构建的，是和 Android studio 完美搭配的新一代构建系统。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="\images\Gradle\gradle-for-android-article.png" alt="目录"></p>
+<h2 id="Android-Gradle-简介"><a href="#Android-Gradle-简介" class="headerlink" title="Android Gradle 简介"></a>Android Gradle 简介</h2><p>从 Gradle 角度看，Android 插件是由 Google 的 Android 团队开发的一个第三方插件。</p>
+<p>从 Android 的角度看，Android 插件是基于 Gradle 构建的，是和 Android studio 完美搭配的新一代构建系统。</p>
+<p>使用它可以很轻松的执行以下操作：<br>自定义，配置和扩展编译流程。<br>使用相同的项目和模块为你的应用创建多个具有不同功能的 APK。<br>在不同源集之间重复使用代码和资源。</p>
+<p>利用 Gradle 的灵活性，可以在不修改应用核心源文件的情况下完成以上所有操作。</p>
+<p>Android 插件能做的还有很多，更多的可以参阅 <a href="https://developer.android.google.cn/studio/build" target="_blank" rel="noopener">配置构建</a></p>
+<h2 id="插件分类"><a href="#插件分类" class="headerlink" title="插件分类"></a>插件分类</h2><p>Android 插件的分类其实是根据 Android 工程的属性分类的。</p>
+<p>在 Android 中有很多种工程类型，常见的有</p>
+<ul>
+<li>App 应用工程，用于生成可运行的 APK 。</li>
+<li>Library 库工程，用于生成 AAR 包给其他 APK 应用工程公用。</li>
+</ul>
+<p>分别对应的插件 ID 是</p>
+<ul>
+<li>App 插件  ：com.android.application</li>
+<li>Library 插件：com.android.library</li>
+</ul>
+<p>在创建 Module 时就可以看到很多类型</p>
+<p><img src="\images\Gradle\gradle-for-android-type.png" alt="插件类型"></p>
+<p>通过应用以上不同的插件就可以配置不同的 Android 工程，然后配合 Android studio 就可以分别对它们进行编译，测试，发布等操作。</p>
+<h2 id="应用插件"><a href="#应用插件" class="headerlink" title="应用插件"></a>应用插件</h2><p>在 Android studio 里创建 Module 的时候选择不同的工程会自动应用对应的插件。</p>
+<p>如果不配合 Android studio 应用，可以在配置脚本 build.gradle 里设置对应的插件ID 。<br>因为 Android 插件是托管在 jcenter 仓库上的，所以必须在 repositories{} 添加 jcenter 仓库。</p>
+<p>这样就能找到 Android 插件了，具体为什么这么做，<a href="https://mp.weixin.qq.com/s?__biz=MzA5NDkwNjc4Ng==&amp;mid=2247483733&amp;idx=1&amp;sn=558d2352ed2abb034f7bbf06f2449ac1&amp;scene=19#wechat_redirect" target="_blank" rel="noopener">看这里</a>。<br>然后是把构件依赖添加到 classpath 。</p>
+<p>这一步一般是在根项目的配置文件里配置的，这样就不用每一个子项目都配置了。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    </span><br><span class="line">    repositories &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath <span class="string">'com.android.tools.build:gradle:3.6.3'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后就是在子项目里应用插件了。<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="string">plugin:</span> <span class="string">'com.android.application'</span></span><br><span class="line"></span><br><span class="line">apply <span class="string">plugin:</span> <span class="string">'com.android.library'</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h2><p>Android 插件是继承自 Java 插件的，自然把 Java 的任务也继承来了，例如</p>
+<ul>
+<li>assemble</li>
+<li>build</li>
+<li>clean</li>
+<li>check</li>
+</ul>
+<p>除了继承 Java 插件的，Android 插件本身也添加了自己的任务，例如</p>
+<ul>
+<li>connectCheck 在所有连接设备或者模拟器上运行 check 检查。</li>
+<li>deviceCheck 通过 API 链接远程设备运行 checks 。它被用于 CI 服务器上。</li>
+<li>lint 在所有的 ProductFlabor  上运行 lint 检查。</li>
+<li>install 在已连接的设备上安装 应用。</li>
+<li>uninstall 在已连接的设备上卸载应用。</li>
+</ul>
+<p>除此之外还有些不太常用的任务：</p>
+<ul>
+<li>signingReport 可以打印应用的签名</li>
+<li>androidDependencies 可以打印 Android 的依赖。</li>
+</ul>
+<p>一般我们常用的任务是 build、assemble、clean、check、lint等，通过这些任务可以对应用进行打包生成 APK，对现有的 Android 工程进行 lint 检查等。</p>
+<p>还有一些其他的任务，可以通过命令查看<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle tasks</span><br></pre></td></tr></table></figure></p>
+<p><img src="\images\Gradle\gradle-for-android-tasks-1.png" alt="任务"><br><img src="\images\Gradle\gradle-for-android-tasks-2.png" alt="任务"></p>
+<p>在 Android studio 的 Gradle 窗口也可以看到所有的任务</p>
+<p><img src="\images\Gradle\gradle-for-android-tasks-3.png" alt="任务窗口"></p>
+<p>关于 Java 插件的介绍，移步 <a href="https://mp.weixin.qq.com/s?__biz=MzA5NDkwNjc4Ng==&amp;mid=2247483749&amp;idx=1&amp;sn=ed87924cea3f6b770608d18995ffc62b&amp;scene=19#wechat_redirect" target="_blank" rel="noopener">Java 插件</a></p>
+<h2 id="Android-工程详细示例"><a href="#Android-工程详细示例" class="headerlink" title="Android 工程详细示例"></a>Android 工程详细示例</h2><p>Android 插件继承自 Java 插件，具备 Java 插件所有的特性，其目录结构也和 Java 差不多。</p>
+<p>使用 Android studio 创建一个工程，可以得到以下目录:</p>
+<p><img src="\images\Gradle\gradle-for-android-project-director.png" alt="Android 工程目录"></p>
+<p>我们的重点放在项目的配置脚本文件上，大部分的配置是在这里的。</p>
+<p>这是一个标准的多项目的 Gradle 目录。</p>
+<ul>
+<li>settings.gradle 配置参与构建的项目，会在初始化阶段被执行。</li>
+<li>local.properties 是本地配置，配置 sdk和ndk 的位置。</li>
+<li>gradlew.bat Gradle 在 windows 系统下的执行脚本</li>
+<li>gradlew Gradle 在 unix 系统下的执行脚本</li>
+<li>gradle.properties Gradle属性配置文件</li>
+<li>build.gradle Gradle 配置文件 这里是根项目的配置文件。</li>
+<li>*.iml Android studio 自动生成的文件，每个项目都会生成一个。</li>
+<li>.gitignore Git 的忽略配置</li>
+<li>gradle/wrapper 目录是 Gradle Wrapper 使用的目录</li>
+<li>gradle-wrapper.jar 是执行 Gradle Wrapper 使用的</li>
+<li>gradle-wrapper.properties 是配置 Gradle Wrapper 属性的 </li>
+<li>app 目录是默认创建的一个 App 应用工程。在 settings.gradle 里会默认导入此子项目。</li>
+</ul>
+<p>关于更多 Gradle 介绍，移步 <a href="http://mp.weixin.qq.com/mp/homepage?__biz=MzA5NDkwNjc4Ng==&amp;hid=1&amp;sn=49aa5ba6f154fcb59ccd68dc0478e1e7&amp;scene=18#wechat_redirect" target="_blank" rel="noopener">Gradle 系列</a>,在持续更新中。</p>
+<p>settings.gradle<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//项目名称，默认是目录名字</span></span><br><span class="line">rootProject.name=<span class="string">'AndroidGradleExample'</span></span><br><span class="line"><span class="comment">//导入子项目 app </span></span><br><span class="line">include <span class="string">':app'</span></span><br></pre></td></tr></table></figure></p>
+<p>local.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 配置 SDK 在本机的目录，创建项目时，Android studio 会自动配置，如果需要自己单独设置，可以更改</span><br><span class="line">sdk.dir=/Users/skymxc/Library/Android/sdk</span><br><span class="line"># ndk 在本机的目录 需要时配置</span><br><span class="line">##ndk.dir=/Users/skymxc/Library/Android/sdk/ndk-bundle</span><br></pre></td></tr></table></figure></p>
+<p>gradle.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 使用 AndroidX 更多详细可查看 https://developer.android.com/topic/libraries/support-library/androidx-rn</span><br><span class="line">android.useAndroidX=true</span><br><span class="line"># 自动转换第三方库使用 androidx ;Automatically convert third-party libraries to use AndroidX</span><br><span class="line">android.enableJetifier=true</span><br><span class="line"># 为 JVM 守护进程指定参数；Specifies the JVM arguments used for the daemon process.</span><br><span class="line"># 调整内存设置的参数；The setting is particularly useful for tweaking memory settings.</span><br><span class="line">org.gradle.jvmargs=-Xmx1536m</span><br></pre></td></tr></table></figure></p>
+<p>.gitignore<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">*.iml</span><br><span class="line">.gradle</span><br><span class="line">.idea</span><br><span class="line">/local.properties</span><br><span class="line">/.idea/caches</span><br><span class="line">/.idea/libraries</span><br><span class="line">/.idea/modules.xml</span><br><span class="line">/.idea/workspace.xml</span><br><span class="line">/.idea/navEditor.xml</span><br><span class="line">/.idea/assetWizardSettings.xml</span><br><span class="line">.DS_Store</span><br><span class="line">/build</span><br><span class="line">/captures</span><br><span class="line">.externalNativeBuild</span><br><span class="line">.cxx</span><br></pre></td></tr></table></figure></p>
+<p>build.gradle  根项目的配置脚本，可以在这里配置所有项目都会用到的共性配置，例如配置所有子项目都会使用的仓库。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">// Top-level build file where you can add configuration options common to all sub-projects/modules.</span><br><span class="line">//顶层配置文件，这里添加的配置可选择配置到所有子项目</span><br><span class="line"></span><br><span class="line">//配置脚本，主要是配置 Gradle 脚本执行使用的依赖。</span><br><span class="line">buildscript &#123;</span><br><span class="line"></span><br><span class="line">    //使用的插件所在的仓库，例如 Android 插件就放在了 jcenter 上</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //使用的插件依赖</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        // Android 构建工具</span><br><span class="line">        classpath &apos;com.android.tools.build:gradle:3.6.3&apos;</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">        // NOTE: Do not place your application dependencies here; they belong</span><br><span class="line">        // in the individual module build.gradle files</span><br><span class="line">        //注意：不要子项目的依赖放在这里，各自项目的依赖应该放在各自项目的 build.gralde 配置脚本里。</span><br><span class="line">        //这里的配置会应用到所有项目。</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//会遍历所有子项目，这里相当于给所有项目都配置了仓库了。</span><br><span class="line">allprojects &#123;</span><br><span class="line"></span><br><span class="line">    //给所有项目配置仓库</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 配置 clean 任务，删除根目录的 build 目录。</span><br><span class="line">task clean(type: Delete) &#123;</span><br><span class="line">    delete rootProject.buildDir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="应用工程目录"><a href="#应用工程目录" class="headerlink" title="应用工程目录"></a>应用工程目录</h3><p><img src="\images\Gradle\gradle-for-android-app-dir.png" alt="应用工程目录"></p>
+<ul>
+<li>libs 放置第三方的 jar ，也可以放置 so 库。</li>
+<li>src 源文件</li>
+<li>src/androidTest Android测试目录，这里可以写测试代码，执行测试</li>
+<li>src/main main源集，其中 java 目录是 java 源代码，res  目录是资源目录</li>
+<li>src/test 测试目录，其中 java 目录可以写单元测试等测试代码，执行测试</li>
+<li>.gitignore git 忽略文件</li>
+<li>build.gradle Gradle 配置脚本</li>
+<li>proguard-rules.pro 配置Proguard 混淆规则；</li>
+<li>AndroidManifest.xml Android 清单文件；常见的配置有四大组件，使用的权限；</li>
+</ul>
+<p>app/.gitignore<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/build</span><br></pre></td></tr></table></figure></p>
+<p>app/build.gradle<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">//使用 Android 应用插件</span><br><span class="line">apply plugin: &apos;com.android.application&apos;</span><br><span class="line">// android 是 Android插件提供的扩展类型。 Android 工程的配置都可以在这里配置。</span><br><span class="line">android &#123;</span><br><span class="line"></span><br><span class="line">    //编译的SDK 版本</span><br><span class="line">    compileSdkVersion 29</span><br><span class="line">    //构建工具版本</span><br><span class="line">    buildToolsVersion &quot;29.0.2&quot;</span><br><span class="line"></span><br><span class="line">    //默认配置，它是一个 ProductFlavor</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        //应用程序ID，创建时的包名，可以更改。</span><br><span class="line">        applicationId &quot;cn.sintoon.androidgradleexample&quot;</span><br><span class="line">        //最小支持的SDK 版本</span><br><span class="line">        minSdkVersion 19</span><br><span class="line">        //目标 SDK 版本</span><br><span class="line">        targetSdkVersion 29</span><br><span class="line">        //应用版本代码，一般用于控制APP的升级。</span><br><span class="line">        versionCode 1</span><br><span class="line">        //应用版本名称，用户可以看到。</span><br><span class="line">        versionName &quot;1.0&quot;</span><br><span class="line"></span><br><span class="line">        //配置单元测试使用的 runner</span><br><span class="line">        testInstrumentationRunner &quot;androidx.test.runner.AndroidJUnitRunner&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //构建类型</span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        //发布类型</span><br><span class="line">        release &#123;</span><br><span class="line">            //是否启用混淆</span><br><span class="line">            minifyEnabled false</span><br><span class="line">            //proguard 规则文件;</span><br><span class="line">            proguardFiles getDefaultProguardFile(&apos;proguard-android-optimize.txt&apos;), &apos;proguard-rules.pro&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">//使用的依赖</span><br><span class="line">dependencies &#123;</span><br><span class="line">    implementation fileTree(dir: &apos;libs&apos;, include: [&apos;*.jar&apos;])</span><br><span class="line"></span><br><span class="line">    implementation &apos;androidx.appcompat:appcompat:1.1.0&apos;</span><br><span class="line">    implementation &apos;androidx.constraintlayout:constraintlayout:1.1.3&apos;</span><br><span class="line">    testImplementation &apos;junit:junit:4.12&apos;</span><br><span class="line">    androidTestImplementation &apos;androidx.test.ext:junit:1.1.1&apos;</span><br><span class="line">    androidTestImplementation &apos;androidx.test.espresso:espresso-core:3.2.0&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Android 工程的配置都在 android{} 中。通过它，可以对 Android Gradle 工程进行自定义配置。</p>
+<p>defaultConfig{} 里是默认的配置，它是一个 ProductFlavor 。</p>
+<p>getDefaultProguardFile 是 Android 扩展的一个方法，它可以获取你的 Android SDK 目录下默认的 proguard 配置文件。 在 android-sdk/tools/proguard/ 目录下，文件名就是传入的参数 proguard-android-optimize.txt 。</p>
+<hr>
+<p>我在 github 建了一个仓库，是 Android 插件的配置示例，会持续把所有的配置和注释都记录在这里以供查阅，<a href="https://github.com/skymxc/AndroidGradleExample" target="_blank" rel="noopener">AndroidGradleExample</a>。</p>
+<blockquote>
+<p>End</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="佛系编码 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>微信扫一扫，关注我的公众号</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/pay/wechatpay.png" alt="佛系编码 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/pay/alipay.jpg" alt="佛系编码 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Gradle-Plugin/" rel="tag"># Gradle Plugin</a>
+          
+            <a href="/tags/Gradle-for-Android/" rel="tag"># Gradle for Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/28/display-pdf-in-Android/" rel="next" title="Android 上显示 PDF 文件">
+                <i class="fa fa-chevron-left"></i> Android 上显示 PDF 文件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/user.jpg"
+                alt="佛系编码" />
+            
+              <p class="site-author-name" itemprop="name">佛系编码</p>
+              <p class="site-description motion-element" itemprop="description">好记性不如烂笔头</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">博文</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/skymxc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:skymxc@foxmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-Gradle-简介"><span class="nav-number">1.</span> <span class="nav-text">Android Gradle 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插件分类"><span class="nav-number">2.</span> <span class="nav-text">插件分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用插件"><span class="nav-number">3.</span> <span class="nav-text">应用插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务"><span class="nav-number">4.</span> <span class="nav-text">任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-工程详细示例"><span class="nav-number">5.</span> <span class="nav-text">Android 工程详细示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#应用工程目录"><span class="nav-number">5.1.</span> <span class="nav-text">应用工程目录</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">佛系编码</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://skymxc.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://blog.skymxc.com/2020/05/24/Gradle-for-android-1/';
+          this.page.identifier = '2020/05/24/Gradle-for-android-1/';
+          this.page.title = 'Android Gradle 插件';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://skymxc.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
